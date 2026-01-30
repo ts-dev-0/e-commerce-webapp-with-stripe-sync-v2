@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+
+Route::get('/products/{product}', [ProductController::class, 'show']);
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
