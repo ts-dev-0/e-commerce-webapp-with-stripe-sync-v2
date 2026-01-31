@@ -36,4 +36,16 @@ class UserCartTest extends TestCase
 
         $this->assertEquals(1, Cart::where('user_id', $user->id)->count(), 'There should be exactly one cart created for the user');
     }
+
+    public function test_current_cart_returns_existing_cart()
+    {
+        $user = User::factory()->create();
+        $existing = Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $cart = $user->currentCart();
+
+        $this->assertEquals($existing->id, $cart->id);
+    }
 }
