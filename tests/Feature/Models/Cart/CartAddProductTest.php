@@ -51,4 +51,15 @@ class CartAddProductTest extends TestCase
         );
     }
 
+    public function test_add_product_throws_exception_when_quantity_is_less_than_one()
+    {
+        /** @var \App\Models\User $user  */
+        $user = User::factory()->create();
+        $cart = $user->currentCart();
+        $product = Product::factory()->create();
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $cart->addProduct($product, 0);
+    }
 }

@@ -8,4 +8,40 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'cart_items')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
+    public function addProduct(Product $product, int $quantity = 1): void
+    {
+        if ($quantity < 1) {
+            throw new \InvalidArgumentException('Quantity must be at least 1.');
+        }
+
+        $existing = $this->products()
+            ->where('product_id', $product->id)
+            ->first();
+
+        if($existing) {
+            $this->products()->updateExistingPivot(
+                $product->id,
+                [
+                    'quantity' => $existing->pivot->quantity + $quantity,
+                ]
+            );
+        }
+
+        $this->products()->attach($product->id, [
+            'quantity' => $quantity,
+        ]);
+    }
 }
