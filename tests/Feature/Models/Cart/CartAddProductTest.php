@@ -29,4 +29,26 @@ class CartAddProductTest extends TestCase
             'quantity'    => 2,
         ]);
     }
+
+    public function test_add_product_increments_quantity_if_product_already_exists_in_cart()
+    {
+        /** @var \App\Models\User $user  */
+        $user = User::factory()->create();
+        $cart = $user->currentCart();
+        $product = Product::factory()->create();
+
+        $cart->products()->attach($product->id, [
+            'quantity' => 2,
+        ]);
+
+        $cart->addProduct($product, 3);
+
+        $cart->refresh();
+
+        $this->assertEquals(
+            5,
+            $cart->products()->first()->pivot->quantity
+        );
+    }
+
 }
