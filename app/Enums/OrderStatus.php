@@ -3,8 +3,8 @@
 namespace App\Enums;
 
 enum OrderStatus: int {
-    case Ordered = 1;
-    case Paid = 2;
-    case Shipped = 3;
-    case Canceled = 4;
+    case Pending   = 1;
+    case Paid      = 2;
+    case Completed = 3;
+    case Cancelled = 4;
 }
