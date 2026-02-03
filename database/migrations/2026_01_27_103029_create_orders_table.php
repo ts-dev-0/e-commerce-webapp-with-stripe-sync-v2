@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->unsignedTinyInteger('status')->default(1);
+            $table->unsignedInteger('total_amount');
+            $table->timestamp('ordered_at')->nullable();
             $table->timestamps();
         });
     }
