@@ -50,4 +50,24 @@ class UpdateProductQuantityTest extends TestCase
 
         $cart->updateProductQuantity($product, 3);
     }
+
+    public function test_throws_exception_if_quantity_is_zero_or_less()
+    {
+        /** @var \App\Models\User $user  */
+        $user = User::factory()->create();
+
+        $cart = $user->currentCart();
+
+        $product = Product::factory()->create();
+
+        $cart->addProduct($product);
+
+        $cart->refresh();
+
+        $updatedQuantity = 0;
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $cart->updateProductQuantity($product, $updatedQuantity);
+    }
 }

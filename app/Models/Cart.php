@@ -47,6 +47,10 @@ class Cart extends Model
 
     public function updateProductQuantity(Product $product, int $updatedQuantity): void
     {
+        if($updatedQuantity < 1) {
+            throw new \InvalidArgumentException('Quantity must be at least 1.');
+        }
+
         if (! $this->products()->where('product_id', $product->id)->exists()) {
             throw new \InvalidArgumentException('Product does not exist.');
         }
