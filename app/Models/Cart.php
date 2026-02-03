@@ -44,4 +44,14 @@ class Cart extends Model
             'quantity' => $quantity,
         ]);
     }
+
+    public function updateProductQuantity(Product $product, int $updatedQuantity): void
+    {
+        $this->products()->updateExistingPivot(
+            $product->id,
+            [
+                'quantity' => $updatedQuantity,
+            ]
+        );
+    }
 }
