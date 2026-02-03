@@ -47,6 +47,10 @@ class Cart extends Model
 
     public function updateProductQuantity(Product $product, int $updatedQuantity): void
     {
+        if (! $this->products()->where('product_id', $product->id)->exists()) {
+            throw new \InvalidArgumentException('Product does not exist.');
+        }
+
         $this->products()->updateExistingPivot(
             $product->id,
             [

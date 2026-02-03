@@ -36,4 +36,18 @@ class UpdateProductQuantityTest extends TestCase
             ]
         );
     }
+
+    public function test_throws_exception_if_product_not_in_cart()
+    {
+        /** @var \App\Models\User $user  */
+        $user = User::factory()->create();
+
+        $cart = $user->currentCart();
+
+        $product = Product::factory()->create();
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $cart->updateProductQuantity($product, 3);
+    }
 }
