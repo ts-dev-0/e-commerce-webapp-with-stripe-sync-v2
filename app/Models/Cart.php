@@ -62,4 +62,9 @@ class Cart extends Model
             ]
         );
     }
+
+    public function removeProduct(Product $product): void
+    {
+        $this->products()->detach($product->id);
+    }
 }
