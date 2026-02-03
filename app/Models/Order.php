@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
+        'user_id',
         'status',
+        'total_amount',
+        'ordered_at',
     ];
 
     protected $casts = [
