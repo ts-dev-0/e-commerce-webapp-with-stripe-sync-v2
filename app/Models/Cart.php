@@ -72,6 +72,10 @@ class Cart extends Model
     {
         $products = $this->products;
 
+        if($products->isEmpty()) {
+            throw new \DomainException('Cart is empty.');
+        }
+
         $totalAmount = $products->sum(function ($product) {
             return $product->price * $product->pivot->quantity;
         });

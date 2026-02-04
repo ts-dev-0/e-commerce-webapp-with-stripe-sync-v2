@@ -48,4 +48,20 @@ class CheckoutTest extends TestCase
 
         $this->assertDatabaseCount('cart_items', 0);
     }
+
+    public function test_throws_exception_if_cart_is_empty()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $cart = $user->currentCart();
+
+        $this->assertCount(0, $cart->products);
+
+        $this->expectException(\DomainException::class);
+
+        $this->expectExceptionMessage('Cart is empty');
+
+        $cart->checkout();
+    }
 }
