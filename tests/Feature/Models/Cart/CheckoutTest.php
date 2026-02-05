@@ -64,4 +64,24 @@ class CheckoutTest extends TestCase
 
         $cart->checkout();
     }
+
+    public function test_cart_can_be_used_again_after_checkout()
+    {
+        $user = User::factory()->create();
+        $cart = $user->currentCart();
+
+        $product = Product::factory()->create(['price' => 1000]);
+        $cart->addProduct($product, 1);
+
+        $cart->checkout();
+
+        $newProduct = Product::factory()->create(['price' => 500]);
+        $cart->addProduct($newProduct, 2);
+
+        $this->assertDatabaseHas('cart_items', [
+            'cart_id'    => $cart->id,
+            'product_id' => $newProduct->id,
+            'quantity'   => 2,
+        ]);
+    }
 }
