@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Models\Cart;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -83,5 +84,18 @@ class CheckoutTest extends TestCase
             'product_id' => $newProduct->id,
             'quantity'   => 2,
         ]);
+    }
+
+    public function test_checkout_returns_order_instance()
+    {
+        $user = User::factory()->create();
+        $cart = $user->currentCart();
+
+        $product = Product::factory()->create(['price' => 1000]);
+        $cart->addProduct($product);
+
+        $order = $cart->checkout();
+
+        $this->assertInstanceOf(Order::class, $order);
     }
 }
