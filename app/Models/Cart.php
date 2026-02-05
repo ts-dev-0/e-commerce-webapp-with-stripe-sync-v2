@@ -67,4 +67,39 @@ class Cart extends Model
     {
         $this->products()->detach($product->id);
     }
+
+    public function checkout(): Order
+    {
+        $products = $this->products;
+
+        if($products->isEmpty()) {
+            throw new \DomainException('Cart is empty.');
+        }
+
+        $totalAmount = $products->sum(function ($product) {
+            return $product->price * $product->pivot->quantity;
+        });
+
+        $order = Order::create([
+            'user_id'      => $this->user_id,
+            'total_amount' => $totalAmount,
+        ]);
+
+        foreach ($products as $product) {
+            $quantity = $product->pivot->quantity;
+            $price    = $product->price;
+
+            $order->items()->create([
+                'product_id'   => $product->id,
+                'product_name' => $product->name,
+                'quantity'     => $quantity,
+                'price'        => $price,
+                'subtotal'     => $price * $quantity,
+            ]);
+        }
+
+        $this->products()->detach();
+
+        return $order;
+    }
 }
