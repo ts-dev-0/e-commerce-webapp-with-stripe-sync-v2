@@ -37,7 +37,7 @@ class CancelTest extends TestCase
 
         $order = Order::factory()->create([
             'user_id' => $user->id,
-            'status' => OrderStatus::Paid,
+            'status' => OrderStatus::Paid->value,
         ]);
 
         $this->expectException(\DomainException::class);
@@ -51,7 +51,7 @@ class CancelTest extends TestCase
 
         $order = Order::factory()->create([
             'user_id' => $user->id,
-            'status' => OrderStatus::Completed,
+            'status' => OrderStatus::Completed->value,
         ]);
 
         $this->expectException(\DomainException::class);
@@ -65,7 +65,7 @@ class CancelTest extends TestCase
 
         $order = Order::factory()->create([
             'user_id' => $user->id,
-            'status' => OrderStatus::Canceled,
+            'status' => OrderStatus::Canceled->value,
         ]);
 
         $this->expectException(\DomainException::class);
