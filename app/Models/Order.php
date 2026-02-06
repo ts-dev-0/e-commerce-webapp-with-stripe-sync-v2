@@ -37,7 +37,7 @@ class Order extends Model
             throw new \DomainException('Order cannot be canceled.');
         }
 
-        $this->status = OrderStatus::Canceled->value;
+        $this->status = OrderStatus::Canceled;
         $this->save();
     }
 }
