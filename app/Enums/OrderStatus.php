@@ -7,4 +7,9 @@ enum OrderStatus: int {
     case Paid      = 1;
     case Completed = 2;
     case Canceled  = 3;
+
+    public function canCancel(): bool
+    {
+        return $this === self::Pending;
+    }
 }
