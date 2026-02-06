@@ -33,6 +33,10 @@ class Order extends Model
 
     public function cancel(): void
     {
+        if(! $this->status->canCancel()) {
+            throw new \DomainException('Order cannot be canceled.');
+        }
+
         $this->status = OrderStatus::Canceled->value;
         $this->save();
     }

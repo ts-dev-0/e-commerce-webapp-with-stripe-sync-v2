@@ -29,4 +29,18 @@ class CancelTest extends TestCase
             'status' => OrderStatus::Canceled->value,
         ]);
     }
+
+    public function test_order_can_not_be_canceled_when_status_is_completed()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $order = Order::factory()->create([
+            'user_id' => $user->id,
+            'status' => OrderStatus::Completed,
+        ]);
+
+        $this->expectException(\DomainException::class);
+        $order->cancel();
+    }
 }
