@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\OrderStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +21,7 @@ class OrderFactory extends Factory
         return [
             'user_id' => User::factory(),
             'total_amount' => $this->faker->numberBetween(1000, 2000),
+            'status' => OrderStatus::Pending,
         ];
     }
 }
