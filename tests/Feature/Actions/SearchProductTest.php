@@ -41,4 +41,28 @@ class SearchProductTest extends TestCase
         );
     }
 
+    public function test_can_search_products_by_manufacture()
+    {
+        $appleProduct = Product::factory()->create([
+            'name' => 'iPhone 15',
+            'manufacturer' => 'Apple',
+        ]);
+
+        $samsungProduct = Product::factory()->create([
+            'name' => 'Galaxy S24',
+            'manufacturer' => 'Samsung',
+        ]);
+
+        $action = new SearchProduct();
+
+        $results = $action->handle('Apple');
+
+        $this->assertTrue(
+            $results->pluck('id')->contains($appleProduct->id)
+        );
+
+        $this->assertFalse(
+            $results->pluck('id')->contains($samsungProduct->id)
+        );
+    }
 }

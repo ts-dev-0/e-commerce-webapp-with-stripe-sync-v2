@@ -10,7 +10,13 @@ class SearchProduct
     public function handle(string $keyword): Collection
     {
         return Product::query()
-            ->where('name', 'like', '%' . $keyword . '%')
+            ->where(function ($query) use ($keyword) {
+                $query
+                    ->where('name', 'like', "%{$keyword}%")
+                    ->orWhere('manufacturer', 'like', "%{$keyword}%");
+            })
+            ->orderByDesc('created_at')
+            ->limit(15)
             ->get();
     }
 }
