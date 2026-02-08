@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->unsignedInteger('price');
             $table->unsignedInteger('stock');
+            $table->string('manufacturer');
             $table->timestamps();
         });
     }
