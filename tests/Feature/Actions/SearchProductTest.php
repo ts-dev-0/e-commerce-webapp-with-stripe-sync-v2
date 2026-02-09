@@ -23,11 +23,11 @@ class SearchProductTest extends TestCase
 
     public function test_can_search_products_by_keyword()
     {
-        Product::factory()->create([
+        $iphone = Product::factory()->create([
             'name' => 'Apple iPhone',
         ]);
 
-        Product::factory()->create([
+        $appleWatch = Product::factory()->create([
             'name' => 'Apple Watch',
         ]);
 
@@ -39,13 +39,8 @@ class SearchProductTest extends TestCase
 
         $this->assertCount(2, $results);
 
-        $this->assertTrue(
-            $results->pluck('name')->contains('Apple iPhone')
-        );
-
-        $this->assertTrue(
-            $results->pluck('name')->contains('Apple Watch')
-        );
+        $this->assertTrue($results->contains('id', $iphone->id));
+        $this->assertTrue($results->contains('id', $appleWatch->id));
     }
 
     public function test_can_search_products_by_manufacture()
