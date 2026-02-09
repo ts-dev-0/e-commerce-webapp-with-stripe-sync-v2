@@ -13,6 +13,14 @@ class SearchProductTest extends TestCase
 {
     use RefreshDatabase;
 
+    private SearchProduct $action;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->action = new SearchProduct();
+    }
+
     public function test_can_search_products_by_keyword()
     {
         Product::factory()->create([
@@ -27,9 +35,7 @@ class SearchProductTest extends TestCase
             'name' => 'Samsung Galaxy',
         ]);
 
-        $action = new SearchProduct();
-
-        $results = $action->handle('Apple');
+        $results = $this->action->handle('Apple');
 
         $this->assertCount(2, $results);
 
@@ -54,9 +60,7 @@ class SearchProductTest extends TestCase
             'manufacturer' => 'Samsung',
         ]);
 
-        $action = new SearchProduct();
-
-        $results = $action->handle('Apple');
+        $results = $this->action->handle('Apple');
 
         $this->assertTrue(
             $results->pluck('id')->contains($appleProduct->id)
@@ -83,9 +87,7 @@ class SearchProductTest extends TestCase
 
         $matchedProduct->categories()->attach($category->id);
 
-        $action = new SearchProduct();
-
-        $results = $action->handle('Electronics');
+        $results = $this->action->handle('Electronics');
 
         $this->assertTrue(
             $results->contains(fn ($product) => $product->id === $matchedProduct->id)
