@@ -3,6 +3,7 @@
 namespace Tests\Feature\Actions;
 
 use App\Actions\Product\SearchProduct;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -63,6 +64,35 @@ class SearchProductTest extends TestCase
 
         $this->assertFalse(
             $results->pluck('id')->contains($samsungProduct->id)
+        );
+    }
+
+    public function test_can_search_products_by_category_name()
+    {
+        $category = Category::factory()->create([
+            'name' => 'Electronics',
+        ]);
+
+        $matchedProduct = Product::factory()->create([
+            'name' => 'iPhone',
+        ]);
+
+        $unmatchedProduct = Product::factory()->create([
+            'name' => 'T-Shirt',
+        ]);
+
+        $matchedProduct->categories()->attach($category->id);
+
+        $action = new SearchProduct();
+
+        $results = $action->handle('Electronics');
+
+        $this->assertTrue(
+            $results->contains(fn ($product) => $product->id === $matchedProduct->id)
+        );
+
+        $this->assertFalse(
+            $results->contains(fn ($product) => $product->id === $unmatchedProduct->id)
         );
     }
 }
