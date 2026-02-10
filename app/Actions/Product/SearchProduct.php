@@ -7,11 +7,13 @@ use Illuminate\Support\Collection;
 
 class SearchProduct
 {
+    private const PER_PAGE = 15;
+
     public function handle(string $keyword): Collection
     {
         $query = Product::query()
                 ->orderByDesc('created_at')
-                ->limit(15);
+                ->limit(self::PER_PAGE);
         
         if($keyword === '') {
             return $query->get();
