@@ -114,4 +114,14 @@ class SearchProductTest extends TestCase
 
         $this->assertCount(0, $results);
     }
+
+    public function test_returns_latest_products_when_keyword_is_empty()
+    {
+        Product::factory()->count(20)->create();
+
+        $results = $this->action->handle('');
+
+        $this->assertCount(15, $results);
+    }
+
 }
