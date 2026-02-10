@@ -9,7 +9,15 @@ class SearchProduct
 {
     public function handle(string $keyword): Collection
     {
-        return Product::query()
+        $query = Product::query()
+                ->orderByDesc('created_at')
+                ->limit(15);
+        
+        if($keyword === '') {
+            return $query->get();
+        }
+
+        return $query
             ->where(function ($query) use ($keyword) {
                 $query
                     ->where('name', 'like', "%{$keyword}%")
@@ -18,8 +26,6 @@ class SearchProduct
                         $q->where('name', 'like', "%{$keyword}%");
                     });
             })
-            ->orderByDesc('created_at')
-            ->limit(15)
             ->get();
     }
 }
