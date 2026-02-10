@@ -85,4 +85,22 @@ class SearchProductTest extends TestCase
         $this->assertTrue($results->contains('id', $matchedProduct->id));
         $this->assertFalse($results->contains('id', $unmatchedProduct->id));
     }
+
+    public function test_search_results_are_sorted_by_newest()
+    {
+        $old = Product::factory()->create([
+            'created_at' => now()->subDays(2),
+        ]);
+
+        $new = Product::factory()->create([
+            'created_at' => now(),
+        ]);
+
+        $results = $this->action->handle('');
+
+        $this->assertSame(
+            [$new->id, $old->id],
+            $results->pluck('id')->values()->all()
+        );
+    }
 }
