@@ -82,12 +82,7 @@ class SearchProductTest extends TestCase
 
         $results = $this->action->handle('Electronics');
 
-        $this->assertTrue(
-            $results->contains(fn ($product) => $product->id === $matchedProduct->id)
-        );
-
-        $this->assertFalse(
-            $results->contains(fn ($product) => $product->id === $unmatchedProduct->id)
-        );
+        $this->assertTrue($results->contains('id', $matchedProduct->id));
+        $this->assertFalse($results->contains('id', $unmatchedProduct->id));
     }
 }
