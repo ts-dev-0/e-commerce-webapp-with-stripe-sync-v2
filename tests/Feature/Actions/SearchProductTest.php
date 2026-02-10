@@ -46,12 +46,10 @@ class SearchProductTest extends TestCase
     public function test_can_search_products_by_manufacture()
     {
         $appleProduct = Product::factory()->create([
-            'name' => 'iPhone 15',
             'manufacturer' => 'Apple',
         ]);
 
         $samsungProduct = Product::factory()->create([
-            'name' => 'Galaxy S24',
             'manufacturer' => 'Samsung',
         ]);
 
