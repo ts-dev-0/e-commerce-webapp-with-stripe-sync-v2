@@ -103,4 +103,15 @@ class SearchProductTest extends TestCase
             $results->pluck('id')->values()->all()
         );
     }
+
+    public function test_returns_empty_collection_when_no_products_match()
+    {
+        Product::factory()->create([
+            'name' => 'iPhone',
+        ]);
+
+        $results = $this->action->handle('NonExistingKeyword');
+
+        $this->assertCount(0, $results);
+    }
 }
