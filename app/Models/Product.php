@@ -16,6 +16,12 @@ class Product extends Model
         'stock',
     ];
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class)
+                ->withTimestamps();
+    }
+
     public function scopeNewArrivals($query, int $limit)
     {
         return $query->latest()->limit($limit);
