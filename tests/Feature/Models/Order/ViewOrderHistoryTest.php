@@ -66,4 +66,16 @@ class ViewOrderHistoryTest extends TestCase
         $this->assertEquals($oldOrder->id, $orders[1]->id);
     }
 
+    public function test_returns_empty_collection_when_user_has_no_orders()
+    {
+        $user = User::factory()->create();
+
+        $action = new ViewOrderHistory();
+
+        $orders = $action->handle($user);
+
+        $this->assertCount(0, $orders);
+        $this->assertTrue($orders->isEmpty());
+    }
+
 }
