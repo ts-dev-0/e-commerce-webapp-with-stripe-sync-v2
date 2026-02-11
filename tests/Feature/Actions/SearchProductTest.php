@@ -43,7 +43,7 @@ class SearchProductTest extends TestCase
         $this->assertTrue($results->contains('id', $appleWatch->id));
     }
 
-    public function test_can_search_products_by_manufacture()
+    public function test_can_search_products_by_manufacturer()
     {
         $appleProduct = Product::factory()->create([
             'manufacturer' => 'Apple',
