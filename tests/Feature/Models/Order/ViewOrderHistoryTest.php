@@ -40,4 +40,30 @@ class ViewOrderHistoryTest extends TestCase
             $orders->pluck('id')->contains($userOrders[1]->id)
         );
     }
+
+    public function test_orders_are_returned_in_descending_created_at_order()
+    {
+        $user = User::factory()->create();
+
+        $oldOrder = Order::factory()->create([
+            'user_id' => $user->id,
+            'created_at' => now()->subDays(2),
+        ]);
+
+        $newOrder = Order::factory()->create([
+            'user_id' => $user->id,
+            'created_at' => now(),
+        ]);
+
+        $action = new ViewOrderHistory();
+
+        $orders = $action->handle($user)
+            ->values();
+
+        $this->assertCount(2, $orders);
+
+        $this->assertEquals($newOrder->id, $orders[0]->id);
+        $this->assertEquals($oldOrder->id, $orders[1]->id);
+    }
+
 }
