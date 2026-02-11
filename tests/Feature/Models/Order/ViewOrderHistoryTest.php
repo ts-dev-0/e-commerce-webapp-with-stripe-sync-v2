@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Models\Order;
 
+use App\Actions\Order\ViewOrderHistory;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,7 +26,9 @@ class ViewOrderHistoryTest extends TestCase
             'user_id' => $otherUser->id,
         ]);
 
-        $orders = $user->orders()->get();
+        $action = new ViewOrderHistory();
+
+        $orders = $action->handle($user);
 
         $this->assertCount(2, $orders);
 
