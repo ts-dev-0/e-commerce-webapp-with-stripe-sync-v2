@@ -36,4 +36,30 @@ class ViewFavoriteProductsTest extends TestCase
         $this->assertTrue($products->pluck('id')->contains($product2->id));
         $this->assertFalse($products->pluck('id')->contains($otherProduct->id));
     }
+
+    public function test_favorites_are_returned_in_descending_created_at_order()
+    {
+        $user = User::factory()->create();
+
+        $oldProduct = Product::factory()->create();
+        $newProduct = Product::factory()->create();
+
+        $user->favoriteProducts()->attach($oldProduct->id, [
+            'created_at' => now()->subDays(2),
+            'updated_at' => now()->subDays(2),
+        ]);
+
+        $user->favoriteProducts()->attach($newProduct->id, [
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $action = new ViewFavoriteProducts();
+
+        $products = $action->handle($user)->values();
+
+        $this->assertEquals($newProduct->id, $products[0]->id);
+        $this->assertEquals($oldProduct->id, $products[1]->id);
+    }
+
 }
