@@ -26,4 +26,17 @@ class AddFavoriteTest extends TestCase
             'product_id' => $product->id,
         ]);
     }
+
+    public function test_duplicate_favorite_is_not_created()
+    {
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+
+        $action = new AddFavorite();
+
+        $action->handle($user, $product);
+        $action->handle($user, $product);
+
+        $this->assertEquals(1, \DB::table('favorites')->count());
+    }
 }
