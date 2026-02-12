@@ -22,6 +22,12 @@ class Product extends Model
                 ->withTimestamps();
     }
 
+    public function favoritedUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorites')
+            ->withTimestamps();
+    }
+
     public function scopeNewArrivals($query, int $limit)
     {
         return $query->latest()->limit($limit);
