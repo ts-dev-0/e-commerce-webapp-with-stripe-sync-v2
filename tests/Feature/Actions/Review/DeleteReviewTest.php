@@ -30,10 +30,35 @@ class DeleteReviewTest extends TestCase
             'comment' => 'test comment'
         ]);
 
-        $this->action->handle($review);
+        $this->action->handle($user, $review);
 
         $this->assertDatabaseMissing('reviews', [
             'id' => $review->id,
+        ]);
+    }
+
+    public function test_user_cannnot_delete_others_review()
+    {
+        $owner = User::factory()->create();
+        $otherUser = User::factory()->create();
+
+        $review = Review::factory()->create([
+            'user_id' => $owner->id,
+            'rating' => 3,
+            'comment' => 'original comment',
+        ]);
+
+        $this->expectException(\DomainException::class);
+
+        $this->action->handle($otherUser, $review, [
+            'rating' => 5,
+            'comment' => 'hacked comment',
+        ]);
+
+        $this->assertDatabaseHas('reviews', [
+            'id' => $review->id,
+            'rating' => 3,
+            'comment' => 'original comment',
         ]);
     }
 }
