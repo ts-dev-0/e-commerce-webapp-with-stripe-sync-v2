@@ -14,14 +14,20 @@ class CreateReviewTest extends TestCase
 {
     use RefreshDatabase;
 
+    private CreateReview $action;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->action = new CreateReview();
+    }
+
     public function test_user_can_create_review()
     {
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
-        $action = new CreateReview();
-
-        $review = $action->handle(
+        $review = $this->action->handle(
             $user,
             $product,
             5,
@@ -43,9 +49,7 @@ class CreateReviewTest extends TestCase
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
-        $action = new CreateReview();
-
-        $action->handle(
+        $this->action->handle(
             $user,
             $product,
             5,
@@ -56,7 +60,7 @@ class CreateReviewTest extends TestCase
 
         $this->expectException(\DomainException::class);
 
-        $action->handle(
+        $this->action->handle(
             $user,
             $product,
             4,
