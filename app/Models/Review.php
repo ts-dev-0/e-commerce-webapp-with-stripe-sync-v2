@@ -30,4 +30,9 @@ class Review extends Model
             ->where('product_id', $productId)
             ->exists();
     }
+
+    public function isOwnedBy(User $user): bool
+    {
+        return $this->user_id === $user->id;
+    }
 }
