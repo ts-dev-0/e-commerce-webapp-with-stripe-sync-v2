@@ -57,11 +57,9 @@ class UpdateReviewTest extends TestCase
             'comment' => 'original comment',
         ]);
 
-        $action = new UpdateReview();
-
         $this->expectException(\DomainException::class);
 
-        $action->handle($otherUser, $review, [
+        $this->action->handle($otherUser, $review, [
             'rating' => 5,
             'comment' => 'hacked comment',
         ]);
