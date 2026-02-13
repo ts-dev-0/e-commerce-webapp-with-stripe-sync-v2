@@ -15,6 +15,10 @@ class CreateReview
         string $comment,
     ): Review
     {
+        if (Review::alreadyReviewed($user->id, $product->id)) {
+            throw new \DomainException('Already reviewed.');
+        }
+
         $review = new Review([
             'rating' => $rating,
             'comment' => $comment,

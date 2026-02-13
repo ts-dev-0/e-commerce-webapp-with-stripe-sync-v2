@@ -37,4 +37,30 @@ class CreateReviewTest extends TestCase
             'comment' => 'Great product',
         ]);
     }
+
+    public function test_user_cannot_review_same_product_twice()
+    {
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+
+        $action = new CreateReview();
+
+        $action->handle(
+            $user,
+            $product,
+            5,
+            'Great product'
+        );
+
+        $this->assertDatabaseCount('reviews', 1);
+
+        $this->expectException(\DomainException::class);
+
+        $action->handle(
+            $user,
+            $product,
+            4,
+            'Second review'
+        );
+    }
 }
