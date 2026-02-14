@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\tests\Feature\Actions\Favorite;
+namespace Tests\Feature\Actions\User\Favorite;
 
-use App\Actions\Favorite\ViewFavoriteProducts;
+use App\Actions\User\Favorite\ViewFavoriteProducts;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;

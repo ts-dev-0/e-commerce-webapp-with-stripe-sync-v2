@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Product;
+namespace App\Actions\User\Product;
 
 use App\Models\Product;
 use Illuminate\Support\Collection;
@@ -14,7 +14,7 @@ class SearchProduct
         $query = Product::query()
                 ->orderByDesc('created_at')
                 ->limit(self::PER_PAGE);
-        
+
         if($keyword === '') {
             return $query->get();
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Review;
+namespace App\Actions\User\Review;
 
 use App\Models\Review;
 use App\Models\User;

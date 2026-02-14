@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Actions\Review;
+namespace Tests\Feature\Actions\User\Review;
 
-use App\Actions\Review\GetUserReviews;
+use App\Actions\User\Review\GetUserReviews;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;

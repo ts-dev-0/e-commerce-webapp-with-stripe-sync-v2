@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\tests\Feature\Actions\Review;
+namespace Tests\Feature\Actions\User\Review;
 
-use App\Actions\Review\CreateReview;
+use App\Actions\User\Review\CreateReview;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
