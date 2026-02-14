@@ -1,52 +1,43 @@
 <?php
 
-namespace Tests\Feature\Actions\Review;
+namespace Tests\Feature\Actions\User\Review;
 
-use App\Actions\Review\CreateReview;
-use App\Actions\Review\UpdateReview;
+use App\Actions\User\Review\DeleteReview;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class UpdateReviewTest extends TestCase
+class DeleteReviewTest extends TestCase
 {
     use RefreshDatabase;
 
-    private UpdateReview $action;
+    private DeleteReview $action;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new UpdateReview();
+        $this->action = new DeleteReview();
     }
 
-    public function test_user_can_update_review()
+    public function test_user_can_delete_own_review()
     {
         $user = User::factory()->create();
-
         $review = Review::factory()->create([
             'user_id' => $user->id,
-            'rating' => 5,
-            'comment' => 'old comment'
+            'rating' => 4,
+            'comment' => 'test comment'
         ]);
 
-        $updated = $this->action->handle($user, $review, [
-            'rating' => 2,
-            'comment' => 'updated comment'
-        ]);
+        $this->action->handle($user, $review);
 
-        $this->assertInstanceOf(Review::class, $updated);
-
-        $this->assertDatabaseHas('reviews', [
+        $this->assertDatabaseMissing('reviews', [
             'id' => $review->id,
-            'rating' => 2,
-            'comment' => 'updated comment',
         ]);
     }
 
-    public function test_user_cannot_update_others_review(): void
+    public function test_user_cannnot_delete_others_review()
     {
         $owner = User::factory()->create();
         $otherUser = User::factory()->create();
@@ -70,5 +61,4 @@ class UpdateReviewTest extends TestCase
             'comment' => 'original comment',
         ]);
     }
-
 }

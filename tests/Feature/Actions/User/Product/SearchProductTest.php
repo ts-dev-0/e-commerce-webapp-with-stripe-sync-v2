@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Actions;
+namespace Tests\Feature\Actions\User\Product;
 
-use App\Actions\Product\SearchProduct;
+use App\Actions\User\Product\SearchProduct;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;

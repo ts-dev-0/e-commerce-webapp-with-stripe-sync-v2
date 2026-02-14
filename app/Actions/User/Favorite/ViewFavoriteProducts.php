@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Favorite;
+namespace App\Actions\User\Favorite;
 
 use App\Models\User;
 use Illuminate\Support\Collection;

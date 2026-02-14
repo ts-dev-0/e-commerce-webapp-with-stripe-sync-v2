@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Models\Order;
+namespace Tests\Feature\Actions\User\Order;
 
-use App\Actions\Order\ViewOrderHistory;
+use App\Actions\User\Order\ViewOrderHistory;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,6 +12,14 @@ use Tests\TestCase;
 class ViewOrderHistoryTest extends TestCase
 {
     use RefreshDatabase;
+
+    private ViewOrderHistory $action;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->action = new ViewOrderHistory();
+    }
 
     public function test_user_can_view_their_order_history()
     {
@@ -26,9 +34,7 @@ class ViewOrderHistoryTest extends TestCase
             'user_id' => $otherUser->id,
         ]);
 
-        $action = new ViewOrderHistory();
-
-        $orders = $action->handle($user);
+        $orders = $this->action->handle($user);
 
         $this->assertCount(2, $orders);
 
@@ -55,9 +61,7 @@ class ViewOrderHistoryTest extends TestCase
             'created_at' => now(),
         ]);
 
-        $action = new ViewOrderHistory();
-
-        $orders = $action->handle($user)
+        $orders = $this->action->handle($user)
             ->values();
 
         $this->assertCount(2, $orders);
@@ -70,9 +74,7 @@ class ViewOrderHistoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $action = new ViewOrderHistory();
-
-        $orders = $action->handle($user);
+        $orders = $this->action->handle($user);
 
         $this->assertCount(0, $orders);
         $this->assertTrue($orders->isEmpty());

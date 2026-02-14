@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Order;
+namespace App\Actions\User\Order;
 
 use App\Models\User;
 use Illuminate\Support\Collection;
