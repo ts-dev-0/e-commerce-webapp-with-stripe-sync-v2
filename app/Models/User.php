@@ -66,6 +66,11 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function currentCart(): Cart
     {
         return $this->cart()->firstOrCreate();
