@@ -43,4 +43,13 @@ class GetUserReviewsTest extends TestCase
         }
     }
 
+    public function test_it_returns_empty_collection_when_user_has_no_reviews(): void
+    {
+        $user = User::factory()->create();
+
+        $result = $this->action->handle($user);
+
+        $this->assertCount(0, $result);
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $result);
+    }
 }
