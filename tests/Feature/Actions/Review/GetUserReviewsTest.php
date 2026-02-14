@@ -72,4 +72,22 @@ class GetUserReviewsTest extends TestCase
         $this->assertFalse($result->contains($otherReview));
     }
 
+    public function test_it_returns_reviews_in_latest_order(): void
+    {
+        $user = User::factory()->create();
+
+        $old = Review::factory()->create([
+            'user_id' => $user->id,
+            'created_at' => now()->subDays(2),
+        ]);
+
+        $new = Review::factory()->create([
+            'user_id' => $user->id,
+            'created_at' => now(),
+        ]);
+
+        $result = $this->action->handle($user);
+
+        $this->assertEquals($new->id, $result->first()->id);
+    }
 }

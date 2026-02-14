@@ -9,6 +9,6 @@ class GetUserReviews
 {
     public function handle(User $user): Collection
     {
-        return $user->reviews()->get();
+        return $user->reviews()->latest()->get();
     }
 }
