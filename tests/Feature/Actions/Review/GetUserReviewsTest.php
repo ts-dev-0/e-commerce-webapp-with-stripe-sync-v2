@@ -52,4 +52,24 @@ class GetUserReviewsTest extends TestCase
         $this->assertCount(0, $result);
         $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $result);
     }
+
+    public function test_it_does_not_include_other_users_reviews(): void
+    {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+
+        $ownReview = Review::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $otherReview = Review::factory()->create([
+            'user_id' => $otherUser->id,
+        ]);
+
+        $result = $this->action->handle($user);
+
+        $this->assertTrue($result->contains($ownReview));
+        $this->assertFalse($result->contains($otherReview));
+    }
+
 }
