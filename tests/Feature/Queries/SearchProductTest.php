@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Feature\Actions\User\Product;
+namespace Tests\Feature\Queries;
 
-use App\Actions\User\Product\SearchProduct;
+
 use App\Models\Category;
 use App\Models\Product;
+use App\Queries\SearchProduct;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -35,7 +36,7 @@ class SearchProductTest extends TestCase
             'name' => 'Samsung Galaxy',
         ]);
 
-        $results = $this->action->handle('Apple');
+        $results = $this->action->handle('Apple')->get();
 
         $this->assertCount(2, $results);
 
@@ -53,7 +54,7 @@ class SearchProductTest extends TestCase
             'manufacturer' => 'Samsung',
         ]);
 
-        $results = $this->action->handle('Apple');
+        $results = $this->action->handle('Apple')->get();
 
         $this->assertTrue(
             $results->pluck('id')->contains($appleProduct->id)
@@ -80,7 +81,7 @@ class SearchProductTest extends TestCase
 
         $matchedProduct->categories()->attach($category->id);
 
-        $results = $this->action->handle('Electronics');
+        $results = $this->action->handle('Electronics')->get();
 
         $this->assertTrue($results->contains('id', $matchedProduct->id));
         $this->assertFalse($results->contains('id', $unmatchedProduct->id));
@@ -96,7 +97,7 @@ class SearchProductTest extends TestCase
             'created_at' => now(),
         ]);
 
-        $results = $this->action->handle('');
+        $results = $this->action->handle('')->get();
 
         $this->assertSame(
             [$new->id, $old->id],
@@ -110,7 +111,7 @@ class SearchProductTest extends TestCase
             'name' => 'iPhone',
         ]);
 
-        $results = $this->action->handle('NonExistingKeyword');
+        $results = $this->action->handle('NonExistingKeyword')->get();
 
         $this->assertCount(0, $results);
     }
@@ -119,7 +120,7 @@ class SearchProductTest extends TestCase
     {
         Product::factory()->count(20)->create();
 
-        $results = $this->action->handle('');
+        $results = $this->action->handle('')->get();
 
         $this->assertCount(15, $results);
     }

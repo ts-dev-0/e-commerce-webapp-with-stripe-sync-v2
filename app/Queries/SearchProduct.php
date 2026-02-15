@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Actions\User\Product;
+namespace App\Queries;
 
 use App\Models\Product;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 class SearchProduct
 {
     private const PER_PAGE = 15;
 
-    public function handle(string $keyword): Collection
+    public function handle(string $keyword): Builder
     {
         $query = Product::query()
                 ->orderByDesc('created_at')
                 ->limit(self::PER_PAGE);
 
         if($keyword === '') {
-            return $query->get();
+            return $query;
         }
 
         return $query
@@ -27,7 +27,6 @@ class SearchProduct
                     ->orWhereHas('categories', function ($q) use ($keyword) {
                         $q->where('name', 'like', "%{$keyword}%");
                     });
-            })
-            ->get();
+            });
     }
 }
