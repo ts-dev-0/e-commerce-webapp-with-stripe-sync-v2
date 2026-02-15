@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Feature\Actions\User\Product;
+namespace Tests\Feature\Queries;
 
-use App\Actions\User\Product\SearchProduct;
+
 use App\Models\Category;
 use App\Models\Product;
+use App\Queries\SearchProduct;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
