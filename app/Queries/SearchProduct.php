@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\User\Product;
+namespace App\Queries;
 
 use App\Models\Product;
 use Illuminate\Support\Collection;
