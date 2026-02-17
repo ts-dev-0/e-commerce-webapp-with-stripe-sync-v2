@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('price');
             $table->unsignedInteger('stock');
             $table->string('manufacturer');
+            $table->boolean('is_published')->default(false);
             $table->timestamps();
         });
     }
