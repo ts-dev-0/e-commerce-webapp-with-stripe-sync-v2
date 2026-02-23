@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,6 +22,6 @@ class UserSeeder extends Seeder
         ]);
 
         // User
-        User::factory()->count(100)->create();
+        User::factory()->count(100)->has(Cart::factory())->create();
     }
 }
