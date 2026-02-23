@@ -21,6 +21,11 @@ class Cart extends Model
             ->withTimestamps();
     }
 
+    public function items()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
     public function addProduct(Product $product, int $quantity = 1): void
     {
         if ($quantity < 1) {
