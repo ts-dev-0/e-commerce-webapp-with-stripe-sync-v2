@@ -17,6 +17,11 @@ class Product extends Model
         'manufacturer',
     ];
 
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class)
