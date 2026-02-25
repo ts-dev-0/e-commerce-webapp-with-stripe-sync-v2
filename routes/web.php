@@ -5,6 +5,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,6 +19,9 @@ Route::resource('favorites', FavoriteController::class)
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::delete('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+
+Route::resource('/review', ReviewController::class)
+    ->only(['index', 'store', 'update', 'destroy']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
