@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -20,6 +21,9 @@ Route::resource('favorites', FavoriteController::class)
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::delete('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+
+Route::resource('/checkout', CheckoutController::class)
+    ->only(['index', 'store']);
 
 Route::resource('/review', ReviewController::class)
     ->only(['index', 'store', 'update', 'destroy']);
