@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SearchPublishedProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,6 +23,8 @@ Route::delete('/orders/{order}/cancel', [OrderController::class, 'cancel'])->nam
 
 Route::resource('/review', ReviewController::class)
     ->only(['index', 'store', 'update', 'destroy']);
+
+Route::get('/search/products', SearchPublishedProductController::class)->name('search.products');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
