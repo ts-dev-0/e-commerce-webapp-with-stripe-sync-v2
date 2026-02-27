@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\User\Cart\GetCart;
 use Inertia\Inertia;
 
 class CartController extends Controller
 {
-    public function index()
+    public function index(GetCart $action)
     {
-        return Inertia::render('cart');
+        $data = $action->handle($user);
+
+        return Inertia::render('cart', [
+            'data' => $data,
+        ]);
     }
 
     public function store()
