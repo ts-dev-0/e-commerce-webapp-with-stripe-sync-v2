@@ -39,13 +39,13 @@ class GetCartTest extends TestCase
             'user_id' => $otherUser->id,
         ]);
 
-        $item1 = CartItem::factory()->create([
+        CartItem::factory()->create([
             'cart_id' => $cart->id,
             'product_id' => $product1->id,
             'quantity' => 2,
         ]);
 
-        $item2 = CartItem::factory()->create([
+        CartItem::factory()->create([
             'cart_id' => $cart->id,
             'product_id' => $product2->id,
             'quantity' => 5,
