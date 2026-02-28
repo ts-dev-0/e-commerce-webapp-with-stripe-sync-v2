@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Models\Cart;
 
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -15,18 +17,27 @@ class CheckoutTest extends TestCase
 
     public function test_cart_can_be_checked_out_into_order()
     {
-        /** @var \App\Models\User $user  */
         $user = User::factory()->create();
-
-        $cart = $user->currentCart();
+        $cart = Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
 
         $productA = Product::factory()->create(['price' => 1000]);
         $productB = Product::factory()->create(['price' => 2000]);
 
-        $cart->addProduct($productA, 2);
-        $cart->addProduct($productB, 1);
+        CartItem::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $productA->id,
+            'quantity' => 2,
+        ]);
 
-        $order = $cart->checkout();
+        CartItem::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $productB->id,
+            'quantity' => 1,
+        ]);
+
+        $cart->checkout();
 
         $this->assertDatabaseHas('orders', [
             'user_id'      => $user->id,
@@ -52,10 +63,11 @@ class CheckoutTest extends TestCase
 
     public function test_throws_exception_if_cart_is_empty()
     {
-        /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
-        $cart = $user->currentCart();
+        $cart = Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
 
         $this->assertCount(0, $cart->products);
 
@@ -69,15 +81,26 @@ class CheckoutTest extends TestCase
     public function test_cart_can_be_used_again_after_checkout()
     {
         $user = User::factory()->create();
-        $cart = $user->currentCart();
+        $cart = Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
 
         $product = Product::factory()->create(['price' => 1000]);
-        $cart->addProduct($product, 1);
+        
+        CartItem::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
 
         $cart->checkout();
 
         $newProduct = Product::factory()->create(['price' => 500]);
-        $cart->addProduct($newProduct, 2);
+        CartItem::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $newProduct->id,
+            'quantity' => 2,
+        ]);
 
         $this->assertDatabaseHas('cart_items', [
             'cart_id'    => $cart->id,
@@ -89,10 +112,16 @@ class CheckoutTest extends TestCase
     public function test_checkout_returns_order_instance()
     {
         $user = User::factory()->create();
-        $cart = $user->currentCart();
+        $cart = Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
 
         $product = Product::factory()->create(['price' => 1000]);
-        $cart->addProduct($product);
+        CartItem::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
 
         $order = $cart->checkout();
 
