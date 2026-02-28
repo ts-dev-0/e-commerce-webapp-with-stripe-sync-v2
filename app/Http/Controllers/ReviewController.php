@@ -2,39 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\User\Review\CreateReview;
+use App\Actions\User\Review\DeleteReview;
+use App\Actions\User\Review\GetUserReviews;
+use App\Actions\User\Review\UpdateReview;
 use Inertia\Inertia;
 
 class ReviewController extends Controller
 {
-    public function index()
+    public function index(GetUserReviews $action)
     {
-        // TODO: Get review data process
+        $data = $action->handle($user);
 
-        // TODO: Add review data
-        return Inertia::render('reviews');
+        return Inertia::render('reviews', [
+            'data' => $data,
+        ]);
     }
 
-    public function store()
+    public function store(CreateReview $action)
     {
-        // TODO: Save process
+        $action->handle($user, $product, $rating, $comment);
 
         return redirect()
             ->back()
             ->with('success', 'Review posted.');
     }
 
-    public function update()
+    public function update(UpdateReview $action)
     {
-        // TODO: Update process
+        $action->handle($user, $review, $data);
 
         return redirect()
             ->back()
             ->with('success', 'Review updated.');
     }
 
-    public function destroy()
+    public function destroy(DeleteReview $action)
     {
-        // TODO: Delete process
+        $action->handle($user, $review);
 
         return redirect()
             ->back()
