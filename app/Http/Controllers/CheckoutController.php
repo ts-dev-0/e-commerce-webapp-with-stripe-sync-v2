@@ -19,6 +19,6 @@ class CheckoutController extends Controller
 
     public function store(ProcessCheckout $action)
     {
-        $action->handle($cart);
+        $action->handle($user);
     }
 }
