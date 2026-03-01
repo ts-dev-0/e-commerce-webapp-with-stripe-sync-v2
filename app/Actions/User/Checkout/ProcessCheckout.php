@@ -9,7 +9,8 @@ class ProcessCheckout
 {
     public function handle(User $user): Order
     {
-        $products = $user->currentCart()->products()->get();
+        $cart = $user->currentCart();
+        $products = $cart->products()->get();
 
         if($products->isEmpty()) {
             throw new \DomainException('Cart is empty.');
