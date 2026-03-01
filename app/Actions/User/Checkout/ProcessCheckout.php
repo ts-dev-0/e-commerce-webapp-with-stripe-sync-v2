@@ -2,14 +2,14 @@
 
 namespace App\Actions\User\Checkout;
 
-use App\Models\Cart;
 use App\Models\Order;
+use App\Models\User;
 
 class ProcessCheckout
 {
-    public function handle(Cart $cart): Order
+    public function handle(User $user): Order
     {
-        $products = $cart->products()->get();
+        $products = $user->currentCart()->products()->get();
 
         if($products->isEmpty()) {
             throw new \DomainException('Cart is empty.');
