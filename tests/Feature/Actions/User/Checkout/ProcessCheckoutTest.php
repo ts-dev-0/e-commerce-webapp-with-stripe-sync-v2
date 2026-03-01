@@ -46,7 +46,7 @@ class ProcessCheckoutTest extends TestCase
             'quantity' => 1,
         ]);
 
-        $this->action->handle($cart);
+        $this->action->handle($user);
 
         $this->assertDatabaseHas('orders', [
             'user_id'      => $user->id,
@@ -84,7 +84,7 @@ class ProcessCheckoutTest extends TestCase
 
         $this->expectExceptionMessage('Cart is empty');
 
-        $this->action->handle($cart);
+        $this->action->handle($user);
     }
 
     public function test_cart_can_be_used_again_after_checkout()
@@ -102,7 +102,7 @@ class ProcessCheckoutTest extends TestCase
             'quantity' => 1,
         ]);
 
-        $this->action->handle($cart);
+        $this->action->handle($user);
 
         $newProduct = Product::factory()->create(['price' => 500]);
         CartItem::factory()->create([
@@ -132,7 +132,7 @@ class ProcessCheckoutTest extends TestCase
             'quantity' => 1,
         ]);
 
-        $order = $this->action->handle($cart);
+        $order = $this->action->handle($user);
 
         $this->assertInstanceOf(Order::class, $order);
     }

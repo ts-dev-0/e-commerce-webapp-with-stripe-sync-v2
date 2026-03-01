@@ -2,13 +2,14 @@
 
 namespace App\Actions\User\Checkout;
 
-use App\Models\Cart;
 use App\Models\Order;
+use App\Models\User;
 
 class ProcessCheckout
 {
-    public function handle(Cart $cart): Order
+    public function handle(User $user): Order
     {
+        $cart = $user->currentCart();
         $products = $cart->products()->get();
 
         if($products->isEmpty()) {
