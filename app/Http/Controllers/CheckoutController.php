@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\User\Cart\GetCart;
+use App\Actions\User\Checkout\ProcessCheckout;
 use Inertia\Inertia;
 
 class CheckoutController extends Controller
 {
-    public function index()
+    public function index(GetCart $action)
     {
-        // TODO Get Cart data
+        $data = $action->handle($user);
 
-        return Inertia::render('checkout');
+        return Inertia::render('checkout', [
+            'data' => $data,
+        ]);
     }
 
-    public function store()
+    public function store(ProcessCheckout $action)
     {
-        // TODO: Execute checkout
+        $action->handle($cart);
     }
 }
