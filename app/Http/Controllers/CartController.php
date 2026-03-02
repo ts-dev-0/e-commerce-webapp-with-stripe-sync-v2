@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Cart\AddProductToCart;
+use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Cart\RemoveCartItem;
-use App\Actions\User\Cart\UpdateProductQuantity;
+use App\Actions\User\Cart\UpdateCartItemQuantity;
 use Inertia\Inertia;
 
 class CartController extends Controller
@@ -19,7 +19,7 @@ class CartController extends Controller
         ]);
     }
 
-    public function store(AddProductToCart $action,)
+    public function store(AddItemToCart $action,)
     {
         $action->handle($user, $product, $quantity);
 
@@ -28,7 +28,7 @@ class CartController extends Controller
             ->with('success', 'Product added to cart.');
     }
 
-    public function update(UpdateProductQuantity $action)
+    public function update(UpdateCartItemQuantity $action)
     {
         $action->handle($user, $product, $quantity);
 
