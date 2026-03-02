@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Actions\User\Cart;
 
-use App\Actions\User\Cart\UpdateProductQuantity;
+use App\Actions\User\Cart\UpdateCartItemQuantity;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -11,16 +11,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class UpdateProductQuantityTest extends TestCase
+class UpdateCartItemQuantityTest extends TestCase
 {
     use RefreshDatabase;
 
-    private UpdateProductQuantity $action;
+    private UpdateCartItemQuantity $action;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new UpdateProductQuantity();
+        $this->action = new UpdateCartItemQuantity();
     }
 
     public function test_user_can_update_product_quantity()

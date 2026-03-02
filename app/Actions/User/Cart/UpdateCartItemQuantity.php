@@ -5,7 +5,7 @@ namespace App\Actions\User\Cart;
 use App\Models\Product;
 use App\Models\User;
 
-class UpdateProductQuantity
+class UpdateCartItemQuantity
 {
     public function handle(User $user, Product $product, int $updateQuantity): void
     {
