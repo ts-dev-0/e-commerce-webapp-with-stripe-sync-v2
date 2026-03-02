@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Actions\User\Cart;
 
-use App\Actions\User\Cart\AddProductToCart;
+use App\Actions\User\Cart\AddItemToCart;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -11,16 +11,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class AddProductToCartTest extends TestCase
+class AddItemToCartTest extends TestCase
 {
     use RefreshDatabase;
 
-    private AddProductToCart $action;
+    private AddItemToCart $action;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new AddProductToCart();
+        $this->action = new AddItemToCart();
     }
 
     public function test_user_can_add_product_to_their_own_cart()
