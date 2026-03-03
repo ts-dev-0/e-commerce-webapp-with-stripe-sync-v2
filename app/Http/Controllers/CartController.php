@@ -6,6 +6,7 @@ use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Cart\RemoveCartItem;
 use App\Actions\User\Cart\UpdateCartItemQuantity;
+use App\Http\Requests\User\Cart\AddItemToCartRequest;
 use Inertia\Inertia;
 
 class CartController extends Controller
@@ -19,9 +20,14 @@ class CartController extends Controller
         ]);
     }
 
-    public function store(AddItemToCart $action,)
+    public function store(AddItemToCartRequest $request, AddItemToCart $action,)
     {
-        $action->handle($user, $product, $quantity);
+        $validatedData = $request->validated();
+        $action->handle(
+            $request->user(),
+            $validatedData['product_id'],
+            $validatedData['quantity'],
+        );
 
         return redirect()
             ->route('cart.index')
