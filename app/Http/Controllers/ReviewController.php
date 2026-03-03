@@ -7,6 +7,8 @@ use App\Actions\User\Review\DeleteReview;
 use App\Actions\User\Review\GetUserReviews;
 use App\Actions\User\Review\UpdateReview;
 use App\Http\Requests\User\Review\CreateReviewRequest;
+use App\Http\Requests\User\Review\UpdateReviewRequest;
+use App\Models\Review;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
@@ -37,9 +39,12 @@ class ReviewController extends Controller
             ->with('success', 'Review posted.');
     }
 
-    public function update(UpdateReview $action)
+    public function update(UpdateReviewRequest $request, UpdateReview $action, Review $review)
     {
-        $action->handle($user, $review, $data);
+        $action->handle(
+            $review, 
+            $request->validated(),
+        );
 
         return redirect()
             ->back()
