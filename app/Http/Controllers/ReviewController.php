@@ -6,13 +6,14 @@ use App\Actions\User\Review\CreateReview;
 use App\Actions\User\Review\DeleteReview;
 use App\Actions\User\Review\GetUserReviews;
 use App\Actions\User\Review\UpdateReview;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class ReviewController extends Controller
 {
-    public function index(GetUserReviews $action)
+    public function index(Request $request, GetUserReviews $action)
     {
-        $data = $action->handle($user);
+        $data = $action->handle($request->user());
 
         return Inertia::render('reviews', [
             'data' => $data,

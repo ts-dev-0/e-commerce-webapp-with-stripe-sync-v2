@@ -9,13 +9,14 @@ use App\Actions\User\Cart\UpdateCartItemQuantity;
 use App\Http\Requests\User\Cart\RemoveCartItemRequest;
 use App\Http\Requests\User\Cart\UpdateCartItemQuantityRequest;
 use App\Http\Requests\User\Cart\AddItemToCartRequest;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class CartController extends Controller
 {
-    public function index(GetCart $action)
+    public function index(Request $request, GetCart $action)
     {
-        $data = $action->handle($user);
+        $data = $action->handle($request->user());
 
         return Inertia::render('cart', [
             'data' => $data,
