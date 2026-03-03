@@ -6,8 +6,8 @@ use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Cart\RemoveCartItem;
 use App\Actions\User\Cart\UpdateCartItemQuantity;
-use App\Http\Requests\Requests\User\Cart\RemoveCartItemRequest;
-use App\Http\Requests\Requests\User\Cart\UpdateCartItemQuantityRequest;
+use App\Http\Requests\User\Cart\RemoveCartItemRequest;
+use App\Http\Requests\User\Cart\UpdateCartItemQuantityRequest;
 use App\Http\Requests\User\Cart\AddItemToCartRequest;
 use Inertia\Inertia;
 
