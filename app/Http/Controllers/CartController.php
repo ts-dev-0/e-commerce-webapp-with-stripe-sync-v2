@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Cart\AddProductToCart;
+use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Cart\RemoveCartItem;
-use App\Actions\User\Cart\UpdateProductQuantity;
+use App\Actions\User\Cart\UpdateCartItemQuantity;
+use App\Http\Requests\Requests\User\Cart\RemoveCartItemRequest;
+use App\Http\Requests\Requests\User\Cart\UpdateCartItemQuantityRequest;
+use App\Http\Requests\User\Cart\AddItemToCartRequest;
 use Inertia\Inertia;
 
 class CartController extends Controller
@@ -19,27 +22,41 @@ class CartController extends Controller
         ]);
     }
 
-    public function store(AddProductToCart $action,)
+    public function store(AddItemToCartRequest $request, AddItemToCart $action,)
     {
-        $action->handle($user, $product, $quantity);
+        $validatedData = $request->validated();
+        $action->handle(
+            $request->user(),
+            $validatedData['product_id'],
+            $validatedData['quantity'],
+        );
 
         return redirect()
             ->route('cart.index')
             ->with('success', 'Product added to cart.');
     }
 
-    public function update(UpdateProductQuantity $action)
+    public function update(UpdateCartItemQuantityRequest $request, UpdateCartItemQuantity $action)
     {
-        $action->handle($user, $product, $quantity);
+        $validatedData = $request->validated();
+        $action->handle(
+            $request->user(),
+            $validatedData['product_id'],
+            $validatedData['quantity'],
+        );
 
         return redirect()
             ->route('cart.index')
             ->with('success', 'Cart updated.');
     }
 
-    public function destroy(RemoveCartItem $action)
+    public function destroy(RemoveCartItemRequest $request , RemoveCartItem $action)
     {
-        $action->handle($user, $product);
+        $validatedData = $request->validated();
+        $action->handle(
+            $request->user(),
+            $validatedData['product_id'],
+        );
 
         return redirect()
             ->route('cart.index')
