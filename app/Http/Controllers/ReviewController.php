@@ -6,6 +6,7 @@ use App\Actions\User\Review\CreateReview;
 use App\Actions\User\Review\DeleteReview;
 use App\Actions\User\Review\GetUserReviews;
 use App\Actions\User\Review\UpdateReview;
+use App\Http\Requests\User\Review\CreateReviewRequest;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
@@ -20,9 +21,16 @@ class ReviewController extends Controller
         ]);
     }
 
-    public function store(CreateReview $action)
+    public function store(CreateReviewRequest $request, CreateReview $action)
     {
-        $action->handle($user, $product, $rating, $comment);
+        $validatedData = $request->validated();
+
+        $action->handle(
+            $request->user(),
+            $validatedData['product_id'],
+            $validatedData['rating'],
+            $validatedData['comment'],
+        );
 
         return redirect()
             ->back()
