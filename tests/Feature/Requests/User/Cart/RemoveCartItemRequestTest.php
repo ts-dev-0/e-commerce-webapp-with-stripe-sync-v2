@@ -41,5 +41,4 @@ class RemoveCartItemRequestTest extends TestCase
         $this->assertFalse($validator->passes());
         $this->assertArrayHasKey('product_id', $validator->errors()->toArray());
     }
-
 }
