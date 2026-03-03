@@ -15,7 +15,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('products/{product}', [ProductController::class, 'show']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('cart', CartController::class);
+    Route::resource('cart', CartController::class)
+        ->only(['index', 'store', 'update', 'destroy']);
 
     Route::resource('favorites', FavoriteController::class)
         ->only(['index', 'store', 'destroy']);
