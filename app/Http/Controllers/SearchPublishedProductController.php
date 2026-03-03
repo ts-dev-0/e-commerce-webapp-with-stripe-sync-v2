@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Actions\User\Search\SearchPublishedProduct;
+use App\Http\Requests\User\Search\SearchPublishedProductRequest;
 use Inertia\Inertia;
 
 class SearchPublishedProductController extends Controller
 {
-    public function __invoke(SearchPublishedProduct $action)
+    public function __invoke(SearchPublishedProductRequest $request, SearchPublishedProduct $action)
     {
-        $data = $action->handle($keyword);
+        $validatedData = $request->validated();
+        $data = $action->handle($validatedData['keyword']);
 
         return Inertia::render('search-product', [
             'data' => $data,
