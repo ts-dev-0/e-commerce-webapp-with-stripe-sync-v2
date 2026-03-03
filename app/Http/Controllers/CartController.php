@@ -45,8 +45,6 @@ class CartController extends Controller
             $validatedData['quantity'],
         );
 
-        $action->handle($user, $product, $quantity);
-
         return redirect()
             ->route('cart.index')
             ->with('success', 'Cart updated.');
