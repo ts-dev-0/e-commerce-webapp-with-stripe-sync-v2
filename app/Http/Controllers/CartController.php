@@ -6,6 +6,7 @@ use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Cart\RemoveCartItem;
 use App\Actions\User\Cart\UpdateCartItemQuantity;
+use App\Http\Requests\Requests\User\Cart\UpdateCartItemQuantityRequest;
 use App\Http\Requests\User\Cart\AddItemToCartRequest;
 use Inertia\Inertia;
 
@@ -34,8 +35,15 @@ class CartController extends Controller
             ->with('success', 'Product added to cart.');
     }
 
-    public function update(UpdateCartItemQuantity $action)
+    public function update(UpdateCartItemQuantityRequest $request, UpdateCartItemQuantity $action)
     {
+        $validatedData = $request->validated();
+        $action->handle(
+            $request->user(),
+            $validatedData['product_id'],
+            $validatedData['quantity'],
+        );
+
         $action->handle($user, $product, $quantity);
 
         return redirect()
