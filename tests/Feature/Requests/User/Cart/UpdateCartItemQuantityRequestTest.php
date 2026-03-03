@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Requests\User\Cart;
 
-use App\Http\Requests\Requests\User\Cart\UpdateCartItemQuantityRequest;
+use App\Http\Requests\User\Cart\UpdateCartItemQuantityRequest;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
