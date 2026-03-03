@@ -49,13 +49,11 @@ class AddItemToCartRequestTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $request = new AddItemToCartRequest();
-
         $validator = Validator::make(
             [
                 'product_id' => $product->id,
             ],
-            $request->rules()
+            $this->request->rules()
         );
 
         $this->assertTrue($validator->fails());
@@ -66,14 +64,12 @@ class AddItemToCartRequestTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $request = new AddItemToCartRequest();
-
         $validator = Validator::make(
             [
                 'product_id' => $product->id,
                 'quantity' => 0,
             ],
-            $request->rules()
+            $this->request->rules()
         );
 
         $this->assertTrue($validator->fails());
@@ -84,14 +80,12 @@ class AddItemToCartRequestTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $request = new AddItemToCartRequest();
-
         $validator = Validator::make(
             [
                 'product_id' => $product->id,
                 'quantity' => 100,
             ],
-            $request->rules()
+            $this->request->rules()
         );
 
         $this->assertTrue($validator->fails());
