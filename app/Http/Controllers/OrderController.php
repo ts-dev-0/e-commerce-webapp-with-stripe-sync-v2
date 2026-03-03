@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\User\Checkout\CancelCheckout;
 use App\Actions\User\Order\ViewOrderHistory;
+use App\Models\Order;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
@@ -18,7 +19,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function cancel(CancelCheckout $action)
+    public function cancel(CancelCheckout $action, Order $order)
     {
         $action->handle($order);
 
