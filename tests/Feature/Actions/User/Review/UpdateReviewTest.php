@@ -31,7 +31,7 @@ class UpdateReviewTest extends TestCase
             'comment' => 'old comment'
         ]);
 
-        $updated = $this->action->handle($user, $review, [
+        $updated = $this->action->handle($review, [
             'rating' => 2,
             'comment' => 'updated comment'
         ]);
@@ -44,30 +44,4 @@ class UpdateReviewTest extends TestCase
             'comment' => 'updated comment',
         ]);
     }
-
-    public function test_user_cannot_update_others_review(): void
-    {
-        $owner = User::factory()->create();
-        $otherUser = User::factory()->create();
-
-        $review = Review::factory()->create([
-            'user_id' => $owner->id,
-            'rating' => 3,
-            'comment' => 'original comment',
-        ]);
-
-        $this->expectException(\DomainException::class);
-
-        $this->action->handle($otherUser, $review, [
-            'rating' => 5,
-            'comment' => 'hacked comment',
-        ]);
-
-        $this->assertDatabaseHas('reviews', [
-            'id' => $review->id,
-            'rating' => 3,
-            'comment' => 'original comment',
-        ]);
-    }
-
 }

@@ -3,21 +3,13 @@
 namespace App\Actions\User\Review;
 
 use App\Models\Review;
-use App\Models\User;
 
 class UpdateReview
 {
-    public function handle(User $user, Review $review, array $data): Review
+    public function handle(Review $review, array $attr): Review
     {
-        if (! $review->isOwnedBy($user)) {
-            throw new \DomainException('You cannot update this review.');
-        }
+        $review->update($attr);
 
-        $review->update([
-            'rating' => $data['rating'],
-            'comment' => $data['comment'],
-        ]);
-
-        return $review;
+        return $review->refresh();
     }
 }
