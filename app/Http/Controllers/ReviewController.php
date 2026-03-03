@@ -6,6 +6,10 @@ use App\Actions\User\Review\CreateReview;
 use App\Actions\User\Review\DeleteReview;
 use App\Actions\User\Review\GetUserReviews;
 use App\Actions\User\Review\UpdateReview;
+use App\Http\Requests\User\Review\CreateReviewRequest;
+use App\Http\Requests\User\Review\DeleteReviewRequest;
+use App\Http\Requests\User\Review\UpdateReviewRequest;
+use App\Models\Review;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
@@ -20,27 +24,40 @@ class ReviewController extends Controller
         ]);
     }
 
-    public function store(CreateReview $action)
+    public function store(CreateReviewRequest $request, CreateReview $action)
     {
-        $action->handle($user, $product, $rating, $comment);
+        $validatedData = $request->validated();
+
+        $action->handle(
+            $request->user(),
+            $validatedData['product_id'],
+            $validatedData['rating'],
+            $validatedData['comment'],
+        );
 
         return redirect()
             ->back()
             ->with('success', 'Review posted.');
     }
 
-    public function update(UpdateReview $action)
+    public function update(UpdateReviewRequest $request, UpdateReview $action, Review $review)
     {
-        $action->handle($user, $review, $data);
+        $action->handle(
+            $review, 
+            $request->validated(),
+        );
 
         return redirect()
             ->back()
             ->with('success', 'Review updated.');
     }
 
-    public function destroy(DeleteReview $action)
+    public function destroy(DeleteReviewRequest $request, DeleteReview $action, Review $review)
     {
-        $action->handle($user, $review);
+        $action->handle(
+            $request->user(),
+            $review,
+        );
 
         return redirect()
             ->back()
