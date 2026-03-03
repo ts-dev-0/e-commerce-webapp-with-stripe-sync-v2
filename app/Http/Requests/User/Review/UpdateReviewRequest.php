@@ -11,7 +11,10 @@ class UpdateReviewRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        /** @var \App\Models\Review $review */
+        $review = $this->route('review');
+
+        return $this->user()->id === $review->user_id;
     }
 
     /**
