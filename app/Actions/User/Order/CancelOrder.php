@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Actions\User\Checkout;
+namespace App\Actions\User\Order;
 
 use App\Enums\OrderStatus;
 use App\Models\Order;
 
-class CancelCheckout
+class CancelOrder
 {
     public function handle(Order $order): void
     {

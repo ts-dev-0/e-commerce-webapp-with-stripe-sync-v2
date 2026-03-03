@@ -21,7 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->only(['index', 'store', 'destroy']);
 
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::delete('orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
     Route::resource('checkout', CheckoutController::class)
         ->only(['index', 'store']);

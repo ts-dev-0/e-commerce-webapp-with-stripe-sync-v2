@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Feature\Actions\User\Checkout;
+namespace Tests\Feature\Actions\User\Order;
 
-use App\Actions\User\Checkout\CancelCheckout;
+use App\Actions\User\Order\CancelOrder;
 use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\User;
@@ -10,16 +10,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class CancelCheckoutTest extends TestCase
+class CancelOrderTest extends TestCase
 {
     use RefreshDatabase;
 
-    private CancelCheckout $action;
+    private CancelOrder $action;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new CancelCheckout();
+        $this->action = new CancelOrder();
     }
 
     public function test_user_can_cancel_order_when_status_is_pending()
