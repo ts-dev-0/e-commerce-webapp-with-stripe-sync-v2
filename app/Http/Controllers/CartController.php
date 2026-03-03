@@ -6,6 +6,7 @@ use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Cart\RemoveCartItem;
 use App\Actions\User\Cart\UpdateCartItemQuantity;
+use App\Http\Requests\Requests\User\Cart\RemoveCartItemRequest;
 use App\Http\Requests\Requests\User\Cart\UpdateCartItemQuantityRequest;
 use App\Http\Requests\User\Cart\AddItemToCartRequest;
 use Inertia\Inertia;
@@ -51,9 +52,13 @@ class CartController extends Controller
             ->with('success', 'Cart updated.');
     }
 
-    public function destroy(RemoveCartItem $action)
+    public function destroy(RemoveCartItemRequest $request , RemoveCartItem $action)
     {
-        $action->handle($user, $product);
+        $validatedData = $request->validated();
+        $action->handle(
+            $request->user(),
+            $validatedData['product_id'],
+        );
 
         return redirect()
             ->route('cart.index')
