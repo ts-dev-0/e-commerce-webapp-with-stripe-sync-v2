@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
+use App\Actions\User\Cart\RemoveCartItem;
 use App\Actions\User\Cart\UpdateCartItemQuantity;
 use Tests\TestCase;
 use Mockery;
@@ -175,5 +176,37 @@ class CartControllerTest extends TestCase
         $response->assertRedirect(route('cart.index'));
 
         $response->assertSessionHas('success', 'Cart updated.');
+    }
+
+    // destroy
+    public function test_user_can_remove_item_from_cart()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $product = Product::factory()->create();
+
+        $payload = [
+            'product_id' => $product->id,
+        ];
+
+        $mock = Mockery::mock(RemoveCartItem::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->with($user, $product->id);
+
+        $this->app->instance(
+            RemoveCartItem::class,
+            $mock
+        );
+
+        $response = $this
+            ->actingAs($user)
+            ->delete("/cart/{$product->id}", $payload);
+
+        $response->assertRedirect(route('cart.index'));
+
+        $response->assertSessionHas('success', 'Item removed from cart.');
     }
 }
