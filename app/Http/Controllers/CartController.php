@@ -23,7 +23,7 @@ class CartController extends Controller
         ]);
     }
 
-    public function store(AddItemToCartRequest $request, AddItemToCart $action,)
+    public function store(AddItemToCartRequest $request, AddItemToCart $action)
     {
         $validatedData = $request->validated();
         $action->handle(
