@@ -2,28 +2,27 @@
 
 namespace App\Actions\User\Cart;
 
-use App\Models\Product;
 use App\Models\User;
 
 class AddItemToCart
 {
-    public function handle(User $user, Product $product, int $quantity): void
+    public function handle(User $user, int $productId, int $quantity): void
     {
         $cart = $user->currentCart();
 
         $existing = $cart->products()
-                ->where('product_id', $product->id)
+                ->where('product_id', $productId)
                 ->first();
         if($existing) {
             $cart->products()->updateExistingPivot(
-                $product->id,
+                $productId,
                 [
                     'quantity' => $existing->pivot->quantity + $quantity,
                 ]
             );
         }
 
-        $cart->products()->attach($product->id, [
+        $cart->products()->attach($productId, [
             'quantity' => $quantity,
         ]);
     }
