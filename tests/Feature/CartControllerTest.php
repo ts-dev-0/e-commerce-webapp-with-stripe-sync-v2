@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
+use App\Actions\User\Cart\UpdateCartItemQuantity;
 use Tests\TestCase;
 use Mockery;
 use App\Models\User;
@@ -138,5 +139,41 @@ class CartControllerTest extends TestCase
             ]);
 
         $response->assertSessionHasErrors('quantity');
+    }
+
+    // update
+    public function test_user_can_update_cart_item_quantity()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+        $cart = Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $product = Product::factory()->create();
+
+        $payload = [
+            'product_id' => $product->id,
+            'quantity' => 3,
+        ];
+
+        $mock = Mockery::mock(UpdateCartItemQuantity::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->with($user, $product->id, 3);
+
+        $this->app->instance(
+            UpdateCartItemQuantity::class,
+            $mock
+        );
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('cart.update', $cart), $payload);
+
+        $response->assertRedirect(route('cart.index'));
+
+        $response->assertSessionHas('success', 'Cart updated.');
     }
 }
