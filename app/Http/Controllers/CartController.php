@@ -9,7 +9,7 @@ use App\Actions\User\Cart\UpdateCartItemQuantity;
 use App\Http\Requests\User\Cart\RemoveCartItemRequest;
 use App\Http\Requests\User\Cart\UpdateCartItemQuantityRequest;
 use App\Http\Requests\User\Cart\AddItemToCartRequest;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CartController extends Controller
