@@ -34,27 +34,11 @@ class CartControllerTest extends TestCase
             'email_verified_at' => now(),
         ]);
 
-        $cart = Cart::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
         $product1 = Product::factory()->create([
             'is_published' => 1,
         ]);
         $product2 = Product::factory()->create([
-            'is_published' => 0,
-        ]);
-
-        CartItem::factory()->create([
-            'cart_id' => $cart->id,
-            'product_id' => $product1->id,
-            'quantity' => 2,
-        ]);
-
-        CartItem::factory()->create([
-            'cart_id' => $cart->id,
-            'product_id' => $product2->id,
-            'quantity' => 1,
+            'is_published' => 1,
         ]);
 
         $data = [
@@ -66,7 +50,7 @@ class CartControllerTest extends TestCase
                 'product' => $product2->toArray(),
                 'quantity' => 1,
             ]
-            ];
+        ];
             
         $mock = Mockery::mock(GetCart::class);
         $mock->shouldReceive('handle')

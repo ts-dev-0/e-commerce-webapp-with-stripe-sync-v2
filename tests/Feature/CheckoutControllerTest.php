@@ -28,15 +28,11 @@ class CheckoutControllerTest extends TestCase
         /** @var \APP\Models\User $user */
         $user = User::factory()->create();
 
-        $cart = Cart::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
         $product1 = Product::factory()->create([
             'is_published' => 1,
         ]);
         $product2 = Product::factory()->create([
-            'is_published' => 0,
+            'is_published' => 1,
         ]);
 
         $data = [
@@ -48,7 +44,7 @@ class CheckoutControllerTest extends TestCase
                 'product' => $product2->toArray(),
                 'quantity' => 1,
             ]
-            ];
+        ];
 
         $mock = Mockery::mock(GetCart::class);
 
