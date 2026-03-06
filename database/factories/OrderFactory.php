@@ -22,6 +22,7 @@ class OrderFactory extends Factory
             'user_id' => User::factory(),
             'total_amount' => $this->faker->numberBetween(1000, 2000),
             'status' => OrderStatus::Pending,
+            'ordered_at' => null,
         ];
     }
 }
