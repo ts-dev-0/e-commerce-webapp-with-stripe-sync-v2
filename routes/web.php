@@ -33,7 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('checkout', CheckoutController::class)
         ->only(['index', 'store']);
 
-    Route::resource('review', ReviewController::class)
+    Route::resource('reviews', ReviewController::class)
         ->only(['index', 'store', 'update', 'destroy']);
 
     Route::get('search/products', SearchPublishedProductController::class)->name('search.products');
