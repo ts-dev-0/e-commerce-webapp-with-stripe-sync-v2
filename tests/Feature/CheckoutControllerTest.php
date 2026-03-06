@@ -5,10 +5,9 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Mockery;
 use App\Models\User;
-use App\Actions\User\Cart\GetCart;
-use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\Product;
+use App\Actions\User\Cart\GetCart;
+use App\Actions\User\Checkout\ProcessCheckout;
 use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -23,6 +22,7 @@ class CheckoutControllerTest extends TestCase
         $this->withoutVite();
     }
 
+    // index
     public function test_authenticated_user_can_view_checkout_page()
     {
         /** @var \APP\Models\User $user */
@@ -72,5 +72,33 @@ class CheckoutControllerTest extends TestCase
         $response = $this->get(route('checkout.index'));
 
         $response->assertRedirect('/login');
+    }
+
+    // store
+    public function test_user_can_process_checkout()
+    {
+        /** @var \APP\Models\User $user */
+        $user = User::factory()->create();
+
+        $mock = Mockery::mock(ProcessCheckout::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->with($user);
+
+        $this->app->instance(ProcessCheckout::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->post(route('checkout.store'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_guest_cannot_process_checkout()
+    {
+        $response = $this->post(route('checkout.store'));
+
+        $response->assertRedirect(route('login'));
     }
 }
