@@ -21,7 +21,7 @@ class RemoveFavoriteTest extends TestCase
         $user->favoriteProducts()->attach($product->id);
 
         $action = new RemoveFavorite();
-        $action->handle($user, $product);
+        $action->handle($user, $product->id);
 
         $this->assertDatabaseMissing('favorites', [
             'user_id' => $user->id,
