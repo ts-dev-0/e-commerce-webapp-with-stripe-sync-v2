@@ -18,8 +18,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('cart', CartController::class)
         ->only(['index', 'store', 'update', 'destroy']);
 
-    Route::resource('favorites', FavoriteController::class)
-        ->only(['index', 'store', 'destroy']);
+    Route::get('/favorites', [FavoriteController::class, 'index'])
+    ->name('favorites.index');
+
+    Route::post('/favorites', [FavoriteController::class, 'store'])
+        ->name('favorites.store');
+
+    Route::delete('/favorites', [FavoriteController::class, 'destroy'])
+        ->name('favorites.destroy');
 
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
