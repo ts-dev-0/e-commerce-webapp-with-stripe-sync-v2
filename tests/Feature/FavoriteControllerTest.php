@@ -7,6 +7,7 @@ use Mockery;
 use App\Models\User;
 use App\Models\Product;
 use App\Actions\User\Favorite\AddFavorite;
+use App\Actions\User\Favorite\RemoveFavorite;
 use App\Actions\User\Favorite\ViewFavoriteProducts;
 use Illuminate\Database\Eloquent\Collection;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -96,6 +97,45 @@ class FavoriteControllerTest extends TestCase
             'product_id' => $product->id,
         ]);
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
+    }
+
+    // destroy
+    public function test_user_can_remove_favorite_product()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $product = Product::factory()->create();
+
+        $mock = Mockery::mock(RemoveFavorite::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->with($user, $product->id);
+
+        $this->app->instance(RemoveFavorite::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->from(route('favorites.index'))
+            ->delete(route('favorites.destroy'), [
+                'product_id' => $product->id,
+            ]);
+
+        $response->assertRedirect(route('favorites.index'));
+
+        $response->assertSessionHas('success', 'Removed favorite.');
+    }
+
+    public function test_guest_cannot_remove_favorite_product()
+    {
+        $product = Product::factory()->create();
+
+        $response = $this->delete(route('favorites.destroy'), [
+            'product_id' => $product->id,
+        ]);
+
+        $response->assertRedirect(route('login'));
     }
 }
