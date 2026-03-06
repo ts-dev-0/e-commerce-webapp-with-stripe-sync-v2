@@ -6,7 +6,7 @@ use App\Actions\User\Order\CancelOrder;
 use App\Actions\User\Order\ViewOrderHistory;
 use App\Http\Requests\User\Order\CancelOrderRequest;
 use App\Models\Order;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class OrderController extends Controller
