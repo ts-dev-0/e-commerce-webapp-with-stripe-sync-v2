@@ -10,7 +10,7 @@ use App\Http\Requests\User\Review\CreateReviewRequest;
 use App\Http\Requests\User\Review\DeleteReviewRequest;
 use App\Http\Requests\User\Review\UpdateReviewRequest;
 use App\Models\Review;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ReviewController extends Controller
