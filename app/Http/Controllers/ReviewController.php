@@ -54,10 +54,7 @@ class ReviewController extends Controller
 
     public function destroy(DeleteReviewRequest $request, DeleteReview $action, Review $review)
     {
-        $action->handle(
-            $request->user(),
-            $review,
-        );
+        $action->handle($review);
 
         return redirect()
             ->back()
