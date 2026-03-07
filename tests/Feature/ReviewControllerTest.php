@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Actions\User\Review\GetUserReviews;
+use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
+use App\Actions\User\Review\CreateReview;
+use App\Actions\User\Review\GetUserReviews;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -60,5 +62,40 @@ class ReviewControllerTest extends TestCase
         $response = $this->get(route('reviews.index'));
 
         $response->assertRedirect(route('login'));
+    }
+
+    // store
+    public function test_user_can_create_review()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $product = Product::factory()->create();
+
+        $mock = Mockery::mock(CreateReview::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->with(
+                $user,
+                $product->id,
+                5,
+                'Great product'
+            );
+
+        $this->app->instance(CreateReview::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->from(route('reviews.index'))
+            ->post(route('reviews.store'), [
+                'product_id' => $product->id,
+                'rating' => 5,
+                'comment' => 'Great product',
+            ]);
+
+        $response->assertRedirect(route('reviews.index'));
+
+        $response->assertSessionHas('success', 'Review posted.');
     }
 }
