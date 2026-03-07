@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Checkout\ProcessCheckout;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CheckoutController extends Controller

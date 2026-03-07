@@ -2,14 +2,13 @@
 
 namespace App\Actions\User\Favorite;
 
-use App\Models\Product;
 use App\Models\User;
 
 class AddFavorite
 {
-    public function handle(User $user, Product $product): void
+    public function handle(User $user, int $productId): void
     {
         $user->favoriteProducts()
-            ->syncWithoutDetaching([$product->id]);
+            ->syncWithoutDetaching([$productId]);
     }
 }

@@ -18,8 +18,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('cart', CartController::class)
         ->only(['index', 'store', 'update', 'destroy']);
 
-    Route::resource('favorites', FavoriteController::class)
-        ->only(['index', 'store', 'destroy']);
+    Route::get('favorites', [FavoriteController::class, 'index'])
+    ->name('favorites.index');
+
+    Route::post('favorites', [FavoriteController::class, 'store'])
+        ->name('favorites.store');
+
+    Route::delete('favorites', [FavoriteController::class, 'destroy'])
+        ->name('favorites.destroy');
 
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
@@ -27,7 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('checkout', CheckoutController::class)
         ->only(['index', 'store']);
 
-    Route::resource('review', ReviewController::class)
+    Route::resource('reviews', ReviewController::class)
         ->only(['index', 'store', 'update', 'destroy']);
 
     Route::get('search/products', SearchPublishedProductController::class)->name('search.products');

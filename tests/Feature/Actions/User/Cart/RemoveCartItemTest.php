@@ -36,7 +36,7 @@ class RemoveCartItemTest extends TestCase
             'product_id' => $product->id,
         ]);
 
-        $this->action->handle($user, $product);
+        $this->action->handle($user, $product->id);
 
         $this->assertDatabaseMissing('cart_items', [
             'cart_id' => $cart->id,
@@ -59,7 +59,7 @@ class RemoveCartItemTest extends TestCase
             'product_id' => $anotherProduct->id,
         ]);
 
-        $this->action->handle($user, $product);
+        $this->action->handle($user, $product->id);
 
         $this->assertDatabaseMissing('cart_items', [
             'cart_id' => $cart->id,

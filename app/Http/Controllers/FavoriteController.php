@@ -7,7 +7,7 @@ use App\Actions\User\Favorite\RemoveFavorite;
 use App\Actions\User\Favorite\ViewFavoriteProducts;
 use App\Http\Requests\User\Favorite\AddFavoriteRequest;
 use App\Http\Requests\User\Favorite\RemoveFavoriteRequest;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class FavoriteController extends Controller

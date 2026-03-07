@@ -34,7 +34,7 @@ class AddItemToCartTest extends TestCase
 
         $quantity = 2;
 
-        $this->action->handle($user, $product, $quantity);
+        $this->action->handle($user, $product->id, $quantity);
 
         $this->assertDatabaseHas('cart_items', [
             'cart_id'     => $cart->id,
@@ -60,7 +60,7 @@ class AddItemToCartTest extends TestCase
 
         $quantity = 1;
 
-        $this->action->handle($user, $product, $quantity);
+        $this->action->handle($user, $product->id, $quantity);
 
         $this->assertDatabaseHas('cart_items', [
             'cart_id'     => $cart->id,

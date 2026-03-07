@@ -19,7 +19,7 @@ class AddFavoriteTest extends TestCase
         $product = Product::factory()->create();
 
         $action = new AddFavorite();
-        $action->handle($user, $product);
+        $action->handle($user, $product->id);
 
         $this->assertDatabaseHas('favorites', [
             'user_id' => $user->id,
@@ -34,8 +34,8 @@ class AddFavoriteTest extends TestCase
 
         $action = new AddFavorite();
 
-        $action->handle($user, $product);
-        $action->handle($user, $product);
+        $action->handle($user, $product->id);
+        $action->handle($user, $product->id);
 
         $this->assertEquals(1, \DB::table('favorites')->count());
     }

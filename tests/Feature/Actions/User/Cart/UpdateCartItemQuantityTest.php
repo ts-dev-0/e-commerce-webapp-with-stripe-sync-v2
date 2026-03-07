@@ -40,7 +40,7 @@ class UpdateCartItemQuantityTest extends TestCase
 
         $updatedQuantity = 1;
 
-        $this->action->handle($user, $product, $updatedQuantity);
+        $this->action->handle($user, $product->id, $updatedQuantity);
 
         $this->assertDatabaseHas('cart_items', [
                 'cart_id'    => $cart->id,
@@ -64,6 +64,6 @@ class UpdateCartItemQuantityTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->action->handle($user, $product, $updatedQuantity);
+        $this->action->handle($user, $product->id, $updatedQuantity);
     }
 }

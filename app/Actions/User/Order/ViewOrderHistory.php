@@ -3,7 +3,7 @@
 namespace App\Actions\User\Order;
 
 use App\Models\User;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class ViewOrderHistory
 {

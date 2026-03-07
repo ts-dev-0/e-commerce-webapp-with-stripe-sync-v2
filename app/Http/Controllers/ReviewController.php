@@ -10,7 +10,7 @@ use App\Http\Requests\User\Review\CreateReviewRequest;
 use App\Http\Requests\User\Review\DeleteReviewRequest;
 use App\Http\Requests\User\Review\UpdateReviewRequest;
 use App\Models\Review;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ReviewController extends Controller
@@ -54,10 +54,7 @@ class ReviewController extends Controller
 
     public function destroy(DeleteReviewRequest $request, DeleteReview $action, Review $review)
     {
-        $action->handle(
-            $request->user(),
-            $review,
-        );
+        $action->handle($review);
 
         return redirect()
             ->back()
