@@ -29,7 +29,7 @@ class CreateReviewTest extends TestCase
 
         $review = $this->action->handle(
             $user,
-            $product,
+            $product->id,
             5,
             'Great product'
         );
@@ -51,7 +51,7 @@ class CreateReviewTest extends TestCase
 
         $this->action->handle(
             $user,
-            $product,
+            $product->id,
             5,
             'Great product'
         );
@@ -62,7 +62,7 @@ class CreateReviewTest extends TestCase
 
         $this->action->handle(
             $user,
-            $product,
+            $product->id,
             4,
             'Second review'
         );
