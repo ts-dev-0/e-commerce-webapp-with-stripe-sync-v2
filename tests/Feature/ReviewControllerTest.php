@@ -100,6 +100,19 @@ class ReviewControllerTest extends TestCase
         $response->assertSessionHas('success', 'Review posted.');
     }
 
+    public function test_guest_cannot_create_review()
+    {
+        $product = Product::factory()->create();
+
+        $response = $this->post(route('reviews.store'), [
+            'product_id' => $product->id,
+            'rating' => 5,
+            'comment' => 'Great product',
+        ]);
+
+        $response->assertRedirect(route('login'));
+    }
+
     // update
     public function test_user_can_update_review()
     {
