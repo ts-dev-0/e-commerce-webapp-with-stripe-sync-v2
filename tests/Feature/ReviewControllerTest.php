@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
 use App\Actions\User\Review\CreateReview;
+use App\Actions\User\Review\DeleteReview;
 use App\Actions\User\Review\GetUserReviews;
 use App\Actions\User\Review\UpdateReview;
 use Illuminate\Database\Eloquent\Collection;
@@ -154,6 +155,43 @@ class ReviewControllerTest extends TestCase
             'rating' => 4,
             'comment' => 'Updated review',
         ]);
+
+        $response->assertRedirect(route('login'));
+    }
+
+    // destroy
+    public function test_user_can_delete_review()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $review = Review::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $mock = Mockery::mock(DeleteReview::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->with(Mockery::type(Review::class));
+
+        $this->app->instance(DeleteReview::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->from(route('reviews.index'))
+            ->delete(route('reviews.destroy', $review));
+
+        $response->assertRedirect(route('reviews.index'));
+
+        $response->assertSessionHas('success', 'Review deleted.');
+    }
+
+    public function test_guest_cannot_delete_review()
+    {
+        $review = Review::factory()->create();
+
+        $response = $this->delete(route('reviews.destroy', $review));
 
         $response->assertRedirect(route('login'));
     }
