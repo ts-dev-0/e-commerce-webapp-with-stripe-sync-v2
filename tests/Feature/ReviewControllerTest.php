@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\User;
 use App\Actions\User\Review\CreateReview;
 use App\Actions\User\Review\GetUserReviews;
+use App\Actions\User\Review\UpdateReview;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -97,5 +98,50 @@ class ReviewControllerTest extends TestCase
         $response->assertRedirect(route('reviews.index'));
 
         $response->assertSessionHas('success', 'Review posted.');
+    }
+
+    // update
+    public function test_user_can_update_review()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $review = Review::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $validatedData = [
+            'rating' => 4,
+            'comment' => 'Updated review',
+        ];
+
+        $mock = Mockery::mock(UpdateReview::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->with(Mockery::type(Review::class), $validatedData);
+
+        $this->app->instance(UpdateReview::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->from(route('reviews.index'))
+            ->put(route('reviews.update', $review), $validatedData);
+
+        $response->assertRedirect(route('reviews.index'));
+
+        $response->assertSessionHas('success', 'Review updated.');
+    }
+
+    public function test_guest_cannot_update_review()
+    {
+        $review = Review::factory()->create();
+
+        $response = $this->put(route('reviews.update', $review), [
+            'rating' => 4,
+            'comment' => 'Updated review',
+        ]);
+
+        $response->assertRedirect(route('login'));
     }
 }
