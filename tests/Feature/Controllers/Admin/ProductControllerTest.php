@@ -3,6 +3,7 @@
 namespace Tests\Feature\Controllers\Admin;
 
 use App\Actions\Admin\Product\CreateProduct;
+use App\Actions\Admin\Product\DeleteProduct;
 use App\Actions\Admin\Product\UpdateProduct;
 use App\Models\Product;
 use App\Models\User;
@@ -87,4 +88,35 @@ class ProductControllerTest extends TestCase
 
         $response->assertSessionHas('success');
     }
+
+    // destroy
+    public function test_admin_can_delete_product()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $product = Product::factory()->create();
+
+        $data = [
+            'product_id' => $product->id,
+        ];
+
+        $mock = Mockery::mock(DeleteProduct::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->with(Mockery::type(Product::class));
+
+        $this->app->instance(DeleteProduct::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->from(route('admin.products.create'))
+            ->delete(route('admin.products.destroy', $product->id), $data);
+
+        $response->assertRedirect(route('admin.products.create'));
+
+        $response->assertSessionHas('success');
+    }
+
 }
