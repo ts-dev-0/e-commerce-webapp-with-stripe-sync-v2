@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Requests\Admin;
+namespace Tests\Feature\Requests\Admin\Product;
 
 use App\Http\Requests\Admin\DeleteProductRequest;
 use App\Models\Product;
