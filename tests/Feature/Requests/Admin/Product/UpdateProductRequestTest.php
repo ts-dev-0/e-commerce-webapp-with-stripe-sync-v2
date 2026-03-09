@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Requests\Admin\Product;
 
-use App\Http\Requests\Admin\UpdateProductRequest;
+use App\Http\Requests\Admin\Product\UpdateProductRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;

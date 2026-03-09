@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Requests\Admin\Product;
 
-use App\Http\Requests\Admin\CreateProductRequest;
+use App\Http\Requests\Admin\Product\CreateProductRequest;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;

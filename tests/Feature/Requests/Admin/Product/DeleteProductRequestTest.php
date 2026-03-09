@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Requests\Admin\Product;
 
-use App\Http\Requests\Admin\DeleteProductRequest;
+use App\Http\Requests\Admin\Product\DeleteProductRequest;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
