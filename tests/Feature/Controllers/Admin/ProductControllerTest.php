@@ -3,6 +3,8 @@
 namespace Tests\Feature\Controllers\Admin;
 
 use App\Actions\Admin\Product\CreateProduct;
+use App\Actions\Admin\Product\UpdateProduct;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -46,6 +48,40 @@ class ProductControllerTest extends TestCase
             ->actingAs($user)
             ->from(route('admin.products.create'))
             ->post(route('admin.products.store'), $validatedData);
+
+        $response->assertRedirect(route('admin.products.create'));
+
+        $response->assertSessionHas('success');
+    }
+
+    // update
+    public function test_admin_can_update_product()
+    {
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        $product = Product::factory()->create();
+
+        $data = [
+            'name' => 'Updated test Product',
+            'description' => 'Test description',
+            'price' => 1000,
+            'stock' => 10,
+            'manufacturer' => 'New manufacturer',
+        ];
+
+        $mock = Mockery::mock(UpdateProduct::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->with(Mockery::type(Product::class), $data);
+
+        $this->app->instance(UpdateProduct::class, $mock);
+
+        $response = $this
+            ->actingAs($user)
+            ->from(route('admin.products.create'))
+            ->patch(route('admin.products.update', $product->id), $data);
 
         $response->assertRedirect(route('admin.products.create'));
 

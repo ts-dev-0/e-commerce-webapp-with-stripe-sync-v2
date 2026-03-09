@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Actions\Admin\Product\CreateProduct;
+use App\Actions\Admin\Product\UpdateProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Product\CreateProductRequest;
+use App\Http\Requests\Admin\Product\UpdateProductRequest;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -26,9 +29,15 @@ class ProductController extends Controller
             ->with('success', 'Product created.');
     }
 
-    public function update()
+    public function update(UpdateProductRequest $request, UpdateProduct $action, Product $product)
     {
-        //
+        $validatedData = $request->validated();
+
+        $action->handle($product, $validatedData);
+
+        return redirect()
+            ->route('admin.products.create')
+            ->with('success', 'Product updated.');
     }
 
     public function destroy()
