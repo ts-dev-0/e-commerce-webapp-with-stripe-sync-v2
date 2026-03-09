@@ -6,12 +6,13 @@ use App\Actions\Admin\Product\CreateProduct;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Product\CreateProductRequest;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
     public function create()
     {
-        //
+        return Inertia::render('admin/product/create');
     }
 
     public function store(CreateProductRequest $request, CreateProduct $action)
