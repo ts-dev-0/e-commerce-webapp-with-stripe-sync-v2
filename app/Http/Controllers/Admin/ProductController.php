@@ -31,6 +31,13 @@ class ProductController extends Controller
             ->with('success', 'Product created.');
     }
 
+    public function edit(Product $product)
+    {
+        return Inertia::render('admin/product/edit', [
+            'data' => $product,
+        ]);
+    }
+
     public function update(UpdateProductRequest $request, UpdateProduct $action, Product $product)
     {
         $validatedData = $request->validated();
