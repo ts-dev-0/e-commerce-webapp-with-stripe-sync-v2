@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\SearchAllProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FavoriteController;
@@ -41,6 +45,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+});
+
+// Admin
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('products', AdminProductController::class)
+        ->only(['create', 'store', 'edit', 'update', 'destroy']);
+
+    Route::resource('categories', CategoryController::class)
+        ->only(['index', 'store', 'update', 'destroy']);
+
+    Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
+
+    Route::get('search/products', SearchAllProductController::class)->name('search.products');
 });
 
 require __DIR__.'/settings.php';

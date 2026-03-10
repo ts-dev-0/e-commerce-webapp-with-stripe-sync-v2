@@ -1,23 +1,23 @@
 <?php
 
-namespace Tests\Feature\Requests\User\Search;
+namespace Tests\Feature\Requests\Admin\Search;
 
-use App\Http\Requests\User\Search\SearchPublishedProductRequest;
+use App\Http\Requests\Admin\Search\SearchAllProductRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
-class SearchPublishedProductRequestTest extends TestCase
+class SearchAllProductRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    private SearchPublishedProductRequest $request;
+    private SearchAllProductRequest $request;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = new SearchPublishedProductRequest();
+        $this->request = new SearchAllProductRequest();
     }
 
     public function test_validation_passes_with_valid_keyword()
