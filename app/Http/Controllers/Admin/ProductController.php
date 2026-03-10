@@ -42,10 +42,10 @@ class ProductController extends Controller
     {
         $validatedData = $request->validated();
 
-        $action->handle($product, $validatedData);
+        $updatedProduct = $action->handle($product, $validatedData);
 
         return redirect()
-            ->route('admin.products.create')
+            ->route('admin.products.edit', $updatedProduct)
             ->with('success', 'Product updated.');
     }
 
