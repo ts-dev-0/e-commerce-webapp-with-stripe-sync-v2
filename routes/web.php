@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FavoriteController;
@@ -41,6 +42,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+});
+
+// Admin
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('products', AdminProductController::class)
+        ->only(['create', 'store', 'edit', 'update', 'destroy']);
 });
 
 require __DIR__.'/settings.php';
