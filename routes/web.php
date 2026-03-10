@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -52,6 +53,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('categories', CategoryController::class)
         ->only(['index', 'store', 'update', 'destroy']);
+
+    Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
 });
 
 require __DIR__.'/settings.php';
