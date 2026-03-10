@@ -30,7 +30,7 @@ class SearchPublishedProductRequestTest extends TestCase
         $this->assertTrue($validator->passes());
     }
 
-    public function test_validation_fails_when_keyword_is_not_string()
+    public function test_validation_fails_when_keyword_is_string()
     {
         $validator = Validator::make(
             ['keyword' => 123],
