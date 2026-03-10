@@ -75,16 +75,17 @@ class ProductControllerTest extends TestCase
 
         $mock->shouldReceive('handle')
             ->once()
-            ->with(Mockery::type(Product::class), $data);
+            ->with(Mockery::type(Product::class), $data)
+            ->andReturn($product);
 
         $this->app->instance(UpdateProduct::class, $mock);
 
         $response = $this
             ->actingAs($user)
-            ->from(route('admin.products.create'))
-            ->patch(route('admin.products.update', $product->id), $data);
+            ->from(route('admin.products.edit', $product))
+            ->patch(route('admin.products.update', $product), $data);
 
-        $response->assertRedirect(route('admin.products.create'));
+        $response->assertRedirect(route('admin.products.edit', $product));
 
         $response->assertSessionHas('success');
     }
@@ -111,12 +112,11 @@ class ProductControllerTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->from(route('admin.products.create'))
+            ->from(route('admin.products.edit', $product->id))
             ->delete(route('admin.products.destroy', $product->id), $data);
 
         $response->assertRedirect(route('admin.products.create'));
 
         $response->assertSessionHas('success');
     }
-
 }
