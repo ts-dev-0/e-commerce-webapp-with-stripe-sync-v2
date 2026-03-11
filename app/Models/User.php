@@ -47,6 +47,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'is_admin' => 'boolean',
         ];
     }
 
@@ -74,5 +75,10 @@ class User extends Authenticatable
     public function currentCart(): Cart
     {
         return $this->cart()->firstOrCreate();
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
     }
 }

@@ -27,7 +27,9 @@ class ProductControllerTest extends TestCase
     public function test_admin_can_create_new_product()
     {
         /** @var \App\Models\User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true,
+        ]);
 
         $validatedData = [
             'name' => 'Test Product',
@@ -59,7 +61,9 @@ class ProductControllerTest extends TestCase
     public function test_admin_can_update_product()
     {
         /** @var \App\Models\User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true,
+        ]);
 
         $product = Product::factory()->create();
 
@@ -94,7 +98,9 @@ class ProductControllerTest extends TestCase
     public function test_admin_can_delete_product()
     {
         /** @var \App\Models\User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true,
+        ]);
 
         $product = Product::factory()->create();
 

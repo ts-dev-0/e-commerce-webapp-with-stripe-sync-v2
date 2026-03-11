@@ -27,7 +27,9 @@ class CategoryControllerTest extends TestCase
     public function test_admin_can_create_category()
     {
         /** @var \App\Models\User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true,
+        ]);
 
         $data = [
             'name' => 'Test Category',
@@ -55,7 +57,9 @@ class CategoryControllerTest extends TestCase
     public function test_admin_can_update_category()
     {
         /** @var \App\Models\User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true,
+        ]);
         $category = Category::factory()->create();
 
         $data = [
@@ -85,7 +89,9 @@ class CategoryControllerTest extends TestCase
     public function test_admin_can_delete_category()
     {
         /** @var \App\Models\User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true,
+        ]);
         $category = Category::factory()->create();
 
         $data = [

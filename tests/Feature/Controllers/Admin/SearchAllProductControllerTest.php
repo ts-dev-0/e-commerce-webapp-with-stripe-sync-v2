@@ -25,7 +25,9 @@ class SearchAllProductControllerTest extends TestCase
     public function test_validation_passes_with_valid_data()
     {
         /** @var \App\Models\User $user */
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'is_admin' => true,
+        ]);
 
         $products = collect([
             Product::factory()->make(),
