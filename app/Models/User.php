@@ -76,4 +76,9 @@ class User extends Authenticatable
     {
         return $this->cart()->firstOrCreate();
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
+    }
 }
