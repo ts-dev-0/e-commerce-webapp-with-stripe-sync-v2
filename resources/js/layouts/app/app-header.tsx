@@ -43,7 +43,7 @@ export default function AppHeader() {
                         <input
                             type="search"
                             placeholder="Search"
-                            className="rounded-md border px-2 py-1 text-sm focus:outline-none"
+                            className="rounded-md border border-slate-300 placeholder-slate-400 px-2 py-1 text-sm focus:outline-none"
                         />
                     </div>
                 </div>
