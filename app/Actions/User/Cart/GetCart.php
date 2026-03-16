@@ -22,6 +22,9 @@ class GetCart
                                 'quantity' => $item->quantity,
                             ];
                         })->toArray(),
+            'subtotal' => $cartItems->sum(function ($item) {
+                            return $item->product->price * $item->quantity;
+            }),
         ];
     }
 }
