@@ -28,8 +28,8 @@ class ProductControllerTest extends TestCase
 
         $response->assertInertia(fn (Assert $page) =>
             $page->component('product/show')
-                 ->where('product.id', $product->id)
-                 ->where('product.name', $product->name)
+                 ->where('data.id', $product->id)
+                 ->where('data.name', $product->name)
         );
     }
 }
