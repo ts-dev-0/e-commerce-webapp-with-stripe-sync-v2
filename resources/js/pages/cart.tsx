@@ -1,15 +1,15 @@
 import CartItemCard from '@/components/cart-item-card';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { CartItem } from '@/types/cart-item';
+import { Cart as CartType } from '@/types/cart';
 import { Head } from '@inertiajs/react';
 
 interface CartProps {
-    data: CartItem[];
+    data: CartType;
 }
 
 export default function Cart({ data }: CartProps) {
-    const cartItems = data;
+    const cartItems = data['items'];
 
     // TODO: Move logic to calculation subtotal to Back-end
     const subtotal = cartItems.reduce(

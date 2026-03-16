@@ -3,15 +3,15 @@ import CartItemCard from '@/components/cart-item-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import { CartItem } from '@/types/cart-item';
+import { Checkout as CheckoutType } from '@/types/checkout';
 import { Head } from '@inertiajs/react';
 
 interface CheckoutProps {
-    data: CartItem[];
+    data: CheckoutType;
 }
 
 export default function Checkout({ data }: CheckoutProps) {
-    const cartItems = data;
+    const cartItems = data['items'];
 
     // TODO: Move logic to calculation subtotal to Back-end
     const subtotal = cartItems.reduce(
