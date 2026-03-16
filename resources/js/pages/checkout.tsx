@@ -12,13 +12,9 @@ interface CheckoutProps {
 
 export default function Checkout({ data }: CheckoutProps) {
     const cartItems = data['items'];
+    const subtotal = data['subtotal'];
 
-    // TODO: Move logic to calculation subtotal to Back-end
-    const subtotal = cartItems.reduce(
-        (sum, item) => sum + item['product'].price * item['quantity'],
-        0,
-    );
-
+    // TODO: Move logic to back-end
     const shipping = 0;
     const total = subtotal + shipping;
 
@@ -164,6 +160,7 @@ export default function Checkout({ data }: CheckoutProps) {
 
                                         return (
                                             <CartItemCard
+                                                key={product.id}
                                                 product={product}
                                                 quantity={quantity}
                                             />
