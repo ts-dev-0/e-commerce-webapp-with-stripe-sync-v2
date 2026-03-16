@@ -23,7 +23,7 @@ export default function CartItemCard({ product, quantity }: CartItemCartProps) {
                     <h2 className="text-sm font-medium text-slate-800">
                         {product.name}
                     </h2>
-                    <p className="mt-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs text-slate-500 line-clamp-2">
                         {product.description}
                     </p>
                 </div>
