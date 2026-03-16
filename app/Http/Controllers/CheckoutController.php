@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Cart\GetCart;
+use App\Actions\User\Checkout\GetCheckout;
 use App\Actions\User\Checkout\ProcessCheckout;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CheckoutController extends Controller
 {
-    public function index(Request $request, GetCart $action)
+    public function index(Request $request, GetCheckout $action)
     {
         $data = $action->handle($request->user());
 

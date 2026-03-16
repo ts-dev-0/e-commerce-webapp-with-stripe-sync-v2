@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Actions\User\Cart;
 
-use App\Actions\User\Cart\GetCart;
+use App\Actions\User\Checkout\GetCheckout;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -11,19 +11,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class GetCartTest extends TestCase
+class GetCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
-    private GetCart $action;
+    private GetCheckout $action;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new GetCart();
+        $this->action = new GetCheckout();
     }
 
-    public function test_user_can_get_cart_data()
+    public function test_user_can_get_checkout_data()
     {
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
@@ -70,7 +70,7 @@ class GetCartTest extends TestCase
         );
     }
 
-    public function test_empty_cart_data_returns_empty_array()
+    public function test_empty_checout_data_returns_empty_array()
     {
         /** @var \App\Models\User $user */
         $user = User::factory()->create();

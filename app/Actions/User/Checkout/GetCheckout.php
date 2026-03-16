@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Actions\User\Cart;
+namespace App\Actions\User\Checkout;
 
 use App\Models\CartItem;
 use App\Models\User;
 
-class GetCart
+class GetCheckout
 {
     public function handle(User $user): array
     {
