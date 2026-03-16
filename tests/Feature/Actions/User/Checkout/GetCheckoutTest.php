@@ -23,9 +23,12 @@ class GetCheckoutTest extends TestCase
         $this->action = new GetCheckout();
     }
 
-    public function test_user_can_get_only_their_cart_items()
+    public function test_user_can_get_checkout_data()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
+
+        /** @var \App\Models\User $otherUser */
         $otherUser = User::factory()->create();
 
         $product1 = Product::factory()->create();
@@ -59,20 +62,21 @@ class GetCheckoutTest extends TestCase
 
         $result = $this->action->handle($user);
 
-        $this->assertCount(2, $result);
+        $this->assertCount(2, $result['items']);
 
         $this->assertEqualsCanonicalizing(
             [2, 5],
-            array_column($result, 'quantity')
+            array_column($result['items'], 'quantity')
         );
     }
 
-    public function test_empty_cart_returns_empty_array()
+    public function test_empty_checout_data_returns_empty_array()
     {
+        /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
         $result = $this->action->handle($user);
 
-        $this->assertEmpty($result);
+        $this->assertEmpty($result['items']);
     }
 }

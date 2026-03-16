@@ -15,11 +15,13 @@ class GetCheckout
             })
             ->get();
 
-        return $cartItems->map(function ($item) {
-            return [
-                'product' => $item->product,
-                'quantity' => $item->quantity,
-            ];
-        })->toArray();
+        return [
+            'items' => $cartItems->map(function ($item) {
+                            return [
+                                'product' => $item->product,
+                                'quantity' => $item->quantity,
+                            ];
+                        })->toArray(),
+        ];
     }
 }
