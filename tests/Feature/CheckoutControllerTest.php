@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Mockery;
 use App\Models\User;
 use App\Models\Product;
-use App\Actions\User\Cart\GetCart;
+use App\Actions\User\Checkout\GetCheckout;
 use App\Actions\User\Checkout\ProcessCheckout;
 use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -46,14 +46,14 @@ class CheckoutControllerTest extends TestCase
             ]
         ];
 
-        $mock = Mockery::mock(GetCart::class);
+        $mock = Mockery::mock(GetCheckout::class);
 
         $mock->shouldReceive('handle')
             ->once()
             ->with($user)
             ->andReturn($data);
 
-        $this->app->instance(GetCart::class, $mock);
+        $this->app->instance(GetCheckout::class, $mock);
 
         $response = $this
             ->actingAs($user)
