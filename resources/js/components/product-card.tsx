@@ -1,4 +1,3 @@
-
 import { show } from '@/routes/product';
 import { Link } from '@inertiajs/react';
 
@@ -15,7 +14,6 @@ export default function ProductCard({
     description,
     price,
 }: ProductCardProps) {
-
     return (
         <Link
             key={id}
@@ -28,7 +26,9 @@ export default function ProductCard({
 
             <div className="p-3">
                 <h2 className="text-sm font-medium text-slate-800">{name}</h2>
-                <p className="mt-1 text-xs text-slate-500">{description}</p>
+                <p className="mt-1 line-clamp-4 text-xs text-slate-500">
+                    {description}
+                </p>
                 <div className="mt-3 flex items-center justify-between">
                     <span className="text-sm font-semibold text-slate-800">
                         {price.toLocaleString('ja-JP')}円
