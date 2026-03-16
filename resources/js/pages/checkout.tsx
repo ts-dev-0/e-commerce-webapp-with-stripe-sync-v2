@@ -1,56 +1,24 @@
+import CartItemCard from '@/components/cart-item-card';
+// import SavedAddressCard from '@/components/saved-address-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
+import { CartItem } from '@/types/cart-item';
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
 
-type CheckoutItem = {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-};
+interface CheckoutProps {
+    data: CartItem[];
+}
 
-type ShippingAddress = {
-    id: number;
-    name: string;
-    postal: string;
-    address: string;
-    phone: string;
-};
+export default function Checkout({ data }: CheckoutProps) {
+    const cartItems = data;
 
-const dummyItems: CheckoutItem[] = [
-    { id: 1, name: 'コットンTシャツ', price: 2500, quantity: 1 },
-    { id: 2, name: 'デニムパンツ', price: 7200, quantity: 2 },
-    { id: 3, name: 'スニーカー', price: 9800, quantity: 1 },
-];
-
-const savedAddresses: ShippingAddress[] = [
-    {
-        id: 1,
-        name: '山田 太郎',
-        postal: '〒123-4567',
-        address: '東京都渋谷区桜丘町1-1-1',
-        phone: '090-1234-5678',
-    },
-    {
-        id: 2,
-        name: '佐藤 花子',
-        postal: '〒234-5678',
-        address: '大阪府大阪市北区梅田2-2-2',
-        phone: '080-9876-5432',
-    },
-];
-
-export default function Checkout() {
-    const [selectedAddressId, setSelectedAddressId] = useState<number>(
-        savedAddresses[0]?.id ?? 0,
-    );
-
-    const subtotal = dummyItems.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+    // TODO: Move logic to calculation subtotal to Back-end
+    const subtotal = cartItems.reduce(
+        (sum, item) => sum + item['product'].price * item['quantity'],
         0,
     );
+
     const shipping = 0;
     const total = subtotal + shipping;
 
@@ -68,45 +36,14 @@ export default function Checkout() {
                                 </h2>
 
                                 <div className="mt-4 space-y-4">
-                                    {savedAddresses.map((addr) => {
-                                        const isSelected =
-                                            selectedAddressId === addr.id;
-
-                                        return (
-                                            <button
-                                                key={addr.id}
-                                                type="button"
-                                                onClick={() =>
-                                                    setSelectedAddressId(
-                                                        addr.id,
-                                                    )
-                                                }
-                                                className={
-                                                    'flex w-full items-start justify-between rounded-lg border p-4 text-left ' +
-                                                    (isSelected
-                                                        ? 'border-emerald-500 bg-emerald-50'
-                                                        : 'border-slate-200 bg-slate-50 hover:bg-slate-100')
-                                                }
-                                            >
-                                                <div>
-                                                    <p className="text-sm font-semibold text-slate-800">
-                                                        {addr.name}
-                                                    </p>
-                                                    <p className="text-xs text-slate-600">
-                                                        {addr.postal}{' '}
-                                                        {addr.address}
-                                                    </p>
-                                                    <p className="text-xs text-slate-600">
-                                                        {addr.phone}
-                                                    </p>
-                                                </div>
-
-                                                <div className="flex h-8 w-8 items-center justify-center rounded-full border text-sm font-semibold">
-                                                    {isSelected ? '✓' : ''}
-                                                </div>
-                                            </button>
-                                        );
-                                    })}
+                                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
+                                        登録済みの配送先がありません。
+                                        <div className="mt-2">
+                                            新しい配送先を入力してください。
+                                        </div>
+                                    </div>
+                                    {/* TODO: 住所に関する機能の実装に使用する */}
+                                    {/* <SavedAddressCard /> */}
                                 </div>
                             </div>
 
@@ -214,6 +151,26 @@ export default function Checkout() {
                                     Stripe 等と連携します。
                                 </p>
                             </div>
+
+                            <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+                                <h2 className="text-lg font-semibold text-slate-800">
+                                    カート内の商品
+                                </h2>
+
+                                <div className="mt-4 space-y-4">
+                                    {cartItems.map((item) => {
+                                        const product = item['product'];
+                                        const quantity = item['quantity'];
+
+                                        return (
+                                            <CartItemCard
+                                                product={product}
+                                                quantity={quantity}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </div>
                         </div>
                     </section>
 
@@ -223,27 +180,31 @@ export default function Checkout() {
                         </h2>
 
                         <div className="mt-4 space-y-3">
-                            {dummyItems.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="flex items-start justify-between"
-                                >
-                                    <div>
-                                        <p className="text-sm font-medium text-slate-800">
-                                            {item.name}
-                                        </p>
-                                        <p className="text-xs text-slate-500">
-                                            数量: {item.quantity}
+                            {cartItems.map((item) => {
+                                const product = item['product'];
+                                const quantity = item['quantity'];
+                                return (
+                                    <div
+                                        key={product.id}
+                                        className="flex items-start justify-between"
+                                    >
+                                        <div>
+                                            <p className="text-sm font-medium text-slate-800">
+                                                {product.name}
+                                            </p>
+                                            <p className="text-xs text-slate-500">
+                                                数量: {quantity}
+                                            </p>
+                                        </div>
+                                        <p className="text-sm font-semibold text-slate-800">
+                                            {(
+                                                product.price * quantity
+                                            ).toLocaleString('ja-JP')}
+                                            円
                                         </p>
                                     </div>
-                                    <p className="text-sm font-semibold text-slate-800">
-                                        {(
-                                            item.price * item.quantity
-                                        ).toLocaleString('ja-JP')}
-                                        円
-                                    </p>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
 
                         <div className="mt-6 border-t border-slate-200 pt-4 text-sm text-slate-600">
