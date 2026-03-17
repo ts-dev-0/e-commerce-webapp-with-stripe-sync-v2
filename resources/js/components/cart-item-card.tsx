@@ -1,5 +1,5 @@
 import { Product } from '@/types/product';
-import { Button } from './ui/button';
+import { QuantitySelector } from './quantity-selector';
 
 interface CartItemCartProps {
     product: Product;
@@ -8,10 +8,7 @@ interface CartItemCartProps {
 
 export default function CartItemCard({ product, quantity }: CartItemCartProps) {
     return (
-        <div
-            key={product.id}
-            className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:flex-row"
-        >
+        <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:flex-row">
             <div className="shrink-0">
                 <div className="flex h-24 w-24 items-center justify-center rounded-md bg-slate-100 text-sm text-slate-400">
                     画像準備中
@@ -23,7 +20,7 @@ export default function CartItemCard({ product, quantity }: CartItemCartProps) {
                     <h2 className="text-sm font-medium text-slate-800">
                         {product.name}
                     </h2>
-                    <p className="mt-1 text-xs text-slate-500 line-clamp-2">
+                    <p className="mt-1 line-clamp-2 text-xs text-slate-500">
                         {product.description}
                     </p>
                 </div>
@@ -33,29 +30,7 @@ export default function CartItemCard({ product, quantity }: CartItemCartProps) {
                         {product.price.toLocaleString('ja-JP')}円
                     </span>
 
-                    <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-2 py-1">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            className="h-7 w-7 p-0"
-                            aria-label="数量を減らす"
-                        >
-                            −
-                        </Button>
-                        <span className="text-xs text-slate-700">
-                            {quantity}
-                        </span>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            className="h-7 w-7 p-0"
-                            aria-label="数量を増やす"
-                        >
-                            +
-                        </Button>
-                    </div>
+                    <QuantitySelector value={quantity} productId={product.id} />
                 </div>
             </div>
         </div>
