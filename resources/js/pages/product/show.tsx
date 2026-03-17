@@ -1,15 +1,31 @@
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { home } from '@/routes';
+import { store } from '@/routes/cart';
 import { Product } from '@/types/product';
-import { Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, useForm } from '@inertiajs/react';
+import React from 'react';
 
 interface ShowProps {
     data: Product;
 }
 
-export default function Show({ data }: ShowProps) {
-    const product = data;
+interface AddToCartForm {
+    product_id: number;
+    quantity: number;
+}
+
+export default function Show({ data: product }: ShowProps) {
+    const { post, processing } = useForm<AddToCartForm>({
+        product_id: product.id,
+        quantity: 1,
+    });
+
+    const handleSubmit: React.FormEventHandler = (e) => {
+        e.preventDefault();
+
+        post(store().url);
+    };
 
     return (
         <AppLayout>
@@ -40,9 +56,15 @@ export default function Show({ data }: ShowProps) {
                         </div>
 
                         <div className="mt-6 flex items-center space-x-3">
-                            <Button className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700">
-                                カートに入れる
-                            </Button>
+                            <Form onClick={handleSubmit} method="POST">
+                                <Button
+                                    type="submit"
+                                    className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700 cursor-pointer"
+                                    disabled={processing}
+                                >
+                                    カートに入れる
+                                </Button>
+                            </Form>
                             <Link
                                 href={home()}
                                 className="text-sm text-slate-600 hover:underline"
