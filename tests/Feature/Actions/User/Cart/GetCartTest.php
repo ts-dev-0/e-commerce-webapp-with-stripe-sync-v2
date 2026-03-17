@@ -31,8 +31,12 @@ class GetCartTest extends TestCase
         /** @var \App\Models\User $otherUser */
         $otherUser = User::factory()->create();
 
-        $product1 = Product::factory()->create();
-        $product2 = Product::factory()->create();
+        $product1 = Product::factory()->create([
+            'price' => 100,
+        ]);
+        $product2 = Product::factory()->create([
+            'price' => 200,
+        ]);
 
         $cart = Cart::factory()->create([
             'user_id' => $user->id,
@@ -68,6 +72,9 @@ class GetCartTest extends TestCase
             [2, 5],
             array_column($result['items'], 'quantity')
         );
+
+        // subtotal = (100 * 2) + (200 * 5) = 1200
+        $this->assertEquals(1200, $result['subtotal']);
     }
 
     public function test_empty_cart_data_returns_empty_array()
@@ -78,5 +85,6 @@ class GetCartTest extends TestCase
         $result = $this->action->handle($user);
 
         $this->assertEmpty($result['items']);
+        $this->assertEquals(0, $result['subtotal']);
     }
 }

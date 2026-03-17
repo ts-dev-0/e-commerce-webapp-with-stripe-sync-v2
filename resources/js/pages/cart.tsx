@@ -10,12 +10,7 @@ interface CartProps {
 
 export default function Cart({ data }: CartProps) {
     const cartItems = data['items'];
-
-    // TODO: Move logic to calculation subtotal to Back-end
-    const subtotal = cartItems.reduce(
-        (sum, item) => sum + item['product'].price * item['quantity'],
-        0,
-    );
+    const subtotal = data['subtotal'];
 
     return (
         <AppLayout>
