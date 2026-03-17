@@ -1,8 +1,9 @@
 import CartItemCard from '@/components/cart-item-card';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
+import { index } from '@/routes/checkout';
 import { Cart as CartType } from '@/types/cart';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 interface CartProps {
     data: CartType;
@@ -53,12 +54,14 @@ export default function Cart({ data }: CartProps) {
                             </div>
                         </dl>
 
-                        <Button
-                            className="mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
-                            variant="default"
-                        >
-                            購入手続きへ進む
-                        </Button>
+                        <Link href={index()}>
+                            <Button
+                                className="mt-6 w-full cursor-pointer rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
+                                variant="default"
+                            >
+                                購入手続きへ進む
+                            </Button>
+                        </Link>
                     </aside>
                 </div>
             </div>
