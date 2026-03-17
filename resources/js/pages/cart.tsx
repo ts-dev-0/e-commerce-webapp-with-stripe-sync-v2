@@ -20,18 +20,29 @@ export default function Cart({ data }: CartProps) {
                 <div className="grid gap-6 lg:grid-cols-3">
                     <section className="lg:col-span-2">
                         <div className="space-y-4">
-                            {cartItems.map((item) => {
-                                const product = item['product'];
-                                const quantity = item['quantity'];
+                            {cartItems.length <= 0 ? (
+                                <>
+                                    <h1 className="text-2xl font-bold text-slate-800">
+                                        カートは空です
+                                    </h1>
+                                    <p className="text-sm text-slate-600">
+                                        ショッピングカートをご利用ください。食料品、衣類、生活用品、電子機器などを入れましょう。{' '}
+                                    </p>
+                                </>
+                            ) : (
+                                cartItems.map((item) => {
+                                    const product = item['product'];
+                                    const quantity = item['quantity'];
 
-                                return (
-                                    <CartItemCard
-                                        key={product.id}
-                                        product={product}
-                                        quantity={quantity}
-                                    />
-                                );
-                            })}
+                                    return (
+                                        <CartItemCard
+                                            key={product.id}
+                                            product={product}
+                                            quantity={quantity}
+                                        />
+                                    );
+                                })
+                            )}
                         </div>
                     </section>
 
