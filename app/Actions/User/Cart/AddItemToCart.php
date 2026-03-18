@@ -20,6 +20,8 @@ class AddItemToCart
                     'quantity' => $existing->pivot->quantity + $quantity,
                 ]
             );
+
+            return;
         }
 
         $cart->products()->attach($productId, [
