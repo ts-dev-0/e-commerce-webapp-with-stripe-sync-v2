@@ -48,6 +48,12 @@ export default function Show({ data: product }: ShowProps) {
                             {product.description}
                         </p>
 
+                        <div className="mt-2">
+                            <span className="text-sm text-slate-600">
+                                {product.manufacturer}
+                            </span>
+                        </div>
+
                         <div className="mt-4">
                             <span className="text-xl font-bold text-slate-800">
                                 {product.price.toLocaleString('ja-JP')}円
