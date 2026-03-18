@@ -36,14 +36,17 @@ class CheckoutControllerTest extends TestCase
         ]);
 
         $data = [
-            [
-                'product' => $product1->toArray(),
-                'quantity' => 2,
+            'items' => [
+                [
+                    'product' => $product1->toArray(),
+                    'quantity' => 2,
+                ],
+                [
+                    'product' => $product2->toArray(),
+                    'quantity' => 1,
+                ],
             ],
-            [
-                'product' => $product2->toArray(),
-                'quantity' => 1,
-            ]
+            'subtotal' => 0,
         ];
 
         $mock = Mockery::mock(GetCheckout::class);
