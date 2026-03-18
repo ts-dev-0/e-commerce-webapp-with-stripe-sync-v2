@@ -38,7 +38,7 @@ export default function Cart({ data }: CartProps) {
                                         <CartItemCard
                                             key={product.id}
                                             product={product}
-                                            quantity={quantity}
+                                            initialQuantity={quantity}
                                         />
                                     );
                                 })

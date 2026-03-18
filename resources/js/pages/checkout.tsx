@@ -162,7 +162,7 @@ export default function Checkout({ data }: CheckoutProps) {
                                             <CartItemCard
                                                 key={product.id}
                                                 product={product}
-                                                quantity={quantity}
+                                                initialQuantity={quantity}
                                             />
                                         );
                                     })}

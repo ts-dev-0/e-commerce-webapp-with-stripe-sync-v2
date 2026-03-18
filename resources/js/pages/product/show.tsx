@@ -1,30 +1,29 @@
+import { QuantitySelector } from '@/components/quantity-selector';
 import { Button } from '@/components/ui/button';
+import { useLocalQuantity } from '@/hooks/use-local-quantity';
 import AppLayout from '@/layouts/app-layout';
 import { home } from '@/routes';
 import { store } from '@/routes/cart';
 import { Product } from '@/types/product';
-import { Form, Head, Link, useForm } from '@inertiajs/react';
+import { Form, Head, Link, router } from '@inertiajs/react';
 import React from 'react';
 
 interface ShowProps {
     data: Product;
 }
 
-interface AddToCartForm {
-    product_id: number;
-    quantity: number;
-}
-
 export default function Show({ data: product }: ShowProps) {
-    const { post, processing } = useForm<AddToCartForm>({
-        product_id: product.id,
-        quantity: 1,
+    const { quantity, decrement, increment } = useLocalQuantity({
+        initialQuantity: 1,
     });
 
     const handleSubmit: React.FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(store().url);
+        router.post(store().url, {
+            product_id: product.id,
+            quantity: quantity,
+        });
     };
 
     return (
@@ -56,11 +55,15 @@ export default function Show({ data: product }: ShowProps) {
                         </div>
 
                         <div className="mt-6 flex items-center space-x-3">
+                            <QuantitySelector
+                                decrement={decrement}
+                                increment={increment}
+                                quantity={quantity}
+                            />
                             <Form onClick={handleSubmit} method="POST">
                                 <Button
                                     type="submit"
-                                    className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700 cursor-pointer"
-                                    disabled={processing}
+                                    className="cursor-pointer rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                                 >
                                     カートに入れる
                                 </Button>
