@@ -1,4 +1,4 @@
-import { update } from '@/routes/cart/items';
+import { destroy, update } from '@/routes/cart/items';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -52,9 +52,21 @@ export function useCartItemQuantity({
         updateQuantity(quantity + 1);
     }
 
+    function remove() {
+        router.delete(destroy.url(), {
+            data: { product_id: productId },
+            preserveScroll: true,
+            preserveState: true,
+            onError: (errors) => {
+                console.error(errors);
+            },
+        });
+    }
+
     return {
         quantity,
         decrement,
         increment,
+        remove,
     };
 }

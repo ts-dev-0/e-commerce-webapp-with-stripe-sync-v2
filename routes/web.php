@@ -20,8 +20,9 @@ Route::get('products/{product}', [ProductController::class, 'show'])->name('prod
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('cart', CartController::class)
-        ->only(['index', 'store', 'destroy']);
+        ->only(['index', 'store']);
     Route::patch('cart/items', [CartController::class, 'update'])->name('cart.items.update');
+    Route::delete('cart/items', [CartController::class, 'destroy'])->name('cart.items.destroy');
 
     Route::get('favorites', [FavoriteController::class, 'index'])
     ->name('favorites.index');

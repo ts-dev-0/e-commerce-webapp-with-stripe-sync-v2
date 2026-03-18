@@ -11,7 +11,7 @@ export default function CartItemCard({
     product,
     initialQuantity,
 }: CartItemCartProps) {
-    const { quantity, decrement, increment } = useCartItemQuantity({
+    const { quantity, decrement, increment, remove } = useCartItemQuantity({
         productId: product.id,
         initialQuantity,
     });
@@ -42,6 +42,7 @@ export default function CartItemCard({
                         decrement={decrement}
                         increment={increment}
                         quantity={quantity}
+                        onRemove={remove}
                     />
                 </div>
             </div>
