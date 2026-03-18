@@ -191,7 +191,7 @@ class CartControllerTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->delete("/cart/{$product->id}", $payload);
+            ->delete(route('cart.items.destroy'), $payload);
 
         $response->assertRedirect(route('cart.index'));
 
