@@ -13,6 +13,10 @@ class CheckoutController extends Controller
     {
         $data = $action->handle($request->user());
 
+        if(empty($data['items'])) {
+            return redirect()->route('cart.index');
+        }
+
         return Inertia::render('checkout', [
             'data' => $data,
         ]);
