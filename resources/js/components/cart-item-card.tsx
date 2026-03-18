@@ -1,12 +1,20 @@
+import { useCartItemQuantity } from '@/hooks/use-cart-item-quantity';
 import { Product } from '@/types/product';
 import { QuantitySelector } from './quantity-selector';
 
 interface CartItemCartProps {
     product: Product;
-    quantity: number;
+    initialQuantity: number;
 }
 
-export default function CartItemCard({ product, quantity }: CartItemCartProps) {
+export default function CartItemCard({
+    product,
+    initialQuantity,
+}: CartItemCartProps) {
+    const { quantity, decrement, increment } = useCartItemQuantity({
+        productId: product.id,
+        initialQuantity,
+    });
     return (
         <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:flex-row">
             <div className="shrink-0">
@@ -30,7 +38,11 @@ export default function CartItemCard({ product, quantity }: CartItemCartProps) {
                         {product.price.toLocaleString('ja-JP')}円
                     </span>
 
-                    <QuantitySelector value={quantity} productId={product.id} />
+                    <QuantitySelector
+                        decrement={decrement}
+                        increment={increment}
+                        quantity={quantity}
+                    />
                 </div>
             </div>
         </div>
