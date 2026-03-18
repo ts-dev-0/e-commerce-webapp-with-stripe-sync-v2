@@ -156,7 +156,7 @@ class CartControllerTest extends TestCase
         $response = $this
             ->actingAs($user)
             ->from(route('cart.index'))
-            ->patch(route('cart.update'), $payload);
+            ->patch(route('cart.items.update'), $payload);
 
         $response->assertRedirect(route('cart.index'));
 
