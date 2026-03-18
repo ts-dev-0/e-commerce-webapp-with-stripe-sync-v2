@@ -1,4 +1,4 @@
-import { update } from '@/routes/cart';
+import { update } from '@/routes/cart/items';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -20,9 +20,8 @@ export function useCartItemQuantity({
     const updateQuantity = (newQuantity: number) => {
         setQuantity(newQuantity);
 
-        router.put(
-            // TODO: use cart_id
-            update({ cart: 1 }).url,
+        router.patch(
+            update().url,
             {
                 product_id: productId,
                 quantity: newQuantity,
