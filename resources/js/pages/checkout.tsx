@@ -111,33 +111,18 @@ export default function Checkout({ data }: CheckoutProps) {
 
                                 <div className="mt-4 space-y-4">
                                     <div className="flex items-center gap-3">
-                                        <input
+                                        <Input
                                             type="radio"
                                             name="payment"
-                                            id="payment-credit"
+                                            id="payment-stripe"
                                             defaultChecked
-                                            className="h-4 w-4 text-primary focus:ring-primary"
+                                            className="h-4 w-4 accent-emerald-600 focus:ring-emerald-500"
                                         />
                                         <label
-                                            htmlFor="payment-credit"
+                                            htmlFor="payment-stripe"
                                             className="text-sm font-medium text-slate-700"
                                         >
-                                            クレジットカード（準備中）
-                                        </label>
-                                    </div>
-
-                                    <div className="flex items-center gap-3">
-                                        <input
-                                            type="radio"
-                                            name="payment"
-                                            id="payment-cod"
-                                            className="h-4 w-4 text-primary focus:ring-primary"
-                                        />
-                                        <label
-                                            htmlFor="payment-cod"
-                                            className="text-sm font-medium text-slate-700"
-                                        >
-                                            代金引換（準備中）
+                                            Stripe（準備中）
                                         </label>
                                     </div>
                                 </div>
