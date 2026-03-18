@@ -1,5 +1,7 @@
 import { useCartItemQuantity } from '@/hooks/use-cart-item-quantity';
+import { show } from '@/routes/product';
 import { Product } from '@/types/product';
+import { Link } from '@inertiajs/react';
 import { QuantitySelector } from './quantity-selector';
 
 interface CartItemCartProps {
@@ -25,9 +27,11 @@ export default function CartItemCard({
 
             <div className="flex flex-1 flex-col justify-between">
                 <div>
-                    <h2 className="text-sm font-medium text-slate-800">
-                        {product.name}
-                    </h2>
+                    <Link href={show(product.id)}>
+                        <h2 className="text-sm font-medium text-slate-800 hover:underline hover:underline-offset-2">
+                            {product.name}
+                        </h2>
+                    </Link>
                     <p className="mt-1 line-clamp-2 text-xs text-slate-500">
                         {product.description}
                     </p>
