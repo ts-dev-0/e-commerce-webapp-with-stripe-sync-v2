@@ -38,9 +38,17 @@ class CheckoutControllerTest extends TestCase
             new CartItem(['product' => $product2, 'quantity' => 1]),
         ]);
 
+        $deliveryDate = [
+            '2026-03-20',
+            '2026-03-21',
+            '2026-03-22',
+            '2026-03-23',
+        ];
+
         $cartData = new CheckoutData(
             cartItems: $items,
             subtotal: 400,
+            deliveryDate: $deliveryDate,
         );
 
         $mock = Mockery::mock(GetCheckout::class);

@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\Delivery\DeliveryDateService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -20,7 +21,7 @@ class GetCheckoutTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new GetCheckout();
+        $this->action = new GetCheckout(new DeliveryDateService);
     }
 
     public function test_user_can_get_checkout_data()
