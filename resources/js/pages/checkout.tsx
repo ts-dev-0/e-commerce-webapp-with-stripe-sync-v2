@@ -68,11 +68,31 @@ export default function Checkout({ data }: CheckoutProps) {
                                         />
                                     </div>
 
-                                    <div className="sm:col-span-2">
-                                        <label className="text-xs font-medium text-slate-600">
-                                            住所
-                                        </label>
-                                        <Input placeholder="〒123-4567 東京都○○区○○町1-2-3" />
+                                    <div className="col-span-2 flex flex-col gap-y-4">
+                                        <div>
+                                            <label className="text-xs font-medium text-slate-600">
+                                                郵便番号(半角数字)
+                                            </label>
+                                            <div className="flex items-center gap-x-2">
+                                                <Input
+                                                    placeholder="000"
+                                                    className="w-fit"
+                                                    maxLength={3}
+                                                />
+                                                <span>-</span>
+                                                <Input
+                                                    placeholder="0000"
+                                                    className="w-fit"
+                                                    maxLength={4}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="text-xs font-medium text-slate-600">
+                                                住所
+                                            </label>
+                                            <Input placeholder="東京都○○区○○町1-2-3" />
+                                        </div>
                                     </div>
 
                                     <div>
