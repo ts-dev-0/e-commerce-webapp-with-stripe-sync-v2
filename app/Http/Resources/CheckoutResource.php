@@ -17,6 +17,7 @@ class CheckoutResource extends JsonResource
         return [
             'cartItems' => CartItemResource::collection($this->cartItems),
             'subtotal' => $this->subtotal,
+            'deliveryDate' => $this->deliveryDate,
         ];
     }
 }

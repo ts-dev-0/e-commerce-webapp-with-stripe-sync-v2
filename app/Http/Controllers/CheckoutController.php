@@ -13,6 +13,7 @@ class CheckoutController extends Controller
     public function index(Request $request, GetCheckout $action)
     {
         $checkoutData = $action->handle($request->user());
+        dd($checkoutData);
 
         if(empty($checkoutData->cartItems)) {
             return redirect()->route('cart.index');

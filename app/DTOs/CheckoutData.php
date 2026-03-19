@@ -11,6 +11,7 @@ readonly class CheckoutData
      */
     public function __construct(
         public Collection $cartItems,
-        public int $subtotal
+        public int $subtotal,
+        public array $deliveryDate,
     ) {}
 }
