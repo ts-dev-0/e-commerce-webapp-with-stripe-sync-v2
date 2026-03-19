@@ -67,11 +67,11 @@ class GetCheckoutTest extends TestCase
         $result = $this->action->handle($user);
 
         $this->assertInstanceOf(\App\DTOs\CheckoutData::class, $result);
-        $this->assertCount(2, $result->items);
+        $this->assertCount(2, $result->cartItems);
 
         $this->assertEqualsCanonicalizing(
             [2, 5],
-            $result->items->pluck('quantity')->all()
+            $result->cartItems->pluck('quantity')->all()
         );
 
         $this->assertEquals(1200, $result->subtotal);
@@ -84,7 +84,7 @@ class GetCheckoutTest extends TestCase
 
         $result = $this->action->handle($user);
 
-        $this->assertEmpty($result->items);
+        $this->assertEmpty($result->cartItems);
         $this->assertEquals(0, $result->subtotal);
     }
 }

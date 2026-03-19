@@ -7,10 +7,10 @@ use Illuminate\Support\Collection;
 readonly class CheckoutData
 {
     /**
-     * @param Collection<int, \App\Models\CartItem> $items
+     * @param Collection<int, \App\Models\CartItem> $cartItems
      */
     public function __construct(
-        public Collection $items,
+        public Collection $cartItems,
         public int $subtotal
     ) {}
 }
