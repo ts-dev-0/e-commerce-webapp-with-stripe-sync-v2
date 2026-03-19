@@ -12,14 +12,14 @@ class CheckoutController extends Controller
 {
     public function index(Request $request, GetCheckout $action)
     {
-        $cartData = $action->handle($request->user());
+        $checkoutData = $action->handle($request->user());
 
-        if(empty($cartData->cartItems)) {
+        if(empty($checkoutData->cartItems)) {
             return redirect()->route('cart.index');
         }
 
         return Inertia::render('checkout', [
-            'data' => CheckoutResource::make($cartData),
+            'data' => CheckoutResource::make($checkoutData),
         ]);
     }
 
