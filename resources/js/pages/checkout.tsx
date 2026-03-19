@@ -11,7 +11,7 @@ interface CheckoutProps {
 }
 
 export default function Checkout({ data }: CheckoutProps) {
-    const cartItems = data['items'];
+    const cartItems = data['cartItems'];
     const subtotal = data['subtotal'];
 
     // TODO: Move logic to back-end

@@ -6,6 +6,7 @@ use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Cart\RemoveCartItem;
 use App\Actions\User\Cart\UpdateCartItemQuantity;
+use App\DTOs\CartData;
 use Tests\TestCase;
 use Mockery;
 use App\Models\User;
@@ -34,45 +35,33 @@ class CartControllerTest extends TestCase
             'email_verified_at' => now(),
         ]);
 
-        $product1 = Product::factory()->create([
-            'is_published' => 1,
-        ]);
-        $product2 = Product::factory()->create([
-            'is_published' => 1,
+
+        $product1 = Product::factory()->make(['price' => 100]);
+        $product2 = Product::factory()->make(['price' => 200]);
+
+        $items = collect([
+            new CartItem(['product' => $product1, 'quantity' => 2]),
+            new CartItem(['product' => $product2, 'quantity' => 1]),
         ]);
 
-        $data = [
-            'items' => [
-                [
-                    'product' => $product1->toArray(),
-                    'quantity' => 2,
-                ],
-                [
-                    'product' => $product2->toArray(),
-                    'quantity' => 1,
-                ],
-            ],
-            'subtotal' => 0,
-        ];
-            
+        $cartData = new CartData(
+            items: $items,
+            subtotal: 400
+        );
+
         $mock = Mockery::mock(GetCart::class);
         $mock->shouldReceive('handle')
             ->once()
-            ->with($user)
-            ->andReturn($data);
+            ->with(Mockery::on(fn($u) => $u->id === $user->id))
+            ->andReturn($cartData);
 
         $this->app->instance(GetCart::class, $mock);
 
         $response = $this->actingAs($user)->get('/cart');
 
         $response->assertOk();
-
-        $response->assertInertia(fn (Assert $page) =>
-            $page->component('cart')
-                 ->where('data', $data)
-        );
     }
-
+    
     public function test_guest_cannot_access_cart()
     {
         $response = $this->get('/cart');

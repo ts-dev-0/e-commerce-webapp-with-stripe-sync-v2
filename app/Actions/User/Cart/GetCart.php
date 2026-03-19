@@ -2,12 +2,14 @@
 
 namespace App\Actions\User\Cart;
 
+use App\DTOs\CartData;
 use App\Models\CartItem;
 use App\Models\User;
 
+
 class GetCart
 {
-    public function handle(User $user): array
+    public function handle(User $user): CartData
     {
         $cartItems = CartItem::with('product')
             ->whereHas('cart', function ($query) use ($user) {
@@ -15,16 +17,10 @@ class GetCart
             })
             ->get();
 
-        return [
-            'items' => $cartItems->map(function ($item) {
-                            return [
-                                'product' => $item->product,
-                                'quantity' => $item->quantity,
-                            ];
-                        })->toArray(),
-            'subtotal' => $cartItems->sum(function ($item) {
-                            return $item->product->price * $item->quantity;
-            }),
-        ];
+        $subtotal = $cartItems->sum(function ($item) {
+                        return $item->product->price * $item->quantity;
+        });
+
+        return new CartData($cartItems, $subtotal);
     }
 }

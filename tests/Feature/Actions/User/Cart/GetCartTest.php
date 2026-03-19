@@ -28,30 +28,19 @@ class GetCartTest extends TestCase
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
-        /** @var \App\Models\User $otherUser */
         $otherUser = User::factory()->create();
 
-        $product1 = Product::factory()->create([
-            'price' => 100,
-        ]);
-        $product2 = Product::factory()->create([
-            'price' => 200,
-        ]);
+        $product1 = Product::factory()->create(['price' => 100]);
+        $product2 = Product::factory()->create(['price' => 200]);
 
-        $cart = Cart::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $otherCart = Cart::factory()->create([
-            'user_id' => $otherUser->id,
-        ]);
+        $cart = Cart::factory()->create(['user_id' => $user->id]);
+        $otherCart = Cart::factory()->create(['user_id' => $otherUser->id]);
 
         CartItem::factory()->create([
             'cart_id' => $cart->id,
             'product_id' => $product1->id,
             'quantity' => 2,
         ]);
-
         CartItem::factory()->create([
             'cart_id' => $cart->id,
             'product_id' => $product2->id,
@@ -66,25 +55,26 @@ class GetCartTest extends TestCase
 
         $result = $this->action->handle($user);
 
-        $this->assertCount(2, $result['items']);
+        $this->assertInstanceOf(\App\DTOs\CartData::class, $result);
+        $this->assertCount(2, $result->items);
 
         $this->assertEqualsCanonicalizing(
             [2, 5],
-            array_column($result['items'], 'quantity')
+            $result->items->pluck('quantity')->all()
         );
 
-        // subtotal = (100 * 2) + (200 * 5) = 1200
-        $this->assertEquals(1200, $result['subtotal']);
+        $this->assertEquals(1200, $result->subtotal);
     }
 
-    public function test_empty_cart_data_returns_empty_array()
+    public function test_empty_cart_data_returns_empty_structure()
     {
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
         $result = $this->action->handle($user);
 
-        $this->assertEmpty($result['items']);
-        $this->assertEquals(0, $result['subtotal']);
+        $this->assertInstanceOf(\App\DTOs\CartData::class, $result);
+        $this->assertTrue($result->items->isEmpty());
+        $this->assertEquals(0, $result->subtotal);
     }
 }

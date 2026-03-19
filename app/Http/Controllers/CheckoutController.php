@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\User\Checkout\GetCheckout;
 use App\Actions\User\Checkout\ProcessCheckout;
+use App\Http\Resources\CheckoutResource;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,14 +12,14 @@ class CheckoutController extends Controller
 {
     public function index(Request $request, GetCheckout $action)
     {
-        $data = $action->handle($request->user());
+        $cartData = $action->handle($request->user());
 
-        if(empty($data['items'])) {
+        if(empty($cartData->cartItems)) {
             return redirect()->route('cart.index');
         }
 
         return Inertia::render('checkout', [
-            'data' => $data,
+            'data' => CheckoutResource::make($cartData),
         ]);
     }
 

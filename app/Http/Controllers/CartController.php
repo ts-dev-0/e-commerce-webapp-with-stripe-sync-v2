@@ -9,6 +9,7 @@ use App\Actions\User\Cart\UpdateCartItemQuantity;
 use App\Http\Requests\User\Cart\RemoveCartItemRequest;
 use App\Http\Requests\User\Cart\UpdateCartItemQuantityRequest;
 use App\Http\Requests\User\Cart\AddItemToCartRequest;
+use App\Http\Resources\CartResource;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -19,7 +20,7 @@ class CartController extends Controller
         $data = $action->handle($request->user());
 
         return Inertia::render('cart', [
-            'data' => $data,
+            'data' => CartResource::make($data),
         ]);
     }
 
