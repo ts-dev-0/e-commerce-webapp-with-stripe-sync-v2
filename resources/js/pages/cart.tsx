@@ -4,12 +4,14 @@ import AppLayout from '@/layouts/app-layout';
 import { index } from '@/routes/checkout';
 import { Cart as CartType } from '@/types/cart';
 import { Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
 
 interface CartProps {
     data: CartType;
 }
 
 export default function Cart({ data }: CartProps) {
+    const [processing, setProcessing] = useState<boolean>(false);
     const cartItems = data['items'];
     const subtotal = data['subtotal'];
 
@@ -39,6 +41,8 @@ export default function Cart({ data }: CartProps) {
                                             key={product.id}
                                             product={product}
                                             initialQuantity={quantity}
+                                            processing={processing}
+                                            setProcessing={setProcessing}
                                         />
                                     );
                                 })
@@ -69,6 +73,7 @@ export default function Cart({ data }: CartProps) {
                             <Button
                                 className="mt-6 w-full cursor-pointer rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                                 variant="default"
+                                disabled={processing}
                             >
                                 購入手続きへ進む
                             </Button>

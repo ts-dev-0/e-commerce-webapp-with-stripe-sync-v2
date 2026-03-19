@@ -5,12 +5,14 @@ import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { Checkout as CheckoutType } from '@/types/checkout';
 import { Head } from '@inertiajs/react';
+import { useState } from 'react';
 
 interface CheckoutProps {
     data: CheckoutType;
 }
 
 export default function Checkout({ data }: CheckoutProps) {
+    const [processing, setProcessing] = useState<boolean>(false);
     const cartItems = data['cartItems'];
     const subtotal = data['subtotal'];
 
@@ -83,6 +85,7 @@ export default function Checkout({ data }: CheckoutProps) {
                                 <Button
                                     className="mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                                     variant="default"
+                                    disabled={processing}
                                 >
                                     この住所を使用
                                 </Button>
@@ -148,6 +151,8 @@ export default function Checkout({ data }: CheckoutProps) {
                                                 key={product.id}
                                                 product={product}
                                                 initialQuantity={quantity}
+                                                processing={processing}
+                                                setProcessing={setProcessing}
                                             />
                                         );
                                     })}
@@ -209,6 +214,7 @@ export default function Checkout({ data }: CheckoutProps) {
                         <Button
                             className="mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                             variant="default"
+                            disabled={processing}
                         >
                             注文を確定する
                         </Button>
