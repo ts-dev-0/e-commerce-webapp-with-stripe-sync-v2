@@ -7,6 +7,7 @@ interface Props {
     initialQuantity: number;
     min?: number;
     max?: number;
+    setProcessing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function useCartItemQuantity({
@@ -14,10 +15,12 @@ export function useCartItemQuantity({
     initialQuantity,
     min = 1,
     max = 10,
+    setProcessing,
 }: Props) {
     const [quantity, setQuantity] = useState<number>(initialQuantity);
 
     const updateQuantity = (newQuantity: number) => {
+        setProcessing(true);
         setQuantity(newQuantity);
 
         router.patch(
@@ -31,10 +34,12 @@ export function useCartItemQuantity({
                 preserveState: true,
                 onSuccess: (page) => {
                     console.log('通信成功:', page);
+                    setProcessing(false);
                 },
                 onError: (errors) => {
                     console.error('バックエンドのエラー:', errors);
                     setQuantity(quantity);
+                    setProcessing(false);
                 },
             },
         );
@@ -53,10 +58,16 @@ export function useCartItemQuantity({
     }
 
     function remove() {
+        setProcessing(true);
+
         router.delete(destroy.url(), {
             data: { product_id: productId },
             preserveScroll: true,
             preserveState: true,
+            onSuccess: (page) => {
+                console.log('通信成功:', page);
+                setProcessing(false);
+            },
             onError: (errors) => {
                 console.error(errors);
             },
