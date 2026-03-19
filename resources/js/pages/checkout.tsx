@@ -2,6 +2,7 @@ import CartItemCard from '@/components/cart-item-card';
 // import SavedAddressCard from '@/components/saved-address-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { Checkout as CheckoutType } from '@/types/checkout';
 import { Head } from '@inertiajs/react';
@@ -12,9 +13,14 @@ interface CheckoutProps {
 }
 
 export default function Checkout({ data }: CheckoutProps) {
-    const [processing, setProcessing] = useState<boolean>(false);
     const cartItems = data['cartItems'];
     const subtotal = data['subtotal'];
+    const deliveryDateList = data['deliveryDate'];
+
+    const [processing, setProcessing] = useState<boolean>(false);
+    const [deliveryDate, setDeliveryDate] = useState<string>(
+        deliveryDateList[0],
+    );
 
     // TODO: Move logic to back-end
     const shipping = 0;
@@ -120,10 +126,37 @@ export default function Checkout({ data }: CheckoutProps) {
                                     <label className="text-xs font-medium text-slate-600">
                                         配達希望日時
                                     </label>
-                                    <Input
-                                        className="mt-2"
-                                        type="datetime-local"
-                                    />
+                                    <div className="mt-4 flex flex-col gap-2">
+                                        {deliveryDateList.map((date) => (
+                                            <div
+                                                key={date}
+                                                className="flex items-center gap-x-2"
+                                            >
+                                                <Input
+                                                    type="radio"
+                                                    id={date}
+                                                    name="deliveryDate"
+                                                    value={date}
+                                                    checked={
+                                                        deliveryDate === date
+                                                    }
+                                                    onChange={(e) =>
+                                                        setDeliveryDate(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className="h-4 w-4 accent-emerald-600 focus:ring-emerald-500"
+                                                />
+
+                                                <Label
+                                                    htmlFor={date}
+                                                    className="text-sm font-medium text-slate-700"
+                                                >
+                                                    {date}
+                                                </Label>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
