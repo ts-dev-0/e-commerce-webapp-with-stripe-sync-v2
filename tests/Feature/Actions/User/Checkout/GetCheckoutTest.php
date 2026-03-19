@@ -66,14 +66,15 @@ class GetCheckoutTest extends TestCase
 
         $result = $this->action->handle($user);
 
-        $this->assertCount(2, $result['items']);
+        $this->assertInstanceOf(\App\DTOs\CheckoutData::class, $result);
+        $this->assertCount(2, $result->items);
 
         $this->assertEqualsCanonicalizing(
             [2, 5],
-            array_column($result['items'], 'quantity')
+            $result->items->pluck('quantity')->all()
         );
-        // subtotal = (100 * 2) + (200 * 5) = 1200
-        $this->assertEquals(1200, $result['subtotal']);
+
+        $this->assertEquals(1200, $result->subtotal);
     }
 
     public function test_empty_checout_data_returns_empty_array()
@@ -83,7 +84,7 @@ class GetCheckoutTest extends TestCase
 
         $result = $this->action->handle($user);
 
-        $this->assertEmpty($result['items']);
-        $this->assertEquals(0, $result['subtotal']);
+        $this->assertEmpty($result->items);
+        $this->assertEquals(0, $result->subtotal);
     }
 }
