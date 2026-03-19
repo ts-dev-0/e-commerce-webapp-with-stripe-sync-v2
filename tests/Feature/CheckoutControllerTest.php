@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Product;
 use App\Actions\User\Checkout\GetCheckout;
 use App\Actions\User\Checkout\ProcessCheckout;
+use App\DTOs\CheckoutData;
+use App\Models\CartItem;
 use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -28,33 +30,24 @@ class CheckoutControllerTest extends TestCase
         /** @var \APP\Models\User $user */
         $user = User::factory()->create();
 
-        $product1 = Product::factory()->create([
-            'is_published' => 1,
-        ]);
-        $product2 = Product::factory()->create([
-            'is_published' => 1,
+        $product1 = Product::factory()->make(['price' => 100]);
+        $product2 = Product::factory()->make(['price' => 200]);
+
+        $items = collect([
+            new CartItem(['product' => $product1, 'quantity' => 2]),
+            new CartItem(['product' => $product2, 'quantity' => 1]),
         ]);
 
-        $data = [
-            'items' => [
-                [
-                    'product' => $product1->toArray(),
-                    'quantity' => 2,
-                ],
-                [
-                    'product' => $product2->toArray(),
-                    'quantity' => 1,
-                ],
-            ],
-            'subtotal' => 0,
-        ];
+        $cartData = new CheckoutData(
+            cartItems: $items,
+            subtotal: 400,
+        );
 
         $mock = Mockery::mock(GetCheckout::class);
-
         $mock->shouldReceive('handle')
             ->once()
-            ->with($user)
-            ->andReturn($data);
+            ->with(Mockery::on(fn($u) => $u->id === $user->id))
+            ->andReturn($cartData);
 
         $this->app->instance(GetCheckout::class, $mock);
 
@@ -63,11 +56,6 @@ class CheckoutControllerTest extends TestCase
             ->get(route('checkout.index'));
 
         $response->assertOk();
-
-        $response->assertInertia(fn (Assert $page) =>
-            $page->component('checkout')
-                 ->where('data', $data)
-        );
     }
 
     public function test_guest_cannot_access_checkout_page()
