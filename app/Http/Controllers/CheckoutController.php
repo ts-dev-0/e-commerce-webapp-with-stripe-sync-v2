@@ -13,7 +13,7 @@ class CheckoutController extends Controller
     {
         $data = $action->handle($request->user());
 
-        if(empty($data['items'])) {
+        if(empty($data->items)) {
             return redirect()->route('cart.index');
         }
 
