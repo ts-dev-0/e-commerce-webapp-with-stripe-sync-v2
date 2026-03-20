@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -43,6 +44,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->only(['index', 'store', 'update', 'destroy']);
 
     Route::get('search/products', SearchPublishedProductController::class)->name('search.products');
+
+    Route::post('addresses', [AddressController::class, 'store'])->name('addresses.store');
 });
 
 // Admin
