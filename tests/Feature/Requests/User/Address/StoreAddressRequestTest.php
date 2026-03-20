@@ -3,7 +3,6 @@
 namespace Tests\Feature\Requests\User\Address;
 
 use App\Http\Requests\StoreAddressRequest;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;
