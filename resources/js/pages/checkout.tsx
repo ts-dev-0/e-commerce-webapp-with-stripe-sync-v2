@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
+import { store } from '@/routes/checkout';
 import { Checkout as CheckoutType } from '@/types/checkout';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
 
 interface CheckoutProps {
@@ -25,6 +26,10 @@ export default function Checkout({ data }: CheckoutProps) {
     // TODO: Move logic to back-end
     const shipping = 0;
     const total = subtotal + shipping;
+
+    function handleCheckout() {
+        router.post(store().url);
+    }
 
     return (
         <AppLayout>
@@ -268,6 +273,7 @@ export default function Checkout({ data }: CheckoutProps) {
                             className="mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                             variant="default"
                             disabled={processing}
+                            onClick={handleCheckout}
                         >
                             注文を確定する
                         </Button>
