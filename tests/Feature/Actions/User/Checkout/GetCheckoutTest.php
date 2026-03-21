@@ -3,6 +3,7 @@
 namespace Tests\Feature\Actions\User\Cart;
 
 use App\Actions\User\Checkout\GetCheckout;
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -65,6 +66,16 @@ class GetCheckoutTest extends TestCase
             'quantity' => 10,
         ]);
 
+        $address1 = Address::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $address2 = Address::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        Address::factory()->create();
+
         $result = $this->action->handle($user);
 
         $this->assertInstanceOf(\App\DTOs\CheckoutData::class, $result);
@@ -73,6 +84,13 @@ class GetCheckoutTest extends TestCase
         $this->assertEqualsCanonicalizing(
             [2, 5],
             $result->cartItems->pluck('quantity')->all()
+        );
+
+        $this->assertCount(2, $result->addresses);
+
+        $this->assertEqualsCanonicalizing(
+            [$address1->id, $address2->id],
+            $result->addresses->pluck('id')->all()
         );
 
         $this->assertEquals(1200, $result->subtotal);
