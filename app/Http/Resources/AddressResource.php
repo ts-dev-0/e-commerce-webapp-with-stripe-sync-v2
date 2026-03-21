@@ -21,6 +21,7 @@ class AddressResource extends JsonResource
             'prefecture' => $this->prefecture,
             'city' => $this->city,
             'addressLine' => $this->address_line,
+            'phoneNumber' => $this->phone_number,
             'isDefault' => $this->is_default,
         ];
     }
