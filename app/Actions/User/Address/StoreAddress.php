@@ -9,7 +9,15 @@ class StoreAddress
 {
     public function handle(User $user, array $address): Address
     {
-        $user->clearDefaultAddress();
+        $hasDefault = $user->defaultAddress()->exists();
+
+        if (!$address['is_default'] && !$hasDefault) {
+            $address['is_default'] = true;
+        }
+
+        if ($address['is_default'] && $hasDefault) {
+            $user->clearDefaultAddress();
+        }
 
         return $user->addresses()->create($address);
     }
