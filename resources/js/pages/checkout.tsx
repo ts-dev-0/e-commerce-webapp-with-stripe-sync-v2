@@ -69,16 +69,6 @@ export default function Checkout({ data }: CheckoutProps) {
                                         <Input placeholder="山田 太郎" />
                                     </div>
 
-                                    <div>
-                                        <label className="text-xs font-medium text-slate-600">
-                                            メールアドレス
-                                        </label>
-                                        <Input
-                                            placeholder="example@example.com"
-                                            type="email"
-                                        />
-                                    </div>
-
                                     <div className="col-span-2 flex flex-col gap-y-4">
                                         <div>
                                             <label className="text-xs font-medium text-slate-600">
