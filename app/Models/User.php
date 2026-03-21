@@ -86,4 +86,11 @@ class User extends Authenticatable
     {
         return $this->is_admin;
     }
+
+    public function clearDefaultAddress(): void
+    {
+        $this->addresses()
+            ->where('is_default', true)
+            ->update(['is_default' => false]);
+    }
 }
