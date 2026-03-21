@@ -27,6 +27,8 @@ class GetCheckout
 
         $deliveryDate = $this->deliveryDateService->generate();
 
-        return new CheckoutData($cartItems, $subtotal, $deliveryDate);
+        $addresses = $user->addresses()->get();
+
+        return new CheckoutData($cartItems, $subtotal, $deliveryDate, $addresses);
     }
 }
