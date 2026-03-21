@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Actions\User\Checkout\GetCheckout;
 use App\Actions\User\Checkout\ProcessCheckout;
 use App\DTOs\CheckoutData;
+use App\Models\Address;
 use App\Models\CartItem;
 use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,10 +46,21 @@ class CheckoutControllerTest extends TestCase
             '2026-03-23',
         ];
 
+        $addresses = collect([
+            Address::factory()->make([
+                'user_id' => $user->id,
+                'is_default' => true,
+            ]),
+            Address::factory()->make([
+                'user_id' => $user->id,
+            ]),
+        ]);
+
         $cartData = new CheckoutData(
             cartItems: $items,
             subtotal: 400,
             deliveryDate: $deliveryDate,
+            addresses: $addresses,
         );
 
         $mock = Mockery::mock(GetCheckout::class);
