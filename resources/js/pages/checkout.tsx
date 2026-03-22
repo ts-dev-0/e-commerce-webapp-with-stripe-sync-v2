@@ -28,6 +28,9 @@ export default function Checkout({ data }: CheckoutProps) {
     const subtotal = data['subtotal'];
     const deliveryDateList = data['deliveryDate'];
     const addresses = data['addresses'];
+    const [isSelectedAddresId, setSelectedAddressId] = useState(
+        addresses.find((address) => address.isDefault)?.id,
+    );
 
     const [processing, setProcessing] = useState<boolean>(false);
     const [deliveryDate, setDeliveryDate] = useState<string>(
@@ -74,6 +77,13 @@ export default function Checkout({ data }: CheckoutProps) {
                                                 <AddressCard
                                                     key={address.id}
                                                     address={address}
+                                                    isSelected={
+                                                        isSelectedAddresId ===
+                                                        address.id
+                                                    }
+                                                    onSelect={
+                                                        setSelectedAddressId
+                                                    }
                                                 />
                                             ))}
                                         </>

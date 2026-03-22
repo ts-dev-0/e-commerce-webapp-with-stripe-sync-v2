@@ -1,18 +1,37 @@
+import { cn } from '@/lib/utils';
 import { Address } from '@/types/address';
+import { CheckCircle2 } from 'lucide-react';
 import { Button } from './ui/button';
 
 interface AddressCardProps {
     address: Address;
+    isSelected: boolean;
+    onSelect: (id: number) => void;
 }
 
-export default function AddressCard({ address }: AddressCardProps) {
+export default function AddressCard({
+    address,
+    isSelected,
+    onSelect,
+}: AddressCardProps) {
     return (
         <Button
             type="button"
-            className={
-                'flex h-fit w-full items-start justify-start gap-4 rounded-xl border border-slate-300 bg-slate-50 p-4 text-left shadow transition duration-300 hover:bg-slate-100'
-            }
+            onClick={() => onSelect(address.id)}
+            className={cn(
+                'flex h-auto w-full items-center justify-start gap-4 rounded-xl border border-slate-300 bg-slate-50 p-4 text-left shadow-sm transition duration-300',
+                isSelected
+                    ? 'border-emerald-300 bg-emerald-50 hover:bg-emerald-50'
+                    : 'hover:bg-slate-100',
+            )}
         >
+            <CheckCircle2
+                className={cn(
+                    'size-6 text-slate-400',
+                    isSelected && 'text-emerald-500',
+                )}
+            />
+
             <div className="flex flex-col gap-1.5">
                 <div className="flex items-center gap-2">
                     <p className="text-sm font-bold text-slate-900">
