@@ -15,5 +15,7 @@ readonly class CheckoutData
         public int $subtotal,
         public array $deliveryDate,
         public Collection $addresses,
+        public int $shippingFee,
+        public int $total,
     ) {}
 }

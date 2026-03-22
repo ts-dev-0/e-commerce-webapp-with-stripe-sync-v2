@@ -29,6 +29,10 @@ class GetCheckout
 
         $addresses = $user->addresses()->get();
 
-        return new CheckoutData($cartItems, $subtotal, $deliveryDate, $addresses);
+        $shippingFee = 0;
+
+        $total = $subtotal + $shippingFee;
+
+        return new CheckoutData($cartItems, $subtotal, $deliveryDate, $addresses, $shippingFee, $total);
     }
 }
