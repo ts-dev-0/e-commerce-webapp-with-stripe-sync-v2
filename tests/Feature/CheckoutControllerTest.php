@@ -56,11 +56,17 @@ class CheckoutControllerTest extends TestCase
             ]),
         ]);
 
+        $subtotal = 400;
+        $shippingFee = 0;
+        $total = $subtotal + $shippingFee;
+
         $cartData = new CheckoutData(
             cartItems: $items,
-            subtotal: 400,
+            subtotal: $subtotal,
             deliveryDate: $deliveryDate,
             addresses: $addresses,
+            shippingFee: $shippingFee,
+            total: $total,
         );
 
         $mock = Mockery::mock(GetCheckout::class);
