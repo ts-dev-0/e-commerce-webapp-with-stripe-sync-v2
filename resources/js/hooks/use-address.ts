@@ -32,7 +32,7 @@ export function useAddress() {
             },
             {
                 preserveScroll: true,
-                preserveState: true,
+                preserveState: false,
                 onSuccess: (page) => {
                     console.log('Communication successful:', page);
                     setAddress({ ...initialAddress });
