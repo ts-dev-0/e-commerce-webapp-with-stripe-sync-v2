@@ -1,5 +1,5 @@
+import AddressCard from '@/components/address-card';
 import CartItemCard from '@/components/cart-item-card';
-// import SavedAddressCard from '@/components/saved-address-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,6 +27,7 @@ export default function Checkout({ data }: CheckoutProps) {
     const cartItems = data['cartItems'];
     const subtotal = data['subtotal'];
     const deliveryDateList = data['deliveryDate'];
+    const addresses = data['addresses'];
 
     const [processing, setProcessing] = useState<boolean>(false);
     const [deliveryDate, setDeliveryDate] = useState<string>(
@@ -67,14 +68,23 @@ export default function Checkout({ data }: CheckoutProps) {
                                 </h2>
 
                                 <div className="mt-4 space-y-4">
-                                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
-                                        登録済みの配送先がありません。
-                                        <div className="mt-2">
-                                            新しい配送先を入力してください。
+                                    {addresses.length > 0 ? (
+                                        <>
+                                            {addresses.map((address) => (
+                                                <AddressCard
+                                                    key={address.id}
+                                                    address={address}
+                                                />
+                                            ))}
+                                        </>
+                                    ) : (
+                                        <div className="rounded-lg border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
+                                            登録済みの配送先がありません。
+                                            <div className="mt-2">
+                                                新しい配送先を入力してください。
+                                            </div>
                                         </div>
-                                    </div>
-                                    {/* TODO: 住所に関する機能の実装に使用する */}
-                                    {/* <SavedAddressCard /> */}
+                                    )}
                                 </div>
                             </div>
 
