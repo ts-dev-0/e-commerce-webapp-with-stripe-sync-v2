@@ -6,4 +6,6 @@ export interface Checkout {
     subtotal: number;
     deliveryDate: string[];
     addresses: Address[];
+    shippingFee: number;
+    total: number;
 }

@@ -19,6 +19,9 @@ export default function Checkout({ data }: CheckoutProps) {
     const subtotal = data['subtotal'];
     const deliveryDateList = data['deliveryDate'];
     const addresses = data['addresses'];
+    const shippingFee = data['shippingFee'];
+    const total = data['total'];
+
     const [isSelectedAddresId, setSelectedAddressId] = useState(
         addresses.find((address) => address.isDefault)?.id,
     );
@@ -27,10 +30,6 @@ export default function Checkout({ data }: CheckoutProps) {
     const [deliveryDate, setDeliveryDate] = useState<string>(
         deliveryDateList[0],
     );
-
-    // TODO: Move logic to back-end
-    const shipping = 0;
-    const total = subtotal + shipping;
 
     function handleCheckout() {
         router.post(store().url);
@@ -226,7 +225,7 @@ export default function Checkout({ data }: CheckoutProps) {
                             </div>
                             <div className="flex justify-between">
                                 <span>送料</span>
-                                <span>無料</span>
+                                <span>{shippingFee.toLocaleString('ja-JP')}円</span>
                             </div>
                             <div className="mt-2 flex justify-between text-base font-semibold text-slate-800">
                                 <span>合計</span>

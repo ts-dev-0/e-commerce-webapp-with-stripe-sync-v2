@@ -19,6 +19,8 @@ class CheckoutResource extends JsonResource
             'subtotal' => $this->subtotal,
             'deliveryDate' => $this->deliveryDate,
             'addresses' => AddressResource::collection($this->addresses),
+            'shippingFee' => $this->shippingFee,
+            'total' => $this->total,
         ];
     }
 }
