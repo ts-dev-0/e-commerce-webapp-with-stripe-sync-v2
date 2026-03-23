@@ -2,30 +2,31 @@
 
 namespace Tests\Feature\Actions\User\Review;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Review\DeleteReview;
 use App\Models\Review;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class DeleteReviewTest extends TestCase
 {
     use RefreshDatabase;
 
     private DeleteReview $action;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->action = new DeleteReview();
+        $this->user = User::factory()->create();
     }
 
     public function test_user_can_delete_own_review()
     {
-        $user = User::factory()->create();
         $review = Review::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'rating' => 4,
             'comment' => 'test comment'
         ]);

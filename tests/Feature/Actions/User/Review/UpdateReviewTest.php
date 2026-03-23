@@ -2,31 +2,31 @@
 
 namespace Tests\Feature\Actions\User\Review;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Review\UpdateReview;
 use App\Models\Review;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class UpdateReviewTest extends TestCase
 {
     use RefreshDatabase;
 
     private UpdateReview $action;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->action = new UpdateReview();
+        $this->user = User::factory()->create();
     }
 
     public function test_user_can_update_review()
     {
-        $user = User::factory()->create();
-
         $review = Review::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'rating' => 5,
             'comment' => 'old comment'
         ]);
