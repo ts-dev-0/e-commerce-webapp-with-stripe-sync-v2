@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Actions\Admin\Order;
+namespace Tests\Feature\Order;
 
 use App\Actions\Admin\Order\GetAllOrder;
 use App\Models\Order;

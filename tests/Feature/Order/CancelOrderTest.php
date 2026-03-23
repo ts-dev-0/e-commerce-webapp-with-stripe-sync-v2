@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Actions\User\Order;
+namespace Tests\Feature\Order;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
