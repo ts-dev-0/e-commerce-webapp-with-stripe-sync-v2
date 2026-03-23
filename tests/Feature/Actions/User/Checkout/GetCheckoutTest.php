@@ -2,34 +2,33 @@
 
 namespace Tests\Feature\Actions\User\Cart;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Services\Delivery\DeliveryDateService;
 use App\Actions\User\Checkout\GetCheckout;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
-use App\Services\Delivery\DeliveryDateService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class GetCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
     private GetCheckout $action;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->action = new GetCheckout(new DeliveryDateService);
+        $this->user = User::factory()->create();
     }
 
     public function test_user_can_get_checkout_data()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
         /** @var \App\Models\User $otherUser */
         $otherUser = User::factory()->create();
 
@@ -41,7 +40,7 @@ class GetCheckoutTest extends TestCase
         ]);
 
         $cart = Cart::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
         ]);
 
         $otherCart = Cart::factory()->create([
@@ -67,16 +66,16 @@ class GetCheckoutTest extends TestCase
         ]);
 
         $address1 = Address::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
         ]);
 
         $address2 = Address::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
         ]);
 
         Address::factory()->create();
 
-        $result = $this->action->handle($user);
+        $result = $this->action->handle($this->user);
 
         $this->assertInstanceOf(\App\DTOs\CheckoutData::class, $result);
         $this->assertCount(2, $result->cartItems);
@@ -98,10 +97,7 @@ class GetCheckoutTest extends TestCase
 
     public function test_empty_checout_data_returns_empty_array()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
-        $result = $this->action->handle($user);
+        $result = $this->action->handle($this->user);
 
         $this->assertEmpty($result->cartItems);
         $this->assertEquals(0, $result->subtotal);
