@@ -1,24 +1,24 @@
 <?php
 
-namespace Tests\Feature\Requests\User\Cart;
+namespace Tests\Feature\Cart;
 
-use App\Http\Requests\User\Cart\UpdateCartItemQuantityRequest;
+use App\Http\Requests\User\Cart\AddItemToCartRequest;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
-class UpdateCartItemQuantityRequestTest extends TestCase
+class AddItemToCartRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    private UpdateCartItemQuantityRequest $request;
+    private AddItemToCartRequest $request;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = new UpdateCartItemQuantityRequest();
+        $this->request = new AddItemToCartRequest();
     }
 
     public function test_validation_passes_with_valid_data()
@@ -91,5 +91,4 @@ class UpdateCartItemQuantityRequestTest extends TestCase
         $this->assertTrue($validator->fails());
         $this->assertArrayHasKey('quantity', $validator->errors()->toArray());
     }
-
 }

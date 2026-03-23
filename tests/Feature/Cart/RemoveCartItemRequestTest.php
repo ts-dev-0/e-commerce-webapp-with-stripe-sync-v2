@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Requests\User\Cart;
+namespace Tests\Feature\Cart;
 
 use App\Http\Requests\User\Cart\RemoveCartItemRequest;
 use App\Models\Product;
