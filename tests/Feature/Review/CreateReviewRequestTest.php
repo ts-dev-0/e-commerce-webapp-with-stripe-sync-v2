@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Requests\User\Review;
+namespace Tests\Feature\Review;
 
 use App\Http\Requests\User\Review\CreateReviewRequest;
 use App\Models\Product;

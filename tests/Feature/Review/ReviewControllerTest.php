@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Review;
 
 use Mockery;
 use Tests\TestCase;
