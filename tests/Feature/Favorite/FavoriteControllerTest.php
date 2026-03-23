@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Favorite;
 
 use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;

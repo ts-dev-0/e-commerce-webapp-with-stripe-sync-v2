@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Actions\User\Favorite;
+namespace Tests\Feature\Favorite;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;

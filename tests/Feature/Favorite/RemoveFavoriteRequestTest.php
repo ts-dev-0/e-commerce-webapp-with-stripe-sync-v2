@@ -1,24 +1,24 @@
 <?php
 
-namespace Tests\Feature\Requests\User\Favorite;
+namespace Tests\Feature\Favorite;
 
-use App\Http\Requests\User\Favorite\AddFavoriteRequest;
+use App\Http\Requests\User\Favorite\RemoveFavoriteRequest;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
-class AddFavoriteRequestTest extends TestCase
+class RemoveFavoriteRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    private AddFavoriteRequest $request;
+    private RemoveFavoriteRequest $request;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = new AddFavoriteRequest();
+        $this->request = new RemoveFavoriteRequest();
     }
 
     public function test_validation_passes_with_valid_data()
