@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Requests\Admin\Category;
+namespace Tests\Feature\Category;
 
 use App\Http\Requests\Admin\Category\DeleteCategoryRequest;
 use App\Models\Category;

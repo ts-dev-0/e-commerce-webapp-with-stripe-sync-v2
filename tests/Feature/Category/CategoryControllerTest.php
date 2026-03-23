@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\Admin;
+namespace Tests\Feature\Category;
 
 use App\Actions\Admin\Category\CreateCategory;
 use App\Actions\Admin\Category\DeleteCategory;

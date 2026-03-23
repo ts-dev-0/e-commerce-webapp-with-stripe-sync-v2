@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Actions\Admin\Category;
+namespace Tests\Feature\Category;
 
 use App\Actions\Admin\Category\UpdateCategory;
 use App\Models\Category;
