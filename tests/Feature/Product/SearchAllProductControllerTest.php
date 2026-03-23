@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\Admin;
+namespace Tests\Feature\Product;
 
 use App\Actions\Admin\Search\SearchAllProduct;
 use App\Models\Product;

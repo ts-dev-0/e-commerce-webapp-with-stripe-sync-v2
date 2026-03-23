@@ -1,21 +1,20 @@
 <?php
 
-namespace Tests\Feature\Requests\Admin\Product;
+namespace Tests\Feature\Product;
 
-use App\Http\Requests\Admin\Product\UpdateProductRequest;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Http\Requests\Admin\Product\CreateProductRequest;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
-class UpdateProductRequestTest extends TestCase
+class CreateProductRequestTest extends TestCase
 {
-    private UpdateProductRequest $request;
+    private CreateProductRequest $request;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = new UpdateProductRequest();
+        $this->request = new CreateProductRequest();
     }
 
     public function test_validation_passes_with_valid_data()

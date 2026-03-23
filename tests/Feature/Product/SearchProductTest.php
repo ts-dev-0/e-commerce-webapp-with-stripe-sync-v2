@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Queries;
+namespace Tests\Feature\Product;
 
 
 use App\Models\Category;

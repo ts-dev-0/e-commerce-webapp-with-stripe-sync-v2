@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\Admin;
+namespace Tests\Feature\Product;
 
 use App\Actions\Admin\Product\CreateProduct;
 use App\Actions\Admin\Product\DeleteProduct;
@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Mockery;
 use Tests\TestCase;
 
-class ProductControllerTest extends TestCase
+class AdminProductControllerTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Requests\Admin\Search;
+namespace Tests\Feature\Product;
 
 use App\Http\Requests\Admin\Search\SearchAllProductRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;

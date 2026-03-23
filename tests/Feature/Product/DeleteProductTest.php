@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Actions\Admin\Product;
+namespace Tests\Feature\Product;
 
 use App\Actions\Admin\Product\DeleteProduct;
 use App\Models\Product;
