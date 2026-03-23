@@ -2,46 +2,55 @@
 
 namespace Tests\Feature;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\MocksActions;
 use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Cart\RemoveCartItem;
 use App\Actions\User\Cart\UpdateCartItemQuantity;
-use App\DTOs\CartData;
-use Tests\TestCase;
-use Mockery;
-use App\Models\User;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\User;
 use App\Models\Product;
-use Inertia\Testing\AssertableInertia as Assert;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\DTOs\CartData;
 
 class CartControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use MocksActions;
+
+    protected User $user;
+    protected Product $product1;
+    protected Product $product2;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->withoutVite();
+
+        $this->user = User::factory()->create();
+        $this->product1 = Product::factory()->create([
+            'price' => 100,
+        ]);
+        $this->product2 = Product::factory()->create([
+            'price' => 200,
+        ]);
     }
 
     // index
     public function test_authenticated_user_can_view_cart()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
-
-
-        $product1 = Product::factory()->make(['price' => 100]);
-        $product2 = Product::factory()->make(['price' => 200]);
-
         $items = collect([
-            new CartItem(['product' => $product1, 'quantity' => 2]),
-            new CartItem(['product' => $product2, 'quantity' => 1]),
+            new CartItem([
+                'product' => $this->product1,
+                'quantity' => 2
+            ]),
+            new CartItem([
+                'product' => $this->product2,
+                'quantity' => 1
+            ]),
         ]);
 
         $cartData = new CartData(
@@ -49,70 +58,57 @@ class CartControllerTest extends TestCase
             subtotal: 400
         );
 
-        $mock = Mockery::mock(GetCart::class);
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with(Mockery::on(fn($u) => $u->id === $user->id))
-            ->andReturn($cartData);
+        $this->mockAction(
+            GetCart::class,
+            [$this->user],
+            $cartData
+        );
 
-        $this->app->instance(GetCart::class, $mock);
-
-        $response = $this->actingAs($user)->get('/cart');
+        $response = $this
+            ->actingAs($this->user)
+            ->get(route('cart.index'));
 
         $response->assertOk();
     }
-    
+
     public function test_guest_cannot_access_cart()
     {
-        $response = $this->get('/cart');
+        $response = $this->get(route('cart.index'));
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
     }
 
     // store
     public function test_user_can_add_item_to_cart()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
-        /** @var \App\Models\Product $product */
-        $product = Product::factory()->create();
-
         $payload = [
-            'product_id' => $product->id,
+            'product_id' => $this->product1->id,
             'quantity' => 2,
         ];
 
-        $mock = Mockery::mock(AddItemToCart::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($user, $product->id, 2);
-
-        $this->app->instance(AddItemToCart::class, $mock);
+        $this->mockAction(
+            AddItemToCart::class,
+            [$this->user, $this->product1->id, 2]
+        );
 
         $response = $this
-            ->actingAs($user)
-            ->post('/cart', $payload);
+            ->actingAs($this->user)
+            ->post(route('cart.store'), $payload);
 
         $response->assertRedirect(route('cart.index'));
 
-        $response->assertSessionHas('success', 'Product added to cart.');
+        $response->assertSessionHas(
+            'success',
+            'Product added to cart.'
+        );
     }
 
     public function test_validation_fails_when_quantity_is_missing()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create([
-            'email_verified_at' => now(),
-        ]);
-
-        $product = Product::factory()->create();
-
         $response = $this
-            ->actingAs($user)
-            ->post('/cart', [
-                'product_id' => $product->id,
+            ->actingAs($this->user)
+            ->post(route('cart.store'), [
+                'product_id' => $this->product1->id,
             ]);
 
         $response->assertSessionHasErrors('quantity');
@@ -121,69 +117,60 @@ class CartControllerTest extends TestCase
     // update
     public function test_user_can_update_cart_item_quantity()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-        $cart = Cart::factory()->create([
-            'user_id' => $user->id,
+        Cart::factory()->create([
+            'user_id' => $this->user->id,
         ]);
 
-        $product = Product::factory()->create();
-
         $payload = [
-            'product_id' => $product->id,
+            'product_id' => $this->product1->id,
             'quantity' => 3,
         ];
 
-        $mock = Mockery::mock(UpdateCartItemQuantity::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($user, $product->id, 3);
-
-        $this->app->instance(
+        $this->mockAction(
             UpdateCartItemQuantity::class,
-            $mock
+            [$this->user, $this->product1->id, 3]
         );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->from(route('cart.index'))
-            ->patch(route('cart.items.update'), $payload);
+            ->patch(
+                route('cart.items.update'),
+                $payload
+            );
 
         $response->assertRedirect(route('cart.index'));
 
-        $response->assertSessionHas('success', 'Cart updated.');
+        $response->assertSessionHas(
+            'success',
+            'Cart updated.'
+        );
     }
 
     // destroy
     public function test_user_can_remove_item_from_cart()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
-        $product = Product::factory()->create();
-
         $payload = [
-            'product_id' => $product->id,
+            'product_id' => $this->product1->id,
         ];
 
-        $mock = Mockery::mock(RemoveCartItem::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($user, $product->id);
-
-        $this->app->instance(
+        $this->mockAction(
             RemoveCartItem::class,
-            $mock
+            [$this->user, $this->product1->id]
         );
 
         $response = $this
-            ->actingAs($user)
-            ->delete(route('cart.items.destroy'), $payload);
+            ->actingAs($this->user)
+            ->delete(
+                route('cart.items.destroy'),
+                $payload
+            );
 
         $response->assertRedirect(route('cart.index'));
 
-        $response->assertSessionHas('success', 'Item removed from cart.');
+        $response->assertSessionHas(
+            'success',
+            'Item removed from cart.'
+        );
     }
 }

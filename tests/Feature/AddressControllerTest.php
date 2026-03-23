@@ -2,29 +2,31 @@
 
 namespace Tests\Feature;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Address\StoreAddress;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Mockery;
-use Tests\TestCase;
+
+use Tests\Traits\MocksActions;
 
 class AddressControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use MocksActions;
+
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->withoutVite();
+
+        $this->user = User::factory()->create();
     }
 
     // store
     public function test_authenticated_user_can_store_address()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
         $address = [
             'full_name' => 'test name',
             'postal_code' => '1234567',
@@ -35,16 +37,13 @@ class AddressControllerTest extends TestCase
             'is_default' => true,
         ];
 
-        $mock = Mockery::mock(StoreAddress::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($user, $address);
-
-        $this->app->instance(StoreAddress::class, $mock);
+        $this->mockAction(
+            StoreAddress::class,
+            [$this->user, $address],
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->from(route('checkout.index'))
             ->post(route('addresses.store'), $address);
 

@@ -2,38 +2,36 @@
 
 namespace Tests\Feature\Actions\User\Cart;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Cart\GetCart;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class GetCartTest extends TestCase
 {
     use RefreshDatabase;
 
     private GetCart $action;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->action = new GetCart();
+        $this->user = User::factory()->create();
     }
 
     public function test_user_can_get_cart_data()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
         $otherUser = User::factory()->create();
 
         $product1 = Product::factory()->create(['price' => 100]);
         $product2 = Product::factory()->create(['price' => 200]);
 
-        $cart = Cart::factory()->create(['user_id' => $user->id]);
+        $cart = Cart::factory()->create(['user_id' => $this->user->id]);
         $otherCart = Cart::factory()->create(['user_id' => $otherUser->id]);
 
         CartItem::factory()->create([
@@ -53,7 +51,7 @@ class GetCartTest extends TestCase
             'quantity' => 10,
         ]);
 
-        $result = $this->action->handle($user);
+        $result = $this->action->handle($this->user);
 
         $this->assertInstanceOf(\App\DTOs\CartData::class, $result);
         $this->assertCount(2, $result->items);
@@ -68,10 +66,7 @@ class GetCartTest extends TestCase
 
     public function test_empty_cart_data_returns_empty_structure()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
-        $result = $this->action->handle($user);
+        $result = $this->action->handle($this->user);
 
         $this->assertInstanceOf(\App\DTOs\CartData::class, $result);
         $this->assertTrue($result->items->isEmpty());

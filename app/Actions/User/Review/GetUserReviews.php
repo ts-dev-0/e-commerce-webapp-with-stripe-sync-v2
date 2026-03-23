@@ -3,7 +3,7 @@
 namespace App\Actions\User\Review;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class GetUserReviews
 {

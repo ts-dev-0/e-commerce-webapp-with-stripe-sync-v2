@@ -2,53 +2,49 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use App\Actions\User\Search\SearchPublishedProduct;
-use App\Models\Product;
+use Tests\TestCase;
+use Tests\Traits\MocksActions;
+use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Testing\AssertableInertia as Assert;
-use Illuminate\Foundation\Testing\WithFaker;
-use Mockery;
-use Tests\TestCase;
+use App\Actions\User\Search\SearchPublishedProduct;
+use App\Models\Product;
+use App\Models\User;
 
 class SearchPublishedProductControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use MocksActions;
+
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->withoutVite();
+
+        $this->user = User::factory()->create();
     }
 
     public function test_user_can_search_products()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
-        $keyword = 'iphone';
+        $parameter = ['keyword' => 'iphone'];
 
         $products = Collection::make([
             Product::factory()->make(),
             Product::factory()->make(),
         ]);
 
-        $mock = Mockery::mock(SearchPublishedProduct::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($keyword)
-            ->andReturn($products);
-
-        $this->app->instance(SearchPublishedProduct::class, $mock);
+        $this->mockAction(
+            SearchPublishedProduct::class,
+            [$parameter['keyword']],
+            $products,
+        );
 
         $response = $this
-            ->actingAs($user)
-            ->get(route('search.products', [
-                'keyword' => $keyword,
-            ]));
+            ->actingAs($this->user)
+            ->get(route('search.products', $parameter));
 
         $response->assertOk();
 

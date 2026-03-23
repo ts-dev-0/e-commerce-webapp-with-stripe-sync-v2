@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\Actions\User\Search;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Search\SearchPublishedProduct;
 use App\Models\Product;
 use App\Queries\SearchProduct;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class SearchPublishedProductTest extends TestCase
 {

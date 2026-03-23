@@ -2,41 +2,48 @@
 
 namespace Tests\Feature\Actions\User\Favorite;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Favorite\AddFavorite;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class AddFavoriteTest extends TestCase
 {
     use RefreshDatabase;
 
-     public function test_user_can_add_product_to_favorites()
-    {
-        $user = User::factory()->create();
-        $product = Product::factory()->create();
+    private AddFavorite $action;
+    private User $user;
+    private Product $product;
 
-        $action = new AddFavorite();
-        $action->handle($user, $product->id);
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->action = new AddFavorite();
+        $this->user = User::factory()->create();
+        $this->product = Product::factory()->create();
+    }
+
+    public function test_user_can_add_product_to_favorites()
+    {
+        $this->action->handle($this->user, $this->product->id);
 
         $this->assertDatabaseHas('favorites', [
-            'user_id' => $user->id,
-            'product_id' => $product->id,
+            'user_id' => $this->user->id,
+            'product_id' => $this->product->id,
         ]);
     }
 
     public function test_duplicate_favorite_is_not_created()
     {
-        $user = User::factory()->create();
-        $product = Product::factory()->create();
+        $this->action->handle($this->user, $this->product->id);
+        $this->action->handle($this->user, $this->product->id);
 
-        $action = new AddFavorite();
-
-        $action->handle($user, $product->id);
-        $action->handle($user, $product->id);
-
-        $this->assertEquals(1, \DB::table('favorites')->count());
+        $this->assertDatabaseCount('favorites', 1);
+        $this->assertDatabaseHas('favorites', [
+            'user_id' => $this->user->id,
+            'product_id' => $this->product->id,
+        ]);
     }
 }

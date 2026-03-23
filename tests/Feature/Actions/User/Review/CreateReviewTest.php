@@ -2,33 +2,34 @@
 
 namespace Tests\Feature\Actions\User\Review;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Review\CreateReview;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class CreateReviewTest extends TestCase
 {
     use RefreshDatabase;
 
     private CreateReview $action;
+    private User $user;
 
     public function setUp(): void
     {
         parent::setUp();
+
         $this->action = new CreateReview();
+        $this->user = User::factory()->create();
     }
 
     public function test_user_can_create_review()
     {
-        $user = User::factory()->create();
         $product = Product::factory()->create();
 
         $review = $this->action->handle(
-            $user,
+            $this->user,
             $product->id,
             5,
             'Great product'
@@ -37,7 +38,7 @@ class CreateReviewTest extends TestCase
         $this->assertInstanceOf(Review::class, $review);
 
         $this->assertDatabaseHas('reviews', [
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'product_id' => $product->id,
             'rating' => 5,
             'comment' => 'Great product',
@@ -46,11 +47,10 @@ class CreateReviewTest extends TestCase
 
     public function test_user_cannot_review_same_product_twice()
     {
-        $user = User::factory()->create();
         $product = Product::factory()->create();
 
         $this->action->handle(
-            $user,
+            $this->user,
             $product->id,
             5,
             'Great product'
@@ -61,7 +61,7 @@ class CreateReviewTest extends TestCase
         $this->expectException(\DomainException::class);
 
         $this->action->handle(
-            $user,
+            $this->user,
             $product->id,
             4,
             'Second review'

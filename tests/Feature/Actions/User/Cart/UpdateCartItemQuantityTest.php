@@ -2,49 +2,50 @@
 
 namespace Tests\Feature\Actions\User\Cart;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Cart\UpdateCartItemQuantity;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class UpdateCartItemQuantityTest extends TestCase
 {
     use RefreshDatabase;
 
     private UpdateCartItemQuantity $action;
+    private User $user;
+    private Cart $cart;
+    private Product $product;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->action = new UpdateCartItemQuantity();
+        $this->user = User::factory()->create();
+        $this->cart = Cart::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
+        $this->product = Product::factory()->create();
     }
 
     public function test_user_can_update_product_quantity()
-    {
-        $user = User::factory()->create();
-        $cart = Cart::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $product = Product::factory()->create();
-
+    {        
         CartItem::factory()->create([
-            'cart_id' => $cart->id,
-            'product_id' => $product->id,
+            'cart_id' => $this->cart->id,
+            'product_id' => $this->product->id,
             'quantity' => 1,
         ]);
 
         $updatedQuantity = 1;
 
-        $this->action->handle($user, $product->id, $updatedQuantity);
+        $this->action->handle($this->user, $this->product->id, $updatedQuantity);
 
         $this->assertDatabaseHas('cart_items', [
-                'cart_id'    => $cart->id,
-                'product_id' => $product->id,
+                'cart_id'    => $this->cart->id,
+                'product_id' => $this->product->id,
                 'quantity'   => $updatedQuantity,
             ]
         );
@@ -52,18 +53,10 @@ class UpdateCartItemQuantityTest extends TestCase
 
     public function test_throws_exception_if_product_not_in_cart()
     {
-        $user = User::factory()->create();
-
-        Cart::factory()->create([
-            'user_id' => $user->id,
-        ]);
-
-        $product = Product::factory()->create();
-
         $updatedQuantity = 1;
 
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->action->handle($user, $product->id, $updatedQuantity);
+        $this->action->handle($this->user, $this->product->id, $updatedQuantity);
     }
 }

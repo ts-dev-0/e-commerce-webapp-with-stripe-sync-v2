@@ -2,32 +2,32 @@
 
 namespace Tests\Feature\Actions\User\Order;
 
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Order\CancelOrder;
 use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 
 class CancelOrderTest extends TestCase
 {
     use RefreshDatabase;
 
     private CancelOrder $action;
+    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->action = new CancelOrder();
+        $this->user = User::factory()->create();
     }
 
     public function test_user_can_cancel_order_when_status_is_pending()
     {
-        $user = User::factory()->create();
-
         $order = Order::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'status' => OrderStatus::Pending,
         ]);
 
@@ -35,17 +35,15 @@ class CancelOrderTest extends TestCase
 
         $this->assertDatabaseHas('orders', [
             'id' => $order->id,
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'status' => OrderStatus::Canceled,
         ]);
     }
 
     public function test_user_can_not_cancel_order_when_status_is_paid()
     {
-        $user = User::factory()->create();
-
         $order = Order::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'status' => OrderStatus::Paid,
         ]);
 
@@ -55,10 +53,8 @@ class CancelOrderTest extends TestCase
 
     public function test_user_can_not_cancel_order_when_status_is_completed()
     {
-        $user = User::factory()->create();
-
         $order = Order::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'status' => OrderStatus::Completed,
         ]);
 
@@ -68,10 +64,8 @@ class CancelOrderTest extends TestCase
 
     public function test_user_can_not_cancel_order_when_status_is_canceled()
     {
-        $user = User::factory()->create();
-
         $order = Order::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'status' => OrderStatus::Canceled,
         ]);
 
