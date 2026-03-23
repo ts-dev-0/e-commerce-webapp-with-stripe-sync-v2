@@ -60,7 +60,7 @@ class CheckoutControllerTest extends TestCase
         $shippingFee = 0;
         $total = $subtotal + $shippingFee;
 
-        $cartData = new CheckoutData(
+        $checkoutData = new CheckoutData(
             cartItems: $items,
             subtotal: $subtotal,
             deliveryDate: $deliveryDate,
@@ -73,7 +73,7 @@ class CheckoutControllerTest extends TestCase
         $mock->shouldReceive('handle')
             ->once()
             ->with(Mockery::on(fn($u) => $u->id === $user->id))
-            ->andReturn($cartData);
+            ->andReturn($checkoutData);
 
         $this->app->instance(GetCheckout::class, $mock);
 
