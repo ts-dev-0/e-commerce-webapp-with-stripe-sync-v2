@@ -123,7 +123,7 @@ class CartControllerTest extends TestCase
     {
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
-        $cart = Cart::factory()->create([
+        Cart::factory()->create([
             'user_id' => $user->id,
         ]);
 
