@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Actions\User\Checkout;
+namespace Tests\Feature\Checkout;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
