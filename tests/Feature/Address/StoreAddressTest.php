@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Actions\User\Address;
+namespace Tests\Feature\Address;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Requests\User\Address;
+namespace Tests\Feature\Address;
 
 use App\Http\Requests\StoreAddressRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
