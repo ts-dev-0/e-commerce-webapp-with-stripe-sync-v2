@@ -22,7 +22,7 @@ class ProductControllerTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $response = $this->get("/products/{$product->id}");
+        $response = $this->get(route('product.show', $product->id));
 
         $response->assertOk();
 

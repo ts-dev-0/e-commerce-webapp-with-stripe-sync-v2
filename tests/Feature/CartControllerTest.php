@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Mockery;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\MocksActions;
 use App\Actions\User\Cart\AddItemToCart;
 use App\Actions\User\Cart\GetCart;
 use App\Actions\User\Cart\RemoveCartItem;
@@ -18,8 +18,8 @@ use App\DTOs\CartData;
 class CartControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use MocksActions;
 
-    /** @var \App\Models\User */
     protected User $user;
     protected Product $product1;
     protected Product $product2;
@@ -30,7 +30,6 @@ class CartControllerTest extends TestCase
 
         $this->withoutVite();
 
-        /** @var \App\Models\User $user */
         $this->user = User::factory()->create();
         $this->product1 = Product::factory()->create([
             'price' => 100,
@@ -38,28 +37,6 @@ class CartControllerTest extends TestCase
         $this->product2 = Product::factory()->create([
             'price' => 200,
         ]);
-    }
-
-    protected function mockAction(
-        string $actionClass,
-        array $with = [],
-        mixed $return = null
-    ): void {
-        $mock = Mockery::mock($actionClass);
-
-        $expectation = $mock
-            ->shouldReceive('handle')
-            ->once();
-
-        if (!empty($with)) {
-            $expectation->with(...$with);
-        }
-
-        if (!is_null($return)) {
-            $expectation->andReturn($return);
-        }
-
-        $this->app->instance($actionClass, $mock);
     }
 
     // index
@@ -83,7 +60,7 @@ class CartControllerTest extends TestCase
 
         $this->mockAction(
             GetCart::class,
-            [Mockery::on(fn ($u) => $u->id === $this->user->id)],
+            [$this->user],
             $cartData
         );
 

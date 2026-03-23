@@ -3,47 +3,47 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Mockery;
-use App\Models\User;
-use App\Models\Product;
+use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\MocksActions;
 use App\Actions\User\Favorite\AddFavorite;
 use App\Actions\User\Favorite\RemoveFavorite;
 use App\Actions\User\Favorite\ViewFavoriteProducts;
-use Illuminate\Database\Eloquent\Collection;
-use Inertia\Testing\AssertableInertia as Assert;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
+use App\Models\Product;
 
 class FavoriteControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use MocksActions;
+
+    private User $user;
+    private Product $product;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->withoutVite();
+
+        $this->user = User::factory()->create();
+        $this->product = Product::factory()->create();
     }
 
     // index
     public function test_authenticated_user_can_view_favorite_products()
     {
-        /** @var \APP\Models\User $user */
-        $user = User::factory()->create();
-        $product1 = Product::factory()->create();
+        $favorites = new Collection($this->product);
 
-        $favorites = new Collection($product1);
-
-        $mock = Mockery::mock(ViewFavoriteProducts::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($user)
-            ->andReturn($favorites);
-
-        $this->app->instance(ViewFavoriteProducts::class, $mock);
+        $this->mockAction(
+            ViewFavoriteProducts::class,
+            [$this->user],
+            $favorites
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->get(route('favorites.index'));
 
         $response->assertOk();
@@ -64,24 +64,16 @@ class FavoriteControllerTest extends TestCase
     // store
     public function test_user_can_add_product_to_favorite()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
-        $product = Product::factory()->create();
-
-        $mock = Mockery::mock(AddFavorite::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($user, $product->id);
-
-        $this->app->instance(AddFavorite::class, $mock);
+        $this->mockAction(
+            AddFavorite::class,
+            [$this->user, $this->product->id],
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->from(route('favorites.index'))
             ->post(route('favorites.store'), [
-                'product_id' => $product->id,
+                'product_id' => $this->product->id,
             ]);
 
         $response->assertRedirect(route('favorites.index'));
@@ -91,10 +83,8 @@ class FavoriteControllerTest extends TestCase
 
     public function test_guest_cannot_add_favorite()
     {
-        $product = Product::factory()->create();
-
         $response = $this->post(route('favorites.store'), [
-            'product_id' => $product->id,
+            'product_id' => $this->product->id,
         ]);
 
         $response->assertRedirect(route('login'));
@@ -103,24 +93,16 @@ class FavoriteControllerTest extends TestCase
     // destroy
     public function test_user_can_remove_favorite_product()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
-        $product = Product::factory()->create();
-
-        $mock = Mockery::mock(RemoveFavorite::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($user, $product->id);
-
-        $this->app->instance(RemoveFavorite::class, $mock);
+        $this->mockAction(
+            RemoveFavorite::class,
+            [$this->user, $this->product->id],
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->from(route('favorites.index'))
             ->delete(route('favorites.destroy'), [
-                'product_id' => $product->id,
+                'product_id' => $this->product->id,
             ]);
 
         $response->assertRedirect(route('favorites.index'));
@@ -130,10 +112,8 @@ class FavoriteControllerTest extends TestCase
 
     public function test_guest_cannot_remove_favorite_product()
     {
-        $product = Product::factory()->create();
-
         $response = $this->delete(route('favorites.destroy'), [
-            'product_id' => $product->id,
+            'product_id' => $this->product->id,
         ]);
 
         $response->assertRedirect(route('login'));

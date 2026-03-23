@@ -2,53 +2,53 @@
 
 namespace Tests\Feature;
 
-use App\Models\Product;
-use App\Models\Review;
-use App\Models\User;
+use Mockery;
+use Tests\TestCase;
+use Tests\Traits\MocksActions;
+use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\User\Review\CreateReview;
 use App\Actions\User\Review\DeleteReview;
 use App\Actions\User\Review\GetUserReviews;
 use App\Actions\User\Review\UpdateReview;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Testing\AssertableInertia as Assert;
-use Illuminate\Foundation\Testing\WithFaker;
-use Mockery;
-use Tests\TestCase;
+use App\Models\Product;
+use App\Models\Review;
+use App\Models\User;
 
 class ReviewControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use MocksActions;
+
+    private User $user;
+    private Product $product;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->withoutVite();
+
+        $this->user = User::factory()->create();
+        $this->product = Product::factory()->create();
     }
 
     // index
     public function test_authenticated_user_can_view_reviews()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
-        $reviews = Collection::make([
+        $reviews = collect([
             Review::factory()->make(),
             Review::factory()->make(),
         ]);
 
-        $mock = Mockery::mock(GetUserReviews::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($user)
-            ->andReturn($reviews);
-
-        $this->app->instance(GetUserReviews::class, $mock);
+        $this->mockAction(
+            GetUserReviews::class,
+            [$this->user],
+            $reviews,
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->get(route('reviews.index'));
 
         $response->assertOk();
@@ -69,32 +69,21 @@ class ReviewControllerTest extends TestCase
     // store
     public function test_user_can_create_review()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
+        $review = [
+            'product_id' => $this->product->id,
+            'rating' => 5,
+            'comment' => "Great product",
+        ];
 
-        $product = Product::factory()->create();
-
-        $mock = Mockery::mock(CreateReview::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with(
-                $user,
-                $product->id,
-                5,
-                'Great product'
-            );
-
-        $this->app->instance(CreateReview::class, $mock);
+        $this->mockAction(
+            CreateReview::class,
+            [$this->user, $review['product_id'], $review['rating'], $review['comment']],
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->from(route('reviews.index'))
-            ->post(route('reviews.store'), [
-                'product_id' => $product->id,
-                'rating' => 5,
-                'comment' => 'Great product',
-            ]);
+            ->post(route('reviews.store'), $review);
 
         $response->assertRedirect(route('reviews.index'));
 
@@ -103,10 +92,8 @@ class ReviewControllerTest extends TestCase
 
     public function test_guest_cannot_create_review()
     {
-        $product = Product::factory()->create();
-
         $response = $this->post(route('reviews.store'), [
-            'product_id' => $product->id,
+            'product_id' => $this->product->id,
             'rating' => 5,
             'comment' => 'Great product',
         ]);
@@ -117,30 +104,24 @@ class ReviewControllerTest extends TestCase
     // update
     public function test_user_can_update_review()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
         $review = Review::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
         ]);
 
-        $validatedData = [
+        $updatedReview = [
             'rating' => 4,
             'comment' => 'Updated review',
         ];
 
-        $mock = Mockery::mock(UpdateReview::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with(Mockery::type(Review::class), $validatedData);
-
-        $this->app->instance(UpdateReview::class, $mock);
+        $this->mockAction(
+            UpdateReview::class,
+            [Mockery::type(Review::class), $updatedReview],
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->from(route('reviews.index'))
-            ->put(route('reviews.update', $review), $validatedData);
+            ->put(route('reviews.update', $review), $updatedReview);
 
         $response->assertRedirect(route('reviews.index'));
 
@@ -162,23 +143,17 @@ class ReviewControllerTest extends TestCase
     // destroy
     public function test_user_can_delete_review()
     {
-        /** @var \App\Models\User $user */
-        $user = User::factory()->create();
-
         $review = Review::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
         ]);
 
-        $mock = Mockery::mock(DeleteReview::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with(Mockery::type(Review::class));
-
-        $this->app->instance(DeleteReview::class, $mock);
+        $this->mockAction(
+            DeleteReview::class,
+            [Mockery::type(Review::class)],
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->from(route('reviews.index'))
             ->delete(route('reviews.destroy', $review));
 

@@ -3,34 +3,35 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Mockery;
-use App\Models\User;
-use App\Models\Product;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Traits\MocksActions;
 use App\Actions\User\Checkout\GetCheckout;
 use App\Actions\User\Checkout\ProcessCheckout;
-use App\DTOs\CheckoutData;
 use App\Models\Address;
 use App\Models\CartItem;
-use Inertia\Testing\AssertableInertia as Assert;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Product;
+use App\Models\User;
+use App\DTOs\CheckoutData;
 
 class CheckoutControllerTest extends TestCase
 {
     use RefreshDatabase;
+    use MocksActions;
+
+    protected User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->withoutVite();
+
+        $this->user = User::factory()->create();
     }
 
     // index
     public function test_authenticated_user_can_view_checkout_page()
     {
-        /** @var \APP\Models\User $user */
-        $user = User::factory()->create();
-
         $product1 = Product::factory()->make(['price' => 100]);
         $product2 = Product::factory()->make(['price' => 200]);
 
@@ -48,11 +49,11 @@ class CheckoutControllerTest extends TestCase
 
         $addresses = collect([
             Address::factory()->make([
-                'user_id' => $user->id,
+                'user_id' => $this->user->id,
                 'is_default' => true,
             ]),
             Address::factory()->make([
-                'user_id' => $user->id,
+                'user_id' => $this->user->id,
             ]),
         ]);
 
@@ -69,16 +70,14 @@ class CheckoutControllerTest extends TestCase
             total: $total,
         );
 
-        $mock = Mockery::mock(GetCheckout::class);
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with(Mockery::on(fn($u) => $u->id === $user->id))
-            ->andReturn($checkoutData);
-
-        $this->app->instance(GetCheckout::class, $mock);
+        $this->mockAction(
+            GetCheckout::class,
+            [$this->user],
+            $checkoutData,
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->get(route('checkout.index'));
 
         $response->assertOk();
@@ -94,19 +93,14 @@ class CheckoutControllerTest extends TestCase
     // store
     public function test_user_can_process_checkout()
     {
-        /** @var \APP\Models\User $user */
-        $user = User::factory()->create();
-
-        $mock = Mockery::mock(ProcessCheckout::class);
-
-        $mock->shouldReceive('handle')
-            ->once()
-            ->with($user);
-
-        $this->app->instance(ProcessCheckout::class, $mock);
+        $this->mockAction(
+            ProcessCheckout::class,
+            [$this->user],
+        );
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
+            ->from(route('checkout.index'))
             ->post(route('checkout.store'));
 
         $response->assertStatus(200);

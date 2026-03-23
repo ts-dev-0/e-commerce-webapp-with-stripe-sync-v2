@@ -3,14 +3,15 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Mockery;
-use App\Models\Product;
-use App\Actions\User\Home\HomeIndex;
-use Illuminate\Database\Eloquent\Collection;
 use Inertia\Testing\AssertableInertia as Assert;
+use Tests\Traits\MocksActions;
+use App\Actions\User\Home\HomeIndex;
+use App\Models\Product;
 
 class HomeControllerTest extends TestCase
 {
+    use MocksActions;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -20,25 +21,18 @@ class HomeControllerTest extends TestCase
 
     public function test_index_returns_products_to_home_page()
     {
-        $products = new Collection([
-            Product::factory()->make([
-                'id' => 1,
-                'name' => 'Product A',
-            ]),
-            Product::factory()->make([
-                'id' => 2,
-                'name' => 'Product B',
-            ]),
+        $products = collect([
+            Product::factory()->make(),
+            Product::factory()->make(),
         ]);
 
-        $mock = Mockery::mock(HomeIndex::class);
-        $mock->shouldReceive('handle')
-            ->once()
-            ->andReturn($products);
+        $this->mockAction(
+            HomeIndex::class,
+            [],
+            $products,
+        );
 
-        $this->app->instance(HomeIndex::class, $mock);
-
-        $response = $this->get('/');
+        $response = $this->get(route('home'));
 
         $response->assertOk();
 
