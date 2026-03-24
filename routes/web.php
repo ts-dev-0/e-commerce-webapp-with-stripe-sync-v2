@@ -48,17 +48,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('addresses', [AddressController::class, 'store'])->name('addresses.store');
 });
 
-// Admin
-Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('products', AdminProductController::class)
-        ->only(['create', 'store', 'edit', 'update', 'destroy']);
-
-    Route::resource('categories', CategoryController::class)
-        ->only(['index', 'store', 'update', 'destroy']);
-
-    Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
-
-    Route::get('search/products', SearchAllProductController::class)->name('search.products');
-});
-
 require __DIR__.'/settings.php';
