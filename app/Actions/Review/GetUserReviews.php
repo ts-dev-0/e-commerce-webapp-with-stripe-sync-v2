@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\User\Review;
+namespace App\Actions\Review;
 
 use App\Models\User;
 use Illuminate\Support\Collection;

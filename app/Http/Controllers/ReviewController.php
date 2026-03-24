@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Review\CreateReview;
-use App\Actions\User\Review\DeleteReview;
-use App\Actions\User\Review\GetUserReviews;
-use App\Actions\User\Review\UpdateReview;
+use App\Actions\Review\CreateReview;
+use App\Actions\Review\DeleteReview;
+use App\Actions\Review\GetUserReviews;
+use App\Actions\Review\UpdateReview;
 use App\Http\Requests\User\Review\CreateReviewRequest;
 use App\Http\Requests\User\Review\DeleteReviewRequest;
 use App\Http\Requests\User\Review\UpdateReviewRequest;
