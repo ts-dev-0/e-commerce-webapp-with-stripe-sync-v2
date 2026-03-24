@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Address\StoreAddress;
+use App\Actions\Address\StoreAddress;
 use App\Http\Requests\StoreAddressRequest;
 
 class AddressController extends Controller
