@@ -7,7 +7,7 @@ use Tests\Traits\MocksActions;
 use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\User\Search\SearchPublishedProduct;
+use App\Actions\Search\SearchPublishedProduct;
 use App\Models\Product;
 use App\Models\User;
 
