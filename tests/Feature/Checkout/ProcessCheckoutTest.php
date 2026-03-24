@@ -4,7 +4,7 @@ namespace Tests\Feature\Checkout;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\User\Checkout\ProcessCheckout;
+use App\Actions\Checkout\ProcessCheckout;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;

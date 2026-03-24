@@ -4,7 +4,7 @@ namespace Tests\Feature\Order;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\User\Order\CancelOrder;
+use App\Actions\Order\CancelOrder;
 use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\User;

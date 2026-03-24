@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\User\Address;
+namespace App\Actions\Address;
 
 use App\Models\Address;
 use App\Models\User;

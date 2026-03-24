@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Home\HomeIndex;
+use App\Actions\Home\HomeIndex;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 

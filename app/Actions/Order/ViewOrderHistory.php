@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Actions\User\Favorite;
+namespace App\Actions\Order;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
-class ViewFavoriteProducts
+class ViewOrderHistory
 {
     public function handle(User $user): Collection
     {
-        return $user->favoriteProducts()
-            ->orderByDesc('favorites.created_at')
+        return $user->orders()
+            ->orderByDesc('created_at')
             ->get();
     }
 }

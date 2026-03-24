@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Cart\AddItemToCart;
-use App\Actions\User\Cart\GetCart;
-use App\Actions\User\Cart\RemoveCartItem;
-use App\Actions\User\Cart\UpdateCartItemQuantity;
+use App\Actions\Cart\AddItemToCart;
+use App\Actions\Cart\GetCart;
+use App\Actions\Cart\RemoveCartItem;
+use App\Actions\Cart\UpdateCartItemQuantity;
 use App\Http\Requests\User\Cart\RemoveCartItemRequest;
 use App\Http\Requests\User\Cart\UpdateCartItemQuantityRequest;
 use App\Http\Requests\User\Cart\AddItemToCartRequest;

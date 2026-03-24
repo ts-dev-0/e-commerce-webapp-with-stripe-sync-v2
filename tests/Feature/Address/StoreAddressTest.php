@@ -4,7 +4,7 @@ namespace Tests\Feature\Address;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\User\Address\StoreAddress;
+use App\Actions\Address\StoreAddress;
 use App\Models\Address;
 use App\Models\User;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\User\Checkout;
+namespace App\Actions\Checkout;
 
 use App\DTOs\CheckoutData;
 use App\Models\CartItem;

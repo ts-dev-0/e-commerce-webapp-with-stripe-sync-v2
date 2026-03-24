@@ -5,7 +5,7 @@ namespace Tests\Feature\Checkout;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Services\Delivery\DeliveryDateService;
-use App\Actions\User\Checkout\GetCheckout;
+use App\Actions\Checkout\GetCheckout;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;

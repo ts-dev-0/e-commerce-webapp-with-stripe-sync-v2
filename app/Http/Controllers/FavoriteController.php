@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Favorite\AddFavorite;
-use App\Actions\User\Favorite\RemoveFavorite;
-use App\Actions\User\Favorite\ViewFavoriteProducts;
+use App\Actions\Favorite\AddFavorite;
+use App\Actions\Favorite\RemoveFavorite;
+use App\Actions\Favorite\ViewFavoriteProducts;
 use App\Http\Requests\User\Favorite\AddFavoriteRequest;
 use App\Http\Requests\User\Favorite\RemoveFavoriteRequest;
 use Illuminate\Http\Request;

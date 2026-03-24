@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\User\Search;
+namespace App\Actions\Search;
 
 use App\Queries\SearchProduct;
 use Illuminate\Support\Collection;

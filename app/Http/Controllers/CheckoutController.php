@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Checkout\GetCheckout;
-use App\Actions\User\Checkout\ProcessCheckout;
+use App\Actions\Checkout\GetCheckout;
+use App\Actions\Checkout\ProcessCheckout;
 use App\Http\Resources\CheckoutResource;
 use Illuminate\Http\Request;
 use Inertia\Inertia;

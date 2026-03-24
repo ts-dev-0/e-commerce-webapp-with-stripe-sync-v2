@@ -4,7 +4,7 @@ namespace Tests\Feature\Product;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\User\Search\SearchPublishedProduct;
+use App\Actions\Search\SearchPublishedProduct;
 use App\Models\Product;
 use App\Queries\SearchProduct;
 

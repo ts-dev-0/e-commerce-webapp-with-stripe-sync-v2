@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Search\SearchPublishedProduct;
+use App\Actions\Search\SearchPublishedProduct;
 use App\Http\Requests\User\Search\SearchPublishedProductRequest;
 use Inertia\Inertia;
 

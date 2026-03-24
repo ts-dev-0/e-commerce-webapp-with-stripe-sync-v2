@@ -4,7 +4,7 @@ namespace Tests\Feature\Actions\User\Review;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\User\Review\DeleteReview;
+use App\Actions\Review\DeleteReview;
 use App\Models\Review;
 use App\Models\User;
 
