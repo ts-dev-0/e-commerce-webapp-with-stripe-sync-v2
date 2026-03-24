@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Traits\MocksActions;
-use App\Actions\User\Home\HomeIndex;
+use App\Actions\Home\HomeIndex;
 use App\Models\Product;
 
 class HomeControllerTest extends TestCase

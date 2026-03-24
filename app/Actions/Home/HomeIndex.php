@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\User\Home;
+namespace App\Actions\Home;
 
 use App\Models\Product;
 use Illuminate\Support\Collection;
