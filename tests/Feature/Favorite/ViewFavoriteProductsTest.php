@@ -4,7 +4,7 @@ namespace Tests\Feature\Favorite;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\User\Favorite\ViewFavoriteProducts;
+use App\Actions\Favorite\ViewFavoriteProducts;
 use App\Models\Product;
 use App\Models\User;
 

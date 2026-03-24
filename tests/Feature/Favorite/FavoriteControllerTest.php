@@ -7,9 +7,9 @@ use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Traits\MocksActions;
-use App\Actions\User\Favorite\AddFavorite;
-use App\Actions\User\Favorite\RemoveFavorite;
-use App\Actions\User\Favorite\ViewFavoriteProducts;
+use App\Actions\Favorite\AddFavorite;
+use App\Actions\Favorite\RemoveFavorite;
+use App\Actions\Favorite\ViewFavoriteProducts;
 use App\Models\User;
 use App\Models\Product;
 
