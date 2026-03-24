@@ -1,10 +1,6 @@
 <?php
 
 use App\Http\Controllers\AddressController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
-use App\Http\Controllers\Admin\ProductController as AdminProductController;
-use App\Http\Controllers\Admin\SearchAllProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FavoriteController;
