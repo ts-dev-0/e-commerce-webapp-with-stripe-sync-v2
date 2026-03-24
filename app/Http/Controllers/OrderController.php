@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\User\Order\CancelOrder;
-use App\Actions\User\Order\ViewOrderHistory;
+use App\Actions\Order\CancelOrder;
+use App\Actions\Order\ViewOrderHistory;
 use App\Http\Requests\User\Order\CancelOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;

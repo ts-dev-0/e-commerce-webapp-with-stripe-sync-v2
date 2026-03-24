@@ -7,8 +7,8 @@ use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Traits\MocksActions;
-use App\Actions\User\Order\CancelOrder;
-use App\Actions\User\Order\ViewOrderHistory;
+use App\Actions\Order\CancelOrder;
+use App\Actions\Order\ViewOrderHistory;
 use App\Models\User;
 use App\Models\Order;
 

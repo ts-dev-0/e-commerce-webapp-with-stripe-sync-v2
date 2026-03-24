@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\User\Order;
+namespace App\Actions\Order;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;

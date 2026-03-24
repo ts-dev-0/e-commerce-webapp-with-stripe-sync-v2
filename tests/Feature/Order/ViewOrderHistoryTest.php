@@ -4,7 +4,7 @@ namespace Tests\Feature\Order;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\User\Order\ViewOrderHistory;
+use App\Actions\Order\ViewOrderHistory;
 use App\Models\Order;
 use App\Models\User;
 
