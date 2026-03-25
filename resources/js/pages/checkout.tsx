@@ -1,6 +1,5 @@
 import AddressCard from '@/components/address-card';
 import CartItemCard from '@/components/cart-item-card';
-import CreateDeliveryAddressForm from '@/components/create-delivery-address-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -87,14 +86,6 @@ export default function Checkout({ data }: CheckoutProps) {
                                         </div>
                                     )}
                                 </div>
-                            </div>
-
-                            <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                                <h2 className="text-lg font-semibold text-slate-800">
-                                    配送先情報
-                                </h2>
-
-                                <CreateDeliveryAddressForm />
                             </div>
 
                             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
