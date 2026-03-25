@@ -80,9 +80,7 @@ export default function Checkout({ data }: CheckoutProps) {
                                     配送先情報
                                 </h2>
 
-                                <CreateDeliveryAddressForm
-                                    processing={true}
-                                />
+                                <CreateDeliveryAddressForm />
                             </div>
 
                             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
