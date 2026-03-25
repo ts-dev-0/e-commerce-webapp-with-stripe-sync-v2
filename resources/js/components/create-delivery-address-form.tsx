@@ -7,23 +7,40 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { PREFECTURES } from '@/const/prefectures';
-import { useAddress } from '@/hooks/use-address';
+import { store } from '@/routes/addresses';
+import { CreateAddress } from '@/types/address';
+import { useForm } from '@inertiajs/react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 
 export default function CreateDeliveryAddressForm() {
-    const {
-        address,
-        handleCreateAddress,
-        handleFullName,
-        handlePostalCode,
-        handlePrefecture,
-        handleCity,
-        handleAddressLine,
-        handlePhoneNumber,
-        handleIsDefault,
-    } = useAddress();
+    const { data, setData, transform, post, processing } =
+        useForm<CreateAddress>({
+            fullName: '',
+            postalCode: '',
+            prefecture: '東京都',
+            city: '',
+            addressLine: '',
+            phoneNumber: '',
+            isDefault: false,
+        });
+
+    const handleCreateAddress = () => {
+        transform(() => ({
+            full_name: data.fullName,
+            postal_code: data.postalCode,
+            prefecture: data.prefecture,
+            city: data.city,
+            address_line: data.addressLine,
+            phone_number: data.phoneNumber,
+            is_default: data.isDefault,
+        }));
+
+        post(store().url, {
+            preserveState: false,
+        });
+    };
 
     return (
         <>
@@ -33,9 +50,9 @@ export default function CreateDeliveryAddressForm() {
                         お名前
                     </label>
                     <Input
-                        value={address['fullName']}
+                        value={data['fullName']}
                         placeholder="山田 太郎"
-                        onChange={(e) => handleFullName(e.target.value)}
+                        onChange={(e) => setData('fullName', e.target.value)}
                     />
                 </div>
 
@@ -46,12 +63,12 @@ export default function CreateDeliveryAddressForm() {
                         </label>
                         <div className="flex items-center gap-x-2">
                             <Input
-                                value={address['postalCode']}
+                                value={data['postalCode']}
                                 placeholder="0000000"
                                 className="w-fit"
                                 maxLength={7}
                                 onChange={(e) =>
-                                    handlePostalCode(e.target.value)
+                                    setData('postalCode', e.target.value)
                                 }
                             />
                         </div>
@@ -62,8 +79,8 @@ export default function CreateDeliveryAddressForm() {
                                 都道府県
                             </label>
                             <Select
-                                onValueChange={(e) => handlePrefecture(e)}
-                                value={address['prefecture']}
+                                onValueChange={(e) => setData('prefecture', e)}
+                                value={data['prefecture']}
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="都道府県を選択" />
@@ -87,9 +104,11 @@ export default function CreateDeliveryAddressForm() {
                                 市区町村
                             </label>
                             <Input
-                                value={address['city']}
+                                value={data['city']}
                                 placeholder="○○区"
-                                onChange={(e) => handleCity(e.target.value)}
+                                onChange={(e) =>
+                                    setData('city', e.target.value)
+                                }
                             />
                         </div>
                         <div>
@@ -98,10 +117,10 @@ export default function CreateDeliveryAddressForm() {
                                 （数字は半角数字）
                             </label>
                             <Input
-                                value={address['addressLine']}
+                                value={data['addressLine']}
                                 placeholder="○○町1-2-3 ○○ビル 101号室"
                                 onChange={(e) =>
-                                    handleAddressLine(e.target.value)
+                                    setData('addressLine', e.target.value)
                                 }
                             />
                         </div>
@@ -113,19 +132,19 @@ export default function CreateDeliveryAddressForm() {
                         電話番号
                     </label>
                     <Input
-                        value={address['phoneNumber']}
+                        value={data['phoneNumber']}
                         placeholder="09012345678"
                         maxLength={11}
-                        onChange={(e) => handlePhoneNumber(e.target.value)}
+                        onChange={(e) => setData('phoneNumber', e.target.value)}
                     />
                 </div>
             </div>
             <div className="mt-4 flex items-center justify-start gap-2">
                 <Input
-                    checked={address['isDefault']}
+                    checked={data['isDefault']}
                     type="checkbox"
                     className="h-4 w-4 border-slate-300 text-emerald-600 accent-emerald-600 focus:ring-emerald-500"
-                    onChange={(e) => handleIsDefault(e.target.checked)}
+                    onChange={(e) => setData('isDefault', e.target.checked)}
                 />
                 <Label className="text-sm font-medium text-slate-700">
                     いつもこの住所に届ける
@@ -135,6 +154,7 @@ export default function CreateDeliveryAddressForm() {
                 className="mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                 variant="default"
                 onClick={handleCreateAddress}
+                disabled={processing}
             >
                 この住所を使用
             </Button>
