@@ -1,12 +1,10 @@
-import AddressCard from '@/components/address-card';
 import CartItemCard from '@/components/cart-item-card';
+import { DeliveryAddressSection } from '@/components/delivery-address-section';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
 import AppLayout from '@/layouts/app-layout';
 import { store } from '@/routes/checkout';
-import { useModalStore } from '@/stores/modalStore';
 import { Checkout as CheckoutType } from '@/types/checkout';
 import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
@@ -23,15 +21,9 @@ export default function Checkout({ data }: CheckoutProps) {
     const shippingFee = data['shippingFee'];
     const total = data['total'];
 
-    const [isSelectedAddresId, setSelectedAddressId] = useState(
-        addresses.find((address) => address.isDefault)?.id,
-    );
-
     const [deliveryDate, setDeliveryDate] = useState<string>(
         deliveryDateList[0],
     );
-
-    const openModal = useModalStore((state) => state.openModal);
 
     function handleCheckout() {
         router.post(store().url);
@@ -45,49 +37,7 @@ export default function Checkout({ data }: CheckoutProps) {
                 <div className="grid gap-6 lg:grid-cols-3">
                     <section className="lg:col-span-2">
                         <div className="space-y-6">
-                            <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                                <div className="flex items-center justify-between">
-                                    <h2 className="text-lg font-semibold text-slate-800">
-                                        登録済み配送先
-                                    </h2>
-                                    <Button
-                                        className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
-                                        onClick={() =>
-                                            openModal('createDeliveryAddress')
-                                        }
-                                    >
-                                        新しい配送先を登録する
-                                    </Button>
-                                </div>
-
-                                <div className="mt-4 space-y-4">
-                                    {addresses.length > 0 ? (
-                                        <>
-                                            {addresses.map((address) => (
-                                                <AddressCard
-                                                    key={address.id}
-                                                    address={address}
-                                                    isSelected={
-                                                        isSelectedAddresId ===
-                                                        address.id
-                                                    }
-                                                    onSelect={
-                                                        setSelectedAddressId
-                                                    }
-                                                />
-                                            ))}
-                                        </>
-                                    ) : (
-                                        <div className="rounded-lg border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
-                                            登録済みの配送先がありません。
-                                            <div className="mt-2">
-                                                新しい配送先を入力してください。
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
+                            <DeliveryAddressSection addresses={addresses} />
                             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                                 <h2 className="text-lg font-semibold text-slate-800">
                                     配達希望日時
