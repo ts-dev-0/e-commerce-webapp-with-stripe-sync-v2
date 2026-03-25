@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/select';
 import { PREFECTURES } from '@/const/prefectures';
 import { store } from '@/routes/addresses';
+import { useModalStore } from '@/stores/modalStore';
 import { CreateAddress } from '@/types/address';
 import { useForm } from '@inertiajs/react';
 import { Button } from './ui/button';
@@ -15,7 +16,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 
 export default function CreateDeliveryAddressForm() {
-    const { data, setData, transform, post, processing } =
+    const { data, setData, transform, post, processing, reset } =
         useForm<CreateAddress>({
             fullName: '',
             postalCode: '',
@@ -25,6 +26,8 @@ export default function CreateDeliveryAddressForm() {
             phoneNumber: '',
             isDefault: false,
         });
+
+    const closeModal = useModalStore((state) => state.closeModal);
 
     const handleCreateAddress = () => {
         transform(() => ({
@@ -39,6 +42,10 @@ export default function CreateDeliveryAddressForm() {
 
         post(store().url, {
             preserveState: false,
+            onSuccess: () => {
+                reset();
+                closeModal();
+            },
         });
     };
 
