@@ -1,11 +1,12 @@
 import AddressCard from '@/components/address-card';
 import CartItemCard from '@/components/cart-item-card';
-import CreateDeliveryAddressForm from '@/components/create-delivery-address-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
 import AppLayout from '@/layouts/app-layout';
 import { store } from '@/routes/checkout';
+import { useModalStore } from '@/stores/modalStore';
 import { Checkout as CheckoutType } from '@/types/checkout';
 import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
@@ -30,6 +31,8 @@ export default function Checkout({ data }: CheckoutProps) {
         deliveryDateList[0],
     );
 
+    const openModal = useModalStore((state) => state.openModal);
+
     function handleCheckout() {
         router.post(store().url);
     }
@@ -43,9 +46,19 @@ export default function Checkout({ data }: CheckoutProps) {
                     <section className="lg:col-span-2">
                         <div className="space-y-6">
                             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                                <h2 className="text-lg font-semibold text-slate-800">
-                                    登録済み配送先
-                                </h2>
+                                <div className="flex items-center justify-between">
+                                    <h2 className="text-lg font-semibold text-slate-800">
+                                        登録済み配送先
+                                    </h2>
+                                    <Button
+                                        className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
+                                        onClick={() =>
+                                            openModal('createDeliveryAddress')
+                                        }
+                                    >
+                                        新しい配送先を登録する
+                                    </Button>
+                                </div>
 
                                 <div className="mt-4 space-y-4">
                                     {addresses.length > 0 ? (
@@ -73,14 +86,6 @@ export default function Checkout({ data }: CheckoutProps) {
                                         </div>
                                     )}
                                 </div>
-                            </div>
-
-                            <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                                <h2 className="text-lg font-semibold text-slate-800">
-                                    配送先情報
-                                </h2>
-
-                                <CreateDeliveryAddressForm />
                             </div>
 
                             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
