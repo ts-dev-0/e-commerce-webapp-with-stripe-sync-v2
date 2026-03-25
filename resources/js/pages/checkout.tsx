@@ -26,7 +26,6 @@ export default function Checkout({ data }: CheckoutProps) {
         addresses.find((address) => address.isDefault)?.id,
     );
 
-    const [processing, setProcessing] = useState<boolean>(false);
     const [deliveryDate, setDeliveryDate] = useState<string>(
         deliveryDateList[0],
     );
@@ -82,7 +81,7 @@ export default function Checkout({ data }: CheckoutProps) {
                                 </h2>
 
                                 <CreateDeliveryAddressForm
-                                    processing={processing}
+                                    processing={true}
                                 />
                             </div>
 
@@ -173,8 +172,6 @@ export default function Checkout({ data }: CheckoutProps) {
                                                 key={product.id}
                                                 product={product}
                                                 initialQuantity={quantity}
-                                                processing={processing}
-                                                setProcessing={setProcessing}
                                             />
                                         );
                                     })}
@@ -225,7 +222,9 @@ export default function Checkout({ data }: CheckoutProps) {
                             </div>
                             <div className="flex justify-between">
                                 <span>送料</span>
-                                <span>{shippingFee.toLocaleString('ja-JP')}円</span>
+                                <span>
+                                    {shippingFee.toLocaleString('ja-JP')}円
+                                </span>
                             </div>
                             <div className="mt-2 flex justify-between text-base font-semibold text-slate-800">
                                 <span>合計</span>
@@ -236,7 +235,7 @@ export default function Checkout({ data }: CheckoutProps) {
                         <Button
                             className="mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                             variant="default"
-                            disabled={processing}
+                            disabled={true}
                             onClick={handleCheckout}
                         >
                             注文を確定する
