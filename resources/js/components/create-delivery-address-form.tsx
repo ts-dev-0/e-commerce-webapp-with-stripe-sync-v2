@@ -12,13 +12,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 
-interface CreateDeliveryAddressFormProps {
-    processing: boolean;
-}
-
-export default function CreateDeliveryAddressForm({
-    processing,
-}: CreateDeliveryAddressFormProps) {
+export default function CreateDeliveryAddressForm() {
     const {
         address,
         handleCreateAddress,
@@ -140,7 +134,6 @@ export default function CreateDeliveryAddressForm({
             <Button
                 className="mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                 variant="default"
-                disabled={processing}
                 onClick={handleCreateAddress}
             >
                 この住所を使用

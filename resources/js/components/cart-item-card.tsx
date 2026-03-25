@@ -1,27 +1,54 @@
-import { useCartItemQuantity } from '@/hooks/use-cart-item-quantity';
+import { destroy, update } from '@/routes/cart/items';
 import { show } from '@/routes/product';
 import { Product } from '@/types/product';
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { QuantitySelector } from './quantity-selector';
 
 interface CartItemCartProps {
     product: Product;
     initialQuantity: number;
-    processing: boolean;
-    setProcessing: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface CartItemQuantityForm {
+    productId: number;
+    quantity: number;
 }
 
 export default function CartItemCard({
     product,
     initialQuantity,
-    processing,
-    setProcessing,
 }: CartItemCartProps) {
-    const { quantity, decrement, increment, remove } = useCartItemQuantity({
+    const {
+        data,
+        setData,
+        processing,
+        transform,
+        patch,
+        delete: deleteCartItem,
+    } = useForm<CartItemQuantityForm>({
         productId: product.id,
-        initialQuantity,
-        setProcessing,
+        quantity: initialQuantity,
     });
+
+    function updateQuantity(updatedQuantity: number) {
+        transform((prev) => ({
+            ...prev,
+            product_id: data.productId,
+            quantity: updatedQuantity,
+        }));
+
+        patch(update().url);
+    }
+
+    function removeCartItem() {
+        transform(() => ({
+            ...data,
+            product_id: data.productId,
+        }));
+
+        deleteCartItem(destroy().url);
+    }
+
     return (
         <div className="relative">
             {processing && (
@@ -63,10 +90,20 @@ export default function CartItemCard({
                         </span>
 
                         <QuantitySelector
-                            decrement={decrement}
-                            increment={increment}
-                            quantity={quantity}
-                            onRemove={remove}
+                            decrement={() => {
+                                const next = data.quantity - 1;
+
+                                setData('quantity', next);
+                                updateQuantity(next);
+                            }}
+                            increment={() => {
+                                const next = data.quantity + 1;
+
+                                setData('quantity', next);
+                                updateQuantity(next);
+                            }}
+                            quantity={data.quantity}
+                            onRemove={removeCartItem}
                         />
                     </div>
                 </div>

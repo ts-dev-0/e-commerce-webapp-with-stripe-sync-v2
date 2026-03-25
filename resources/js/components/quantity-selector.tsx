@@ -2,28 +2,44 @@ import { Trash2 } from 'lucide-react';
 import { Button } from './ui/button';
 
 interface QuantitySelectorProps {
+    quantity: number;
     decrement: () => void;
     increment: () => void;
-    quantity: number;
     onRemove?: () => void;
+    min?: number;
+    max?: number;
 }
 
 export function QuantitySelector({
+    quantity,
     decrement,
     increment,
-    quantity,
     onRemove,
+    min = 1,
+    max = 10,
 }: QuantitySelectorProps) {
-    const isMin = quantity <= 1;
+    const isMin = quantity <= min;
+    const isMax = quantity >= max;
+    const shouldShowRemoveButton =
+        quantity === 1 && typeof onRemove === 'function';
 
-    function handleOnClick() {
-        if (isMin && onRemove) {
-            onRemove();
+    function handleDecrement() {
+        if (isMin) {
+            onRemove?.();
             return;
         }
 
         decrement();
     }
+
+    function handleIncrement() {
+        if (isMax) {
+            return;
+        }
+
+        increment();
+    }
+
     return (
         <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-2 py-1">
             <Button
@@ -32,9 +48,10 @@ export function QuantitySelector({
                 size="icon"
                 className="h-7 w-7 p-0"
                 aria-label="数量を減らす"
-                onClick={handleOnClick}
+                onClick={handleDecrement}
+                disabled={!shouldShowRemoveButton && isMin}
             >
-                {isMin && onRemove ? <Trash2 className="size-3.5" /> : '-'}
+                {shouldShowRemoveButton ? <Trash2 className="size-3.5" /> : '-'}
             </Button>
             <span className="text-xs text-slate-700">{quantity}</span>
             <Button
@@ -43,7 +60,8 @@ export function QuantitySelector({
                 size="icon"
                 className="h-7 w-7 p-0"
                 aria-label="数量を増やす"
-                onClick={increment}
+                onClick={handleIncrement}
+                disabled={isMax}
             >
                 +
             </Button>

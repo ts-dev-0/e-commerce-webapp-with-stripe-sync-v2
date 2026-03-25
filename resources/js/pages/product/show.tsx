@@ -1,29 +1,37 @@
 import { QuantitySelector } from '@/components/quantity-selector';
 import { Button } from '@/components/ui/button';
-import { useLocalQuantity } from '@/hooks/use-local-quantity';
 import AppLayout from '@/layouts/app-layout';
 import { home } from '@/routes';
 import { store } from '@/routes/cart';
 import { Product } from '@/types/product';
-import { Form, Head, Link, router } from '@inertiajs/react';
-import React from 'react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 interface ShowProps {
     data: Product;
 }
 
+interface LocalQuantityForm {
+    productId: number;
+    quantity: number;
+}
+
 export default function Show({ data: product }: ShowProps) {
-    const { quantity, decrement, increment } = useLocalQuantity({
-        initialQuantity: 1,
-    });
+    const { data, setData, transform, post, processing } =
+        useForm<LocalQuantityForm>({
+            productId: product.id,
+            quantity: 1,
+        });
 
     const handleSubmit: React.FormEventHandler = (e) => {
         e.preventDefault();
 
-        router.post(store().url, {
-            product_id: product.id,
-            quantity: quantity,
-        });
+        transform(() => ({
+            ...data,
+            product_id: data.productId,
+            quantity: data.quantity,
+        }));
+
+        post(store().url);
     };
 
     return (
@@ -62,18 +70,29 @@ export default function Show({ data: product }: ShowProps) {
 
                         <div className="mt-6 flex items-center space-x-3">
                             <QuantitySelector
-                                decrement={decrement}
-                                increment={increment}
-                                quantity={quantity}
+                                decrement={() =>
+                                    setData((prev) => ({
+                                        ...prev,
+                                        quantity: prev.quantity - 1,
+                                    }))
+                                }
+                                increment={() =>
+                                    setData((prev) => ({
+                                        ...prev,
+                                        quantity: prev.quantity + 1,
+                                    }))
+                                }
+                                quantity={data.quantity}
                             />
-                            <Form onClick={handleSubmit} method="POST">
+                            <form onSubmit={handleSubmit}>
                                 <Button
                                     type="submit"
                                     className="cursor-pointer rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
+                                    disabled={processing}
                                 >
                                     カートに入れる
                                 </Button>
-                            </Form>
+                            </form>
                             <Link
                                 href={home()}
                                 className="text-sm text-slate-600 hover:underline"
