@@ -1,5 +1,7 @@
+import { update } from '@/routes/addresses/default';
 import { useModalStore } from '@/stores/modalStore';
 import { Address } from '@/types/address';
+import { useForm } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 import AddressCard from './address-card';
 import { Button } from './ui/button';
@@ -8,64 +10,37 @@ interface DeliveryAddressSectionProps {
     addresses: Address[];
 }
 
+interface SetDefaultAddressForm {
+    selectAddressId?: number;
+}
+
 export function DeliveryAddressSection({
     addresses,
 }: DeliveryAddressSectionProps) {
     const openModal = useModalStore((state) => state.openModal);
 
+    const [isExpanded, setIsExpanded] = useState(false);
     const defaultAddress = useMemo(
         () => addresses.find((address) => address.isDefault),
         [addresses],
     );
 
-    const [selectedAddressId, setSelectedAddressId] = useState(
-        defaultAddress?.id,
+    const { data, setData, patch, processing } = useForm<SetDefaultAddressForm>(
+        {
+            selectAddressId: defaultAddress?.id,
+        },
     );
 
-    const [collapsedAddressId, setCollapsedAddressId] = useState(
-        defaultAddress?.id,
-    );
+    const handleSetDefaultAddress = () => {
+        if (data.selectAddressId === undefined) return;
 
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    const collapsedAddress = useMemo(
-        () => addresses.find((address) => address.id === collapsedAddressId),
-        [addresses, collapsedAddressId],
-    );
-
-    const handleCollapse = () => {
-        setCollapsedAddressId(selectedAddressId);
-
-        setIsExpanded(false);
+        patch(update(data.selectAddressId).url, {
+            preserveState: false,
+            onSuccess: () => {
+                setIsExpanded(false);
+            },
+        });
     };
-
-    const handleExpand = () => {
-        setIsExpanded(true);
-    };
-
-    if (addresses.length === 0) {
-        return (
-            <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-slate-800">
-                        登録済み配送先
-                    </h2>
-
-                    <Button
-                        className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
-                        onClick={() => openModal('createDeliveryAddress')}
-                    >
-                        新しい配送先を登録する
-                    </Button>
-                </div>
-
-                <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
-                    登録済みの配送先がありません。
-                    <div className="mt-2">新しい配送先を入力してください。</div>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
@@ -81,44 +56,66 @@ export function DeliveryAddressSection({
                     新しい配送先を登録する
                 </Button>
             </div>
-
-            <div className="mt-4 space-y-4">
-                {!isExpanded && collapsedAddress && (
-                    <AddressCard
-                        address={collapsedAddress}
-                        isSelected={selectedAddressId === collapsedAddress.id}
-                        onSelect={setSelectedAddressId}
-                    />
-                )}
-
-                {isExpanded &&
-                    addresses.map((address) => (
+            {addresses.length === 0 && (
+                <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
+                    登録済みの配送先がありません。
+                    <div className="mt-2">新しい配送先を入力してください。</div>
+                </div>
+            )}
+            {addresses.length >= 1 && (
+                <div className="mt-4 space-y-4">
+                    {!isExpanded && (
                         <AddressCard
-                            key={address.id}
-                            address={address}
-                            isSelected={selectedAddressId === address.id}
-                            onSelect={setSelectedAddressId}
+                            key={defaultAddress?.id}
+                            address={defaultAddress!}
+                            isSelected={
+                                data.selectAddressId === defaultAddress?.id
+                            }
+                            onSelect={() =>
+                                setData({ selectAddressId: defaultAddress?.id })
+                            }
                         />
-                    ))}
+                    )}
+                    {isExpanded &&
+                        addresses.map((address) => (
+                            <AddressCard
+                                key={address.id}
+                                address={address}
+                                isSelected={data.selectAddressId === address.id}
+                                onSelect={() =>
+                                    setData({ selectAddressId: address.id })
+                                }
+                            />
+                        ))}
 
-                {!isExpanded && addresses.length > 1 && (
-                    <button
-                        onClick={handleExpand}
-                        className="text-sm text-emerald-600 hover:underline"
-                    >
-                        他の配送先を表示
-                    </button>
-                )}
+                    {!isExpanded && addresses.length > 1 && (
+                        <button
+                            onClick={() => setIsExpanded(true)}
+                            className="text-sm text-emerald-600 hover:underline"
+                        >
+                            他の配送先を表示
+                        </button>
+                    )}
 
-                {isExpanded && (
-                    <Button
-                        onClick={handleCollapse}
-                        className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
-                    >
-                        この住所に配達する
-                    </Button>
-                )}
-            </div>
+                    {isExpanded && (
+                        <div className="flex items-center justify-between">
+                            <Button
+                                onClick={handleSetDefaultAddress}
+                                className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
+                                disabled={processing}
+                            >
+                                この住所に配達する
+                            </Button>
+                            <button
+                                onClick={() => setIsExpanded(false)}
+                                className="text-sm text-emerald-600 hover:underline"
+                            >
+                                他の配送先を閉じる
+                            </button>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
