@@ -22,11 +22,10 @@ export function DeliveryAddressSection({
     const [isExpanded, setIsExpanded] = useState(false);
     const defaultAddress: Address | undefined = addresses[0];
 
-    const { data, setData, patch, processing } = useForm<SetDefaultAddressForm>(
-        {
+    const { data, setData, patch, processing, reset } =
+        useForm<SetDefaultAddressForm>({
             selectAddressId: defaultAddress?.id,
-        },
-    );
+        });
 
     const handleSetDefaultAddress = () => {
         if (data.selectAddressId === undefined) return;
@@ -104,7 +103,10 @@ export function DeliveryAddressSection({
                                 この住所に配達する
                             </Button>
                             <button
-                                onClick={() => setIsExpanded(false)}
+                                onClick={() => {
+                                    setIsExpanded(false);
+                                    reset();
+                                }}
                                 className="text-sm text-emerald-600 hover:underline"
                             >
                                 他の配送先を閉じる
