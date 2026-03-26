@@ -67,6 +67,7 @@ class GetCheckoutTest extends TestCase
 
         $address1 = Address::factory()->create([
             'user_id' => $this->user->id,
+            'is_default' => true,
         ]);
 
         $address2 = Address::factory()->create([
@@ -91,6 +92,8 @@ class GetCheckoutTest extends TestCase
             [$address1->id, $address2->id],
             $result->addresses->pluck('id')->all()
         );
+
+        $this->assertEquals(true, $result->addresses[0]->is_default);
 
         $this->assertEquals(1200, $result->subtotal);
     }
