@@ -27,7 +27,10 @@ class GetCheckout
 
         $deliveryDate = $this->deliveryDateService->generate();
 
-        $addresses = $user->addresses()->get();
+        $addresses = $user
+            ->addresses()
+            ->orderByDesc('is_default')
+            ->get();
 
         $shippingFee = 0;
 
