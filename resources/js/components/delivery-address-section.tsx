@@ -2,7 +2,7 @@ import { update } from '@/routes/addresses/default';
 import { useModalStore } from '@/stores/modalStore';
 import { Address } from '@/types/address';
 import { useForm } from '@inertiajs/react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import AddressCard from './address-card';
 import { Button } from './ui/button';
 
@@ -20,10 +20,7 @@ export function DeliveryAddressSection({
     const openModal = useModalStore((state) => state.openModal);
 
     const [isExpanded, setIsExpanded] = useState(false);
-    const defaultAddress = useMemo(
-        () => addresses.find((address) => address.isDefault),
-        [addresses],
-    );
+    const defaultAddress: Address | undefined = addresses[0];
 
     const { data, setData, patch, processing } = useForm<SetDefaultAddressForm>(
         {
