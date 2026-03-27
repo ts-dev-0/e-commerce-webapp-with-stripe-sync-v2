@@ -61,6 +61,7 @@ export default function Cart({ data }: CartProps) {
                             <Button
                                 className="mt-6 w-full cursor-pointer rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                                 variant="default"
+                                disabled={cartItems.length === 0}
                             >
                                 購入手続きへ進む
                             </Button>
