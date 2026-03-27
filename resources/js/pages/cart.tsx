@@ -55,14 +55,6 @@ export default function Cart({ data }: CartProps) {
                                 <dt>小計</dt>
                                 <dd>{subtotal.toLocaleString('ja-JP')}円</dd>
                             </div>
-                            <div className="flex justify-between">
-                                <dt>送料</dt>
-                                <dd>無料</dd>
-                            </div>
-                            <div className="flex justify-between font-semibold text-slate-800">
-                                <dt>合計</dt>
-                                <dd>{subtotal.toLocaleString('ja-JP')}円</dd>
-                            </div>
                         </dl>
 
                         <Link href={index()}>
