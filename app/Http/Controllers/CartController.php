@@ -61,7 +61,7 @@ class CartController extends Controller
         );
 
         return redirect()
-            ->route('cart.index')
+            ->back()
             ->with('success', 'Item removed from cart.');
     }
 }
