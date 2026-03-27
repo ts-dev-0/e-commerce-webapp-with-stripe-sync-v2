@@ -36,6 +36,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('checkout', CheckoutController::class)
         ->only(['index', 'store']);
 
+    Route::get('checkout/success', [CheckoutController::class, 'success'])
+        ->name('checkout.success');
+
+    Route::get('checkout/failed', [CheckoutController::class, 'failed'])
+        ->name('checkout.failed');
+
     Route::resource('reviews', ReviewController::class)
         ->only(['index', 'store', 'update', 'destroy']);
 
