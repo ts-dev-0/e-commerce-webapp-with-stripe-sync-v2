@@ -27,4 +27,14 @@ class CheckoutController extends Controller
     {
         $action->handle($request->user());
     }
+
+    public function success()
+    {
+        return inertia('checkout/success');
+    }
+
+    public function failed()
+    {
+        return inertia('checkout/failed');
+    }
 }
