@@ -1,13 +1,18 @@
+import { Head, router } from '@inertiajs/react';
+
+import AppLayout from '@/layouts/app-layout';
+
 import CartItemCard from '@/components/cart-item-card';
 import { DeliveryAddressSection } from '@/components/delivery-address-section';
+import { PaymentMethodSection } from '@/components/payment-method-section';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/app-layout';
+
 import { store } from '@/routes/checkout';
+
 import { Checkout as CheckoutType } from '@/types/checkout';
-import { Head, router } from '@inertiajs/react';
-import { useState } from 'react';
 
 interface CheckoutProps {
     data: CheckoutType;
@@ -15,15 +20,10 @@ interface CheckoutProps {
 
 export default function Checkout({ data }: CheckoutProps) {
     const cartItems = data['cartItems'];
-    const subtotal = data['subtotal'];
-    const deliveryDateList = data['deliveryDate'];
     const addresses = data['addresses'];
     const shippingFee = data['shippingFee'];
+    const subtotal = data['subtotal'];
     const total = data['total'];
-
-    const [deliveryDate, setDeliveryDate] = useState<string>(
-        deliveryDateList[0],
-    );
 
     function handleCheckout() {
         router.post(store().url);
@@ -38,101 +38,58 @@ export default function Checkout({ data }: CheckoutProps) {
                     <section className="lg:col-span-2">
                         <div className="space-y-6">
                             <DeliveryAddressSection addresses={addresses} />
+                            <PaymentMethodSection />
                             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                                <h2 className="text-lg font-semibold text-slate-800">
-                                    配達希望日時
-                                </h2>
+                                <div className="flex">
+                                    <div className="mt-4 max-w-96 space-y-4">
+                                        {cartItems.map(
+                                            ({ product, quantity }) => {
+                                                return (
+                                                    <CartItemCard
+                                                        key={product.id}
+                                                        product={product}
+                                                        initialQuantity={
+                                                            quantity
+                                                        }
+                                                    />
+                                                );
+                                            },
+                                        )}
+                                    </div>
+                                    <div className="w-full p-6">
+                                        <h2 className="text-lg font-semibold text-slate-800">
+                                            配達日時
+                                        </h2>
 
-                                <div className="mt-4">
-                                    <label className="text-xs font-medium text-slate-600">
-                                        配達希望日時
-                                    </label>
-                                    <div className="mt-4 flex flex-col gap-2">
-                                        {deliveryDateList.map((date) => (
-                                            <div
-                                                key={date}
-                                                className="flex items-center gap-x-2"
-                                            >
+                                        <div className="mt-4 flex items-center justify-between">
+                                            <div className="flex items-center gap-x-2">
                                                 <Input
                                                     type="radio"
-                                                    id={date}
                                                     name="deliveryDate"
-                                                    value={date}
-                                                    checked={
-                                                        deliveryDate === date
-                                                    }
-                                                    onChange={(e) =>
-                                                        setDeliveryDate(
-                                                            e.target.value,
-                                                        )
-                                                    }
+                                                    value={'delivery-date'}
+                                                    defaultChecked
                                                     className="h-4 w-4 accent-emerald-600 focus:ring-emerald-500"
                                                 />
 
                                                 <Label
-                                                    htmlFor={date}
+                                                    htmlFor={'delivery-date'}
                                                     className="text-sm font-medium text-slate-700"
                                                 >
-                                                    {date}
+                                                    発送後 0～3営業日
                                                 </Label>
                                             </div>
-                                        ))}
+
+                                            <p className="text-sm">
+                                                {shippingFee} 円
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                                <h2 className="text-lg font-semibold text-slate-800">
-                                    支払い方法
-                                </h2>
-
-                                <div className="mt-4 space-y-4">
-                                    <div className="flex items-center gap-3">
-                                        <Input
-                                            type="radio"
-                                            name="payment"
-                                            id="payment-stripe"
-                                            defaultChecked
-                                            className="h-4 w-4 accent-emerald-600 focus:ring-emerald-500"
-                                        />
-                                        <label
-                                            htmlFor="payment-stripe"
-                                            className="text-sm font-medium text-slate-700"
-                                        >
-                                            Stripe（準備中）
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <p className="mt-4 text-xs text-slate-500">
-                                    ※ 本実装では決済処理は行われません。今後
-                                    Stripe 等と連携します。
-                                </p>
-                            </div>
-
-                            <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-                                <h2 className="text-lg font-semibold text-slate-800">
-                                    カート内の商品
-                                </h2>
-
-                                <div className="mt-4 space-y-4">
-                                    {cartItems.map((item) => {
-                                        const product = item['product'];
-                                        const quantity = item['quantity'];
-
-                                        return (
-                                            <CartItemCard
-                                                key={product.id}
-                                                product={product}
-                                                initialQuantity={quantity}
-                                            />
-                                        );
-                                    })}
                                 </div>
                             </div>
                         </div>
                     </section>
 
+                    {/* Order Summary  */}
                     <aside className="h-fit rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                         <h2 className="text-lg font-semibold text-slate-800">
                             ご注文内容
