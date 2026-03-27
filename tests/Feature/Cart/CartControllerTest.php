@@ -161,6 +161,7 @@ class CartControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
+            ->from(route('cart.index'))
             ->delete(
                 route('cart.items.destroy'),
                 $payload
