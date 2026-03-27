@@ -10,13 +10,13 @@ class ProcessCheckout
     public function handle(User $user): Order
     {
         $cart = $user->currentCart();
-        $products = $cart->products()->get();
+        $cartItems = $cart->products()->get();
 
-        if($products->isEmpty()) {
+        if($cartItems->isEmpty()) {
             throw new \DomainException('Cart is empty.');
         }
 
-        $totalAmount = $products->sum(function ($product) {
+        $totalAmount = $cartItems->sum(function ($product) {
             return $product->price * $product->pivot->quantity;
         });
 
@@ -25,7 +25,7 @@ class ProcessCheckout
             'total_amount' => $totalAmount,
         ]);
 
-        foreach ($products as $product) {
+        foreach ($cartItems as $product) {
             $quantity = $product->pivot->quantity;
             $price    = $product->price;
 
