@@ -26,5 +26,19 @@ class CheckoutController extends Controller
     public function store(Request $request, ProcessCheckout $action)
     {
         $action->handle($request->user());
+
+        return redirect()
+            ->route('checkout.success')
+            ->with('success', 'Checkout successfully.');
+    }
+
+    public function success()
+    {
+        return inertia('checkout/success');
+    }
+
+    public function failed()
+    {
+        return inertia('checkout/failed');
     }
 }

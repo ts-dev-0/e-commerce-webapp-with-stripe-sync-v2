@@ -103,7 +103,12 @@ class CheckoutControllerTest extends TestCase
             ->from(route('checkout.index'))
             ->post(route('checkout.store'));
 
-        $response->assertStatus(200);
+        $response->assertRedirect(route('checkout.success'));
+
+        $response->assertSessionHas(
+            'success',
+            'Checkout successfully.'
+        );
     }
 
     public function test_guest_cannot_process_checkout()
