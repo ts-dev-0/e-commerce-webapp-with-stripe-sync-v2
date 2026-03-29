@@ -15,6 +15,7 @@ class SearchPublishedProductController extends Controller
 
         return Inertia::render('search-product', [
             'data' => $data,
+            'keyword'=> $validatedData['keyword'],
         ]);
     }
 }
