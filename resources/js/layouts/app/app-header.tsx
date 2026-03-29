@@ -1,3 +1,4 @@
+import { SearchProductsForm } from '@/components/search-products-form';
 import { home } from '@/routes';
 import cart from '@/routes/cart';
 import { Link } from '@inertiajs/react';
@@ -38,13 +39,8 @@ export default function AppHeader() {
                         </Link>
                     </nav>
 
-                    {/* TODO:Backend側の処理を見直してからFront側の作成の続きを行う */}
                     <div className="flex items-center space-x-4">
-                        <input
-                            type="search"
-                            placeholder="Search"
-                            className="rounded-md border border-slate-300 placeholder-slate-400 px-2 py-1 text-sm focus:outline-none"
-                        />
+                        <SearchProductsForm />
                     </div>
                 </div>
             </div>
