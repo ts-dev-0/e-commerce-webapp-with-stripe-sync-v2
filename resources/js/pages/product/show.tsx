@@ -95,7 +95,10 @@ export default function Show({ data: product }: ShowProps) {
                                     カートに入れる
                                 </Button>
                             </form>
-                            <FavoriteButton productId={data.productId}/>
+                            <FavoriteButton
+                                productId={data.productId}
+                                isFavorited
+                            />
                         </div>
                     </div>
                 </div>

@@ -34,7 +34,7 @@ export default function ProductCard({
                     <span className="text-sm font-semibold text-slate-800">
                         {price.toLocaleString('ja-JP')}円
                     </span>
-                    <FavoriteButton productId={id}/>
+                    <FavoriteButton productId={id} isFavorited />
                 </div>
             </div>
         </Link>
