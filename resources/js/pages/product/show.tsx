@@ -1,5 +1,6 @@
 import { QuantitySelector } from '@/components/quantity-selector';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
 import { home } from '@/routes';
 import { store } from '@/routes/cart';
@@ -90,6 +91,7 @@ export default function Show({ data: product }: ShowProps) {
                                     className="cursor-pointer rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
                                     disabled={processing}
                                 >
+                                    {processing && <Spinner />}
                                     カートに入れる
                                 </Button>
                             </form>

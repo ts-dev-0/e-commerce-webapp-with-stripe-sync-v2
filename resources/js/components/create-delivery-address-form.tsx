@@ -14,6 +14,7 @@ import { useForm } from '@inertiajs/react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
+import { Spinner } from './ui/spinner';
 
 export default function CreateDeliveryAddressForm() {
     const { data, setData, transform, post, processing, reset } =
@@ -163,6 +164,7 @@ export default function CreateDeliveryAddressForm() {
                 onClick={handleCreateAddress}
                 disabled={processing}
             >
+                {processing && <Spinner />}
                 この住所を使用
             </Button>
         </>
