@@ -1,4 +1,3 @@
-import { FavoriteButton } from '@/components/favorite-button';
 import { QuantitySelector } from '@/components/quantity-selector';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -95,10 +94,6 @@ export default function Show({ data: product }: ShowProps) {
                                     カートに入れる
                                 </Button>
                             </form>
-                            <FavoriteButton
-                                productId={data.productId}
-                                isFavorited
-                            />
                         </div>
                     </div>
                 </div>
