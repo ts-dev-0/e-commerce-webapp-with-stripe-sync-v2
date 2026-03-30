@@ -1,5 +1,7 @@
 import { QuantitySelector } from '@/components/quantity-selector';
+import ReviewSection from '@/components/review-section';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
 import { store } from '@/routes/cart';
@@ -97,6 +99,8 @@ export default function Show({ data: product }: ShowProps) {
                         </div>
                     </div>
                 </div>
+                <Separator className="my-6 h-px border-0 bg-slate-300" />
+                <ReviewSection productId={product.id} />
             </div>
         </AppLayout>
     );
