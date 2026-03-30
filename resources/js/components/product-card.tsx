@@ -1,5 +1,6 @@
 import { show } from '@/routes/product';
 import { Link } from '@inertiajs/react';
+import { FavoriteButton } from './favorite-button';
 
 interface ProductCardProps {
     id: number;
@@ -33,6 +34,7 @@ export default function ProductCard({
                     <span className="text-sm font-semibold text-slate-800">
                         {price.toLocaleString('ja-JP')}円
                     </span>
+                    <FavoriteButton productId={id} isFavorited />
                 </div>
             </div>
         </Link>

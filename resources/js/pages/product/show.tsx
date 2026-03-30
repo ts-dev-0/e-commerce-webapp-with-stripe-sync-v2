@@ -1,11 +1,11 @@
+import { FavoriteButton } from '@/components/favorite-button';
 import { QuantitySelector } from '@/components/quantity-selector';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
-import { home } from '@/routes';
 import { store } from '@/routes/cart';
 import { Product } from '@/types/product';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
 interface ShowProps {
     data: Product;
@@ -95,12 +95,10 @@ export default function Show({ data: product }: ShowProps) {
                                     カートに入れる
                                 </Button>
                             </form>
-                            <Link
-                                href={home()}
-                                className="text-sm text-slate-600 hover:underline"
-                            >
-                                一覧に戻る
-                            </Link>
+                            <FavoriteButton
+                                productId={data.productId}
+                                isFavorited
+                            />
                         </div>
                     </div>
                 </div>
