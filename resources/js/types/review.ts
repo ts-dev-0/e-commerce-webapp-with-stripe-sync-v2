@@ -1,3 +1,5 @@
+import { User } from ".";
+
 export interface Review {
     id: number;
     user_id: number;
@@ -5,4 +7,5 @@ export interface Review {
     comment: string;
     createdAt: string;
     isEdited: boolean;
+    user: Pick<User, 'id' | 'name'>
 }
