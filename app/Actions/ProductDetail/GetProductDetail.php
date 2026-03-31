@@ -8,7 +8,12 @@ class GetProductDetail
 {
   public function handle(Product $product): array
   {
-    $reviews = $product->reviews;
+    $reviews = $product
+      ->reviews()
+      ->with('user:id,name')
+      ->latest()
+      ->get();
+
     $averageRating = $reviews->avg('rating') ?? 0.0;
 
     return [
