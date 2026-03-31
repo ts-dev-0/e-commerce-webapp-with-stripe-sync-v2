@@ -23,7 +23,7 @@ export default function ReviewSection({
 
             <div className="mt-6 flex items-center gap-4">
                 <div className="text-2xl font-bold text-slate-800">
-                    {averageRating}
+                    平均評価：{averageRating} / 5
                 </div>
 
                 <div className="text-sm text-slate-500">
