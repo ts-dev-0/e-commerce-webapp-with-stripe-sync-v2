@@ -21,7 +21,6 @@ class ReviewResource extends JsonResource
             'rating' => $this->rating,
             'comment' => $this->comment,
             'createdAt' => $this->created_at?->diffForHumans(),
-            'updatedAt' => $this->updated_at?->diffForHumans(),
             'isEdited' => $this->updated_at?->ne($this->created_at),
         ];
     }
