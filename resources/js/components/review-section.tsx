@@ -1,7 +1,9 @@
 import { SharedData } from '@/types';
 import { Review } from '@/types/review';
 import { usePage } from '@inertiajs/react';
+import { Pencil, Trash2 } from 'lucide-react';
 import ReviewForm from './review-form';
+import { Button } from './ui/button';
 
 interface ReviewSectionProps {
     productId: number;
@@ -43,9 +45,30 @@ export default function ReviewSection({
                                     {review.user.name}
                                 </div>
 
-                                <div className="text-xs text-slate-400">
-                                    {review.createdAt}
-                                    {review.isEdited && '（編集済み）'}
+                                <div className="flex items-center gap-3">
+                                    <div className="text-xs text-slate-400">
+                                        {review.createdAt}
+                                        {review.isEdited && '（編集済み）'}
+                                    </div>
+                                    {review.userId === auth.user.id && (
+                                        <div className="flex items-center gap-2">
+                                            <Button
+                                                size={'icon'}
+                                                variant={'ghost'}
+                                                className="text-slate-400 hover:text-slate-600"
+                                            >
+                                                <Pencil className="size-4" />
+                                            </Button>
+
+                                            <Button
+                                                size={'icon'}
+                                                variant={'ghost'}
+                                                className="text-slate-400 hover:bg-red-200 hover:text-red-500"
+                                            >
+                                                <Trash2 className="size-4" />
+                                            </Button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
