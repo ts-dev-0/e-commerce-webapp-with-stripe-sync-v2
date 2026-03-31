@@ -1,8 +1,9 @@
 export interface Review {
-  id: number;
-  user_id: number;
-  rating: number;
-  comment: string
-  createdAt: string;
-  updatedAt: string;
+    id: number;
+    user_id: number;
+    rating: number;
+    comment: string;
+    createdAt: string;
+    updatedAt: string;
+    isEdited: boolean;
 }
