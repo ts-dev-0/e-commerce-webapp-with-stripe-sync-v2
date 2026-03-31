@@ -1,34 +1,25 @@
+import { SharedData } from '@/types';
+import { Review } from '@/types/review';
+import { usePage } from '@inertiajs/react';
 import ReviewForm from './review-form';
 
 interface ReviewSectionProps {
-  productId: number;
+    productId: number;
+    reviews: Review[];
+    averageRating: number;
 }
 
-export default function ReviewSection({productId}: ReviewSectionProps) {
-    const reviews = [
-        {
-            id: 1,
-            name: '山田 太郎',
-            rating: 5,
-            comment: 'とても良い商品でした。',
-            date: '2025-03-01',
-        },
-        {
-            id: 2,
-            name: '佐藤 花子',
-            rating: 4,
-            comment: '配送も早く満足です。',
-            date: '2025-03-02',
-        },
-    ];
-
-    const averageRating = 4.5;
+export default function ReviewSection({
+    productId,
+    reviews,
+    averageRating,
+}: ReviewSectionProps) {
+    const { auth } = usePage<SharedData>().props;
 
     return (
         <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-slate-800">レビュー</h2>
-
-            <ReviewForm productId={productId}/>
+            {auth.user && <ReviewForm productId={productId} />}
 
             <div className="mt-6 flex items-center gap-4">
                 <div className="text-2xl font-bold text-slate-800">
@@ -49,11 +40,12 @@ export default function ReviewSection({productId}: ReviewSectionProps) {
                         >
                             <div className="flex items-center justify-between">
                                 <div className="text-sm font-medium text-slate-800">
-                                    {review.name}
+                                    名無しユーザー
                                 </div>
 
                                 <div className="text-xs text-slate-400">
-                                    {review.date}
+                                    {review.createdAt}
+                                    {review.isEdited && '（編集済み）'}
                                 </div>
                             </div>
 

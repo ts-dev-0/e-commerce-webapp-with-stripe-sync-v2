@@ -6,10 +6,13 @@ import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
 import { store } from '@/routes/cart';
 import { Product } from '@/types/product';
+import { Review } from '@/types/review';
 import { Head, useForm } from '@inertiajs/react';
 
 interface ShowProps {
     data: Product;
+    reviews: Review[];
+    averageRating: number;
 }
 
 interface LocalQuantityForm {
@@ -17,7 +20,11 @@ interface LocalQuantityForm {
     quantity: number;
 }
 
-export default function Show({ data: product }: ShowProps) {
+export default function Show({
+    data: product,
+    reviews,
+    averageRating,
+}: ShowProps) {
     const { data, setData, transform, post, processing } =
         useForm<LocalQuantityForm>({
             productId: product.id,
@@ -100,7 +107,11 @@ export default function Show({ data: product }: ShowProps) {
                     </div>
                 </div>
                 <Separator className="my-6 h-px border-0 bg-slate-300" />
-                <ReviewSection productId={product.id} />
+                <ReviewSection
+                    productId={product.id}
+                    reviews={reviews}
+                    averageRating={averageRating}
+                />
             </div>
         </AppLayout>
     );
