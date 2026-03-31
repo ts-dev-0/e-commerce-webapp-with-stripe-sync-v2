@@ -53,12 +53,12 @@ class getProductDetailTest extends TestCase
         );
 
         $this->assertArrayHasKey(
-            'averageReview',
+            'averageRating',
             $result,
         );
 
         $this->assertCount(4, $result['reviews']);
-        $this->assertSame(2.75, $result['averageReview']);
+        $this->assertSame(2.75, $result['averageRating']);
 
         $this->assertInstanceOf(
             \Illuminate\Support\Collection::class,
@@ -82,10 +82,10 @@ class getProductDetailTest extends TestCase
         );
 
         $this->assertArrayHasKey(
-            'averageReview',
+            'averageRating',
             $result,
         );
         $this->assertCount(0, $result['reviews']);
-        $this->assertSame(0.0, $result['averageReview']);
+        $this->assertSame(0.0, $result['averageRating']);
     }
 }

@@ -9,11 +9,11 @@ class GetProductDetail
   public function handle(Product $product): array
   {
     $reviews = $product->reviews;
-    $averageReview = $reviews->avg('rating') ?? 0.0;
+    $averageRating = $reviews->avg('rating') ?? 0.0;
 
     return [
       'reviews' => $reviews,
-      'averageReview' => $averageReview,
+      'averageRating' => $averageRating,
     ];
   }
 }
