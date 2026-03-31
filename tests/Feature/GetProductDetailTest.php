@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\ProductDetail\getProductDetail;
+use App\Actions\ProductDetail\GetProductDetail;
 use App\Models\Product;
 use App\Models\Review;
 
@@ -12,7 +12,7 @@ class getProductDetailTest extends TestCase
 {
     use RefreshDatabase;
 
-    private getProductDetail $action;
+    private GetProductDetail $action;
     private Product $product;
     private Review $review1;
     private Review $review2;
@@ -23,7 +23,7 @@ class getProductDetailTest extends TestCase
     {
         parent::setUp();
 
-        $this->action = new getProductDetail();
+        $this->action = new GetProductDetail();
         $this->product = Product::factory()->create();
         $this->review1 = Review::factory()->create([
             'product_id' => $this->product->id,

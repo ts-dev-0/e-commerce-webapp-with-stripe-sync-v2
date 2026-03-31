@@ -4,7 +4,7 @@ namespace App\Actions\ProductDetail;
 
 use App\Models\Product;
 
-class getProductDetail
+class GetProductDetail
 {
   public function handle(Product $product): array
   {
