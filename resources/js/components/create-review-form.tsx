@@ -2,6 +2,7 @@ import { store } from '@/routes/reviews';
 import { useForm } from '@inertiajs/react';
 import { Star } from 'lucide-react';
 import { Button } from './ui/button';
+import { Spinner } from './ui/spinner';
 
 interface ReviewFormData {
     productId: number;
@@ -13,7 +14,7 @@ interface ReviewFormProps {
     productId: number;
 }
 
-export default function ReviewForm({ productId }: ReviewFormProps) {
+export default function CreateReviewForm({ productId }: ReviewFormProps) {
     const { data, setData, transform, processing, post, reset } =
         useForm<ReviewFormData>({
             productId,
@@ -86,6 +87,7 @@ export default function ReviewForm({ productId }: ReviewFormProps) {
                 className="bg-emerald-600 hover:bg-emerald-700"
                 disabled={processing}
             >
+                {processing && <Spinner />}
                 レビューを投稿する
             </Button>
         </form>

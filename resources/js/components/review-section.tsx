@@ -1,8 +1,8 @@
 import { SharedData } from '@/types';
 import { Review } from '@/types/review';
 import { usePage } from '@inertiajs/react';
+import CreateReviewForm from './create-review-form';
 import ReviewCard from './review-card';
-import ReviewForm from './review-form';
 
 interface ReviewSectionProps {
     productId: number;
@@ -20,7 +20,7 @@ export default function ReviewSection({
     return (
         <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-slate-800">レビュー</h2>
-            {auth.user && <ReviewForm productId={productId} />}
+            {auth.user && <CreateReviewForm productId={productId} />}
 
             <div className="mt-6 flex items-center gap-4">
                 <div className="text-2xl font-bold text-slate-800">
