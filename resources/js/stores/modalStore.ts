@@ -7,7 +7,7 @@ import { create } from 'zustand';
 */
 
 export interface ModalPropsMap {
-    deleteConfirm: {
+    deleteReviewConfirm: {
         id: number;
     };
 
