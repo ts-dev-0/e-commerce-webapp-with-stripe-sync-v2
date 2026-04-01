@@ -1,3 +1,4 @@
+import { useModalStore } from '@/stores/modalStore';
 import { SharedData } from '@/types';
 import { Review } from '@/types/review';
 import { usePage } from '@inertiajs/react';
@@ -17,6 +18,8 @@ export default function ReviewSection({
     averageRating,
 }: ReviewSectionProps) {
     const { auth } = usePage<SharedData>().props;
+
+    const openModal = useModalStore((state) => state.openModal);
 
     return (
         <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
@@ -50,25 +53,32 @@ export default function ReviewSection({
                                         {review.createdAt}
                                         {review.isEdited && '（編集済み）'}
                                     </div>
-                                    {auth.user && review.userId === auth.user.id && (
-                                        <div className="flex items-center gap-2">
-                                            <Button
-                                                size={'icon'}
-                                                variant={'ghost'}
-                                                className="text-slate-400 hover:text-slate-600"
-                                            >
-                                                <Pencil className="size-4" />
-                                            </Button>
+                                    {auth.user &&
+                                        review.userId === auth.user.id && (
+                                            <div className="flex items-center gap-2">
+                                                <Button
+                                                    size={'icon'}
+                                                    variant={'ghost'}
+                                                    className="text-slate-400 transition-colors duration-150 hover:text-slate-600"
+                                                >
+                                                    <Pencil className="size-4 transition-colors duration-150" />
+                                                </Button>
 
-                                            <Button
-                                                size={'icon'}
-                                                variant={'ghost'}
-                                                className="text-slate-400 hover:bg-red-200 hover:text-red-500"
-                                            >
-                                                <Trash2 className="size-4" />
-                                            </Button>
-                                        </div>
-                                    )}
+                                                <Button
+                                                    size={'icon'}
+                                                    variant={'ghost'}
+                                                    className="text-slate-400 transition-colors duration-150 hover:bg-red-200 hover:text-red-500"
+                                                    onClick={() =>
+                                                        openModal(
+                                                            'deleteReviewConfirm',
+                                                            { id: review.id },
+                                                        )
+                                                    }
+                                                >
+                                                    <Trash2 className="size-4 transition-colors duration-150" />
+                                                </Button>
+                                            </div>
+                                        )}
                                 </div>
                             </div>
 
