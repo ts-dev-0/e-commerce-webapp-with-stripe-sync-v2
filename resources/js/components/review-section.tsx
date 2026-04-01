@@ -50,7 +50,7 @@ export default function ReviewSection({
                                         {review.createdAt}
                                         {review.isEdited && '（編集済み）'}
                                     </div>
-                                    {review.userId === auth.user.id && (
+                                    {auth.user && review.userId === auth.user.id && (
                                         <div className="flex items-center gap-2">
                                             <Button
                                                 size={'icon'}
