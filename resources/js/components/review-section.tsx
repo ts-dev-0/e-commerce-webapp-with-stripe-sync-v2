@@ -1,10 +1,8 @@
-import { useModalStore } from '@/stores/modalStore';
 import { SharedData } from '@/types';
 import { Review } from '@/types/review';
 import { usePage } from '@inertiajs/react';
-import { Pencil, Trash2 } from 'lucide-react';
+import ReviewCard from './review-card';
 import ReviewForm from './review-form';
-import { Button } from './ui/button';
 
 interface ReviewSectionProps {
     productId: number;
@@ -18,8 +16,6 @@ export default function ReviewSection({
     averageRating,
 }: ReviewSectionProps) {
     const { auth } = usePage<SharedData>().props;
-
-    const openModal = useModalStore((state) => state.openModal);
 
     return (
         <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
@@ -39,57 +35,12 @@ export default function ReviewSection({
             <div className="mt-4 space-y-4">
                 {reviews.length > 0 ? (
                     reviews.map((review) => (
-                        <div
-                            key={review.id}
-                            className="rounded-md border border-slate-200 p-4"
-                        >
-                            <div className="flex items-center justify-between">
-                                <div className="text-sm font-medium text-slate-800">
-                                    {review.user.name}
-                                </div>
-
-                                <div className="flex items-center gap-3">
-                                    <div className="text-xs text-slate-400">
-                                        {review.createdAt}
-                                        {review.isEdited && '（編集済み）'}
-                                    </div>
-                                    {auth.user &&
-                                        review.userId === auth.user.id && (
-                                            <div className="flex items-center gap-2">
-                                                <Button
-                                                    size={'icon'}
-                                                    variant={'ghost'}
-                                                    className="text-slate-400 transition-colors duration-150 hover:text-slate-600"
-                                                >
-                                                    <Pencil className="size-4 transition-colors duration-150" />
-                                                </Button>
-
-                                                <Button
-                                                    size={'icon'}
-                                                    variant={'ghost'}
-                                                    className="text-slate-400 transition-colors duration-150 hover:bg-red-200 hover:text-red-500"
-                                                    onClick={() =>
-                                                        openModal(
-                                                            'deleteReviewConfirm',
-                                                            { id: review.id },
-                                                        )
-                                                    }
-                                                >
-                                                    <Trash2 className="size-4 transition-colors duration-150" />
-                                                </Button>
-                                            </div>
-                                        )}
-                                </div>
-                            </div>
-
-                            <div className="mt-1 text-sm text-amber-400">
-                                {'★'.repeat(review.rating)}
-                            </div>
-
-                            <p className="mt-2 text-sm text-slate-600">
-                                {review.comment}
-                            </p>
-                        </div>
+                        <ReviewCard
+                            review={review}
+                            isOwnReview={
+                                auth.user && auth.user.id === review.userId
+                            }
+                        />
                     ))
                 ) : (
                     <div className="rounded-md border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-500">
