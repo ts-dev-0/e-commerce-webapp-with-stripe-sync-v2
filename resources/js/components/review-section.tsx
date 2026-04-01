@@ -36,6 +36,7 @@ export default function ReviewSection({
                 {reviews.length > 0 ? (
                     reviews.map((review) => (
                         <ReviewCard
+                            key={review.id}
                             review={review}
                             isOwnReview={
                                 auth.user && auth.user.id === review.userId
