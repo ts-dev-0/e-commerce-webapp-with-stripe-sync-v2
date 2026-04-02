@@ -33,7 +33,7 @@ export default function ReviewCard({ review, isOwnReview }: ReviewCardProps) {
                                 size={'icon'}
                                 variant={'ghost'}
                                 className="text-slate-400 transition-colors duration-150 hover:text-slate-600"
-                                onClick={() => setEditedMode(true)}
+                                onClick={() => setEditedMode(!editedMode)}
                             >
                                 <Pencil className="size-4 transition-colors duration-150" />
                             </Button>
