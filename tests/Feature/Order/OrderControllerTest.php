@@ -45,19 +45,19 @@ class OrderControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->get(route('orders.index'));
+            ->get(route('account.orders'));
 
         $response->assertOk();
 
         $response->assertInertia(fn (Assert $page) =>
-            $page->component('orders')
+            $page->component('account/orders')
                  ->where('data', $orders)
         );
     }
 
     public function test_guest_cannot_access_orders_page()
     {
-        $response = $this->get(route('orders.index'));
+        $response = $this->get(route('account.orders'));
 
         $response->assertRedirect(route('login'));
     }
@@ -74,7 +74,7 @@ class OrderControllerTest extends TestCase
             ->actingAs($this->user)
             ->post(route('orders.cancel', $this->order));
 
-        $response->assertRedirect(route('orders.index'));
+        $response->assertRedirect(route('account.orders'));
         $response->assertSessionHas('success', 'Order has been cancelled.');
     }
 
