@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import AppLayout from '@/layouts/app-layout';
+import AccountLayout from '@/layouts/account-layout';
 import { useModalStore } from '@/stores/modalStore';
 import { Address } from '@/types/address';
 import { Head } from '@inertiajs/react';
@@ -12,7 +12,7 @@ export default function Addresses({ data }: AddressesProps) {
     const openModal = useModalStore((state) => state.openModal);
 
     return (
-        <AppLayout>
+        <AccountLayout>
             <Head title="配送先住所" />
 
             <div className="mx-auto max-w-4xl">
@@ -93,6 +93,6 @@ export default function Addresses({ data }: AddressesProps) {
                     </div>
                 )}
             </div>
-        </AppLayout>
+        </AccountLayout>
     );
 }

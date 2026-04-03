@@ -1,4 +1,4 @@
-import AppLayout from '@/layouts/app-layout';
+import AccountLayout from '@/layouts/account-layout';
 import { Order } from '@/types/order';
 import { Head } from '@inertiajs/react';
 
@@ -22,7 +22,7 @@ interface OrdersProps {
 
 export default function Orders({ data }: OrdersProps) {
     return (
-        <AppLayout>
+        <AccountLayout>
             <Head title="注文履歴" />
 
             <div className="mx-auto max-w-4xl">
@@ -105,6 +105,6 @@ export default function Orders({ data }: OrdersProps) {
                     </div>
                 )}
             </div>
-        </AppLayout>
+        </AccountLayout>
     );
 }
