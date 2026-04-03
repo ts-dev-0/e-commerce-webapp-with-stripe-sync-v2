@@ -32,7 +32,7 @@ export default function AppHeader() {
                             Cart
                         </Link>
                         <Link
-                            href="#"
+                            href="/account"
                             className="text-slate-700 hover:text-slate-900"
                         >
                             Account
