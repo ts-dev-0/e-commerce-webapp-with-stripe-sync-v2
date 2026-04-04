@@ -8,7 +8,6 @@ Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
     Route::redirect('settings', '/account/settings/password');
 
     Route::get('settings/password', [PasswordController::class, 'edit'])->name('user-password.edit');
-    Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('settings/password', [PasswordController::class, 'update'])
         ->middleware('throttle:6,1')
         ->name('user-password.update');
