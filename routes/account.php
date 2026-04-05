@@ -4,9 +4,12 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
-  Route::redirect('/', '/account/profile');
+  Route::get('/', function() {
+    return Inertia::render('account/index');
+  });
 
   Route::get('orders', [OrderController::class, 'index'])->name('account.orders');
   Route::get('addresses', [AddressController::class, 'index'])->name('account.addresses');
