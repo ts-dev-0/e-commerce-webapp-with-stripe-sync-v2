@@ -13,7 +13,7 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
             <div className="mx-auto flex w-full max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
                 <h1 className="text-2xl font-semibold">アカウント</h1>
 
-                <main className="bg-slate-500 p-4">
+                <main className="bg-slate-50 p-4">
                     {children}
                 </main>
             </div>
