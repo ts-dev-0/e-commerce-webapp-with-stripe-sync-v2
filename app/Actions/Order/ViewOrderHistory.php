@@ -9,7 +9,8 @@ class ViewOrderHistory
 {
     public function handle(User $user): Collection
     {
-        return $user->orders()
+        return  $user->orders()
+            ->with('items')
             ->orderByDesc('created_at')
             ->get();
     }

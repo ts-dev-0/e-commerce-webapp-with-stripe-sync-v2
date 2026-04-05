@@ -1,7 +1,9 @@
+import AccountLayout from "@/layouts/account-layout";
+
 export default function Appearance() {
     return (
-        <div>
+        <AccountLayout>
             <div>Appearance Page</div>
-        </div>
+        </AccountLayout>
     );
 }

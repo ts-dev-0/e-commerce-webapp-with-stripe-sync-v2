@@ -6,10 +6,22 @@ use App\Actions\Address\SetDefaultAddress;
 use App\Actions\Address\StoreAddress;
 use App\Http\Requests\SetDefaultAddressRequest;
 use App\Http\Requests\StoreAddressRequest;
+use App\Http\Resources\AddressResource;
 use App\Models\Address;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AddressController extends Controller
 {
+    public function index(Request $request)
+    {
+        $addresses = $request->user()->addresses()->get();
+
+        return Inertia::render('account/addresses', [
+            'data' => AddressResource::collection($addresses),
+        ]);
+    }
+
     public function store(StoreAddressRequest $request, StoreAddress $action)
     {
         $validatedData = $request->validated();

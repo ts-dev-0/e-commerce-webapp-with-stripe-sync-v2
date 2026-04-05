@@ -1,7 +1,9 @@
+import AccountLayout from "@/layouts/account-layout";
+
 export default function Profile() {
     return (
-        <div>
+        <AccountLayout>
             <div>Profile Page</div>
-        </div>
+        </AccountLayout>
     );
 }

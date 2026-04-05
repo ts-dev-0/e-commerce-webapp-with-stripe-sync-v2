@@ -1,7 +1,9 @@
+import AccountLayout from "@/layouts/account-layout";
+
 export default function Password() {
     return (
-        <div>
+        <AccountLayout>
             <div>Password Page</div>
-        </div>
+        </AccountLayout>
     );
 }
