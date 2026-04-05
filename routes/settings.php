@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Settings\PasswordController;
-use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
@@ -12,11 +12,10 @@ Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
         ->middleware('throttle:6,1')
         ->name('user-password.update');
 
-    // TODO: 機能実装後に追加する
-    // Route::get('settings/appearance', function () {
-    //     return Inertia::render('settings/appearance');
-    // })->name('appearance.edit');
+    Route::get('settings/appearance', function () {
+        return Inertia::render('settings/appearance');
+    })->name('appearance.edit');
 
-    // Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
-    //     ->name('two-factor.show');
+    Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
+        ->name('two-factor.show');
 });
