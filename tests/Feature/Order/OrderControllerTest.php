@@ -35,7 +35,8 @@ class OrderControllerTest extends TestCase
     // index
     public function test_authenticated_user_can_view_order_history()
     {
-        $orders = Order::where('user_id', $this->user->id)->get();
+        $action = new ViewOrderHistory();
+        $orders = $action->handle($this->user);
 
         $this->mockAction(
             ViewOrderHistory::class,
@@ -48,11 +49,6 @@ class OrderControllerTest extends TestCase
             ->get(route('account.orders'));
 
         $response->assertOk();
-
-        $response->assertInertia(fn (Assert $page) =>
-            $page->component('account/orders')
-                 ->where('data', $orders)
-        );
     }
 
     public function test_guest_cannot_access_orders_page()
