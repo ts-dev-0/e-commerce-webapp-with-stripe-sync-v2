@@ -72,7 +72,15 @@ export default function Addresses({ data }: AddressesProps) {
                             </div>
 
                             <div className="mt-4 flex justify-end gap-2 border-t border-slate-200 pt-4">
-                                <Button className="bg-emerald-600 hover:bg-emerald-700">
+                                <Button
+                                    className="bg-emerald-600 hover:bg-emerald-700"
+                                    onClick={() =>
+                                        openModal(
+                                            'editDeliveryAddress',
+                                            address,
+                                        )
+                                    }
+                                >
                                     編集
                                 </Button>
 

@@ -5,8 +5,10 @@ namespace Tests\Feature\Address;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\Address\StoreAddress;
+use App\Actions\Address\UpdateAddress;
 use App\Models\User;
-
+use App\Models\Address;
+use Mockery;
 use Tests\Traits\MocksActions;
 
 class AddressControllerTest extends TestCase
@@ -49,6 +51,35 @@ class AddressControllerTest extends TestCase
 
         $response->assertRedirect(route('checkout.index'));
         $response->assertSessionHas('success', 'Created Address.');
+    }
+
+    // update
+    public function test_authenticated_user_can_update_address()
+    {
+        $existingAddress = Address::factory()->create(['user_id' => $this->user->id]);
+
+        $updatedData = [
+            'full_name' => 'updated name',
+            'postal_code' => '7654321',
+            'prefecture' => '大阪府',
+            'city' => '大阪市',
+            'address_line' => '4-5-6-202',
+            'phone_number' => '08011111111',
+            'is_default' => false,
+        ];
+
+        $this->mockAction(
+            UpdateAddress::class,
+            [$this->user, Mockery::type(Address::class), $updatedData],
+        );
+
+        $response = $this
+            ->actingAs($this->user)
+            ->from(route('account.addresses'))
+            ->patch(route('addresses.update', $existingAddress), $updatedData);
+
+        $response->assertRedirect(route('account.addresses'));
+        $response->assertSessionHas('success', 'Updated Address.');
     }
 
     public function test_guest_cannot_access_reviews_page()

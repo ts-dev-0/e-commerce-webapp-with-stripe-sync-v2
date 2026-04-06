@@ -1,6 +1,7 @@
 import { useModalStore } from '@/stores/modalStore';
 import CreateDeliveryAddressModal from './create-delivery-address-modal';
 import DeleteReviewModal from './delete-review-modal';
+import EditDeliveryAddressModal from './edit-delivery-address-modal';
 
 export default function ModalRenderer() {
     const modal = useModalStore((state) => state.modal);
@@ -10,6 +11,8 @@ export default function ModalRenderer() {
     switch (modal.type) {
         case 'createDeliveryAddress':
             return <CreateDeliveryAddressModal />;
+        case 'editDeliveryAddress':
+            return <EditDeliveryAddressModal address={modal.props} />;
         case 'deleteReviewConfirm':
             return <DeleteReviewModal id={modal.props.id} />;
 

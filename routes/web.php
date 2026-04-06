@@ -46,9 +46,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('search/products', SearchPublishedProductController::class)->name('search.products');
 
-    Route::post('addresses', [AddressController::class, 'store'])->name('addresses.store');
-    Route::patch('addresses/{address}/default', [AddressController::class, 'updateDefault']
-        )->name('addresses.default.update');
+    Route::post('addresses', [AddressController::class, 'store'])->name('addresses.store');    
+    Route::patch('addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');    
+    Route::patch('addresses/{address}/default', [AddressController::class, 'updateDefault'])
+        ->name('addresses.default.update');
 });
 
 require __DIR__.'/settings.php';

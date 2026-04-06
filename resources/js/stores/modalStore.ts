@@ -1,3 +1,4 @@
+import { Address } from '@/types/address';
 import { create } from 'zustand';
 
 /*
@@ -12,6 +13,8 @@ export interface ModalPropsMap {
     };
 
     createDeliveryAddress: undefined;
+
+    editDeliveryAddress: Address;
 }
 
 /*
