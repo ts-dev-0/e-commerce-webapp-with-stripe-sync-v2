@@ -46,150 +46,140 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
     };
 
     return (
-        <AccountLayout>
-            <div className="mx-auto max-w-4xl space-y-6">
-                <div>
-                    <h1 className="text-3xl font-bold text-slate-900">
-                        ログインとセキュリティ
-                    </h1>
-                    <p className="mt-2 text-sm text-slate-600">
-                        ログイン情報とメールアドレスの管理を行います。
-                    </p>
-                </div>
-
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <CardTitle>アカウント情報</CardTitle>
-                                <CardDescription>
-                                    現在のログイン名とメールアドレスです。
-                                </CardDescription>
-                            </div>
-                            {!isEditing && (
-                                <Button
-                                    variant="outline"
-                                    className="text-slate-900"
-                                    onClick={handleEdit}
-                                >
-                                    編集
-                                </Button>
-                            )}
+        <AccountLayout
+            title="ログインとセキュリティ"
+            description="ログイン情報とメールアドレスの管理を行います"
+        >
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <CardTitle>アカウント情報</CardTitle>
+                            <CardDescription>
+                                現在のログイン名とメールアドレスです。
+                            </CardDescription>
                         </div>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        {isEditing ? (
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div>
-                                    <Label htmlFor="name">ユーザー名</Label>
-                                    <Input
-                                        id="name"
-                                        type="text"
-                                        value={data.name}
-                                        onChange={(e) =>
-                                            setData('name', e.target.value)
-                                        }
-                                        className="mt-1"
-                                        placeholder="ユーザー名を入力"
-                                    />
-                                    {errors.name && (
-                                        <p className="mt-1 text-sm text-red-600">
-                                            {errors.name}
-                                        </p>
-                                    )}
-                                </div>
-
-                                <div>
-                                    <Label htmlFor="email">
-                                        メールアドレス
-                                    </Label>
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        value={data.email}
-                                        onChange={(e) =>
-                                            setData('email', e.target.value)
-                                        }
-                                        className="mt-1"
-                                        placeholder="メールアドレスを入力"
-                                    />
-                                    {errors.email && (
-                                        <p className="mt-1 text-sm text-red-600">
-                                            {errors.email}
-                                        </p>
-                                    )}
-                                </div>
-
-                                <div className="flex justify-end gap-3">
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        onClick={handleCancel}
-                                        disabled={processing}
-                                    >
-                                        キャンセル
-                                    </Button>
-                                    <Button
-                                        type="submit"
-                                        disabled={processing}
-                                        className="bg-emerald-600 hover:bg-emerald-700"
-                                    >
-                                        {processing ? '保存中...' : '保存'}
-                                    </Button>
-                                </div>
-                            </form>
-                        ) : (
-                            <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                <div className="flex flex-col gap-1">
-                                    <p className="text-sm font-medium text-slate-700">
-                                        ユーザー名
-                                    </p>
-                                    <p className="text-base font-semibold text-slate-900">
-                                        {name}
-                                    </p>
-                                </div>
-
-                                <div className="flex flex-col gap-1">
-                                    <p className="text-sm font-medium text-slate-700">
-                                        メールアドレス
-                                    </p>
-                                    <p className="text-base font-semibold text-slate-900">
-                                        {email}
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle>パスワード</CardTitle>
-                        <CardDescription>
-                            セキュリティのために定期的に変更してください。
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
-                            <div>
-                                <p className="text-sm font-medium text-slate-700">
-                                    現在のパスワード
-                                </p>
-                                <p className="mt-1 text-base font-semibold text-slate-900">
-                                    ********
-                                </p>
-                            </div>
+                        {!isEditing && (
                             <Button
-                                asChild
                                 variant="outline"
                                 className="text-slate-900"
+                                onClick={handleEdit}
                             >
-                                <Link href="/account/settings">変更</Link>
+                                編集
                             </Button>
+                        )}
+                    </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    {isEditing ? (
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div>
+                                <Label htmlFor="name">ユーザー名</Label>
+                                <Input
+                                    id="name"
+                                    type="text"
+                                    value={data.name}
+                                    onChange={(e) =>
+                                        setData('name', e.target.value)
+                                    }
+                                    className="mt-1"
+                                    placeholder="ユーザー名を入力"
+                                />
+                                {errors.name && (
+                                    <p className="mt-1 text-sm text-red-600">
+                                        {errors.name}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div>
+                                <Label htmlFor="email">メールアドレス</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    value={data.email}
+                                    onChange={(e) =>
+                                        setData('email', e.target.value)
+                                    }
+                                    className="mt-1"
+                                    placeholder="メールアドレスを入力"
+                                />
+                                {errors.email && (
+                                    <p className="mt-1 text-sm text-red-600">
+                                        {errors.email}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="flex justify-end gap-3">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={handleCancel}
+                                    disabled={processing}
+                                >
+                                    キャンセル
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    disabled={processing}
+                                    className="bg-emerald-600 hover:bg-emerald-700"
+                                >
+                                    {processing ? '保存中...' : '保存'}
+                                </Button>
+                            </div>
+                        </form>
+                    ) : (
+                        <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                            <div className="flex flex-col gap-1">
+                                <p className="text-sm font-medium text-slate-700">
+                                    ユーザー名
+                                </p>
+                                <p className="text-base font-semibold text-slate-900">
+                                    {name}
+                                </p>
+                            </div>
+
+                            <div className="flex flex-col gap-1">
+                                <p className="text-sm font-medium text-slate-700">
+                                    メールアドレス
+                                </p>
+                                <p className="text-base font-semibold text-slate-900">
+                                    {email}
+                                </p>
+                            </div>
                         </div>
-                    </CardContent>
-                </Card>
-            </div>
+                    )}
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>パスワード</CardTitle>
+                    <CardDescription>
+                        セキュリティのために定期的に変更してください。
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                        <div>
+                            <p className="text-sm font-medium text-slate-700">
+                                現在のパスワード
+                            </p>
+                            <p className="mt-1 text-base font-semibold text-slate-900">
+                                ********
+                            </p>
+                        </div>
+                        <Button
+                            asChild
+                            variant="outline"
+                            className="text-slate-900"
+                        >
+                            <Link href="/account/settings">変更</Link>
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
         </AccountLayout>
     );
 }
