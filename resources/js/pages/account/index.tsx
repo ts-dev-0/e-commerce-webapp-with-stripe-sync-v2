@@ -16,7 +16,7 @@ const cards = [
         title: 'ログイン＆セキュリティ',
         description: 'セキュリティ設定を管理',
         body: 'パスワードやセキュリティ設定を変更できます。',
-        href: '/account/settings',
+        href: '/account/security',
         actionLabel: '設定する',
         icon: Lock,
     },
