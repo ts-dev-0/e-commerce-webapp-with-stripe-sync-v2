@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Address\DeleteAddress;
 use App\Actions\Address\SetDefaultAddress;
 use App\Actions\Address\StoreAddress;
 use App\Actions\Address\UpdateAddress;
+use App\Http\Requests\DeleteAddressRequest;
 use App\Http\Requests\SetDefaultAddressRequest;
 use App\Http\Requests\StoreAddressRequest;
 use App\Http\Requests\UpdateAddressRequest;
@@ -53,5 +55,14 @@ class AddressController extends Controller
         return redirect()
             ->route('checkout.index')
             ->with('success', 'Update default address.');
+    }
+
+    public function destroy(DeleteAddressRequest $request, DeleteAddress $action, Address $address)
+    {
+        $action->handle($address);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Deleted Address.');
     }
 }

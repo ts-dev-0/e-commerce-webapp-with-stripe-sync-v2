@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');    
     Route::patch('addresses/{address}/default', [AddressController::class, 'updateDefault'])
         ->name('addresses.default.update');
+    Route::delete('addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
 });
 
 require __DIR__.'/settings.php';

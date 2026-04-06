@@ -84,7 +84,17 @@ export default function Addresses({ data }: AddressesProps) {
                                     編集
                                 </Button>
 
-                                <Button variant={'ghost'}>削除</Button>
+                                <Button
+                                    type="button"
+                                    variant="destructive"
+                                    onClick={() =>
+                                        openModal('deleteDeliveryAddress', {
+                                            id: address.id,
+                                        })
+                                    }
+                                >
+                                    削除
+                                </Button>
                             </div>
                         </div>
                     ))}

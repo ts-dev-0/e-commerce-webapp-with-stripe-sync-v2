@@ -82,6 +82,24 @@ class AddressControllerTest extends TestCase
         $response->assertSessionHas('success', 'Updated Address.');
     }
 
+    public function test_authenticated_user_can_delete_address()
+    {
+        $existingAddress = Address::factory()->create(['user_id' => $this->user->id]);
+
+        $this->mockAction(
+            \App\Actions\Address\DeleteAddress::class,
+            [Mockery::type(Address::class)],
+        );
+
+        $response = $this
+            ->actingAs($this->user)
+            ->from(route('account.addresses'))
+            ->delete(route('addresses.destroy', $existingAddress));
+
+        $response->assertRedirect(route('account.addresses'));
+        $response->assertSessionHas('success', 'Deleted Address.');
+    }
+
     public function test_guest_cannot_access_reviews_page()
     {
         $response = $this->post(route('addresses.store'));

@@ -12,6 +12,10 @@ export interface ModalPropsMap {
         id: number;
     };
 
+    deleteDeliveryAddress: {
+        id: number;
+    };
+
     createDeliveryAddress: undefined;
 
     editDeliveryAddress: Address;
