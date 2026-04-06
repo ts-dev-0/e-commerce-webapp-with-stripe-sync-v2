@@ -32,16 +32,13 @@ const cards = [
 
 export default function Index() {
     return (
-        <AccountLayout>
+        <AccountLayout title="アカウント">
             <Head title="アカウント" />
 
-            <div className="mx-auto max-w-4xl">
-                <h1 className="mb-6 text-2xl font-semibold">アカウント</h1>
-                <div className="grid gap-6 md:grid-cols-3">
-                    {cards.map((card) => (
-                        <AccountCard key={card.title} {...card} />
-                    ))}
-                </div>
+            <div className="grid gap-6 md:grid-cols-3">
+                {cards.map((card) => (
+                    <AccountCard key={card.title} {...card} />
+                ))}
             </div>
         </AccountLayout>
     );
