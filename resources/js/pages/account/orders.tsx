@@ -1,6 +1,8 @@
+import { Button } from '@/components/ui/button';
 import AccountLayout from '@/layouts/account-layout';
+import { show } from '@/routes/product';
 import { Order } from '@/types/order';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 const STATUS_LABELS = {
     Pending: '保留中',
@@ -71,18 +73,36 @@ export default function Orders({ data }: OrdersProps) {
                                             key={item.id}
                                             className="flex items-center justify-between text-sm text-slate-600"
                                         >
-                                            <div>
+                                            <div className="flex-1">
                                                 <span>{item.productName}</span>
                                                 <span className="ml-2 text-slate-500">
                                                     × {item.quantity}
                                                 </span>
                                             </div>
-                                            <span className="font-medium text-slate-800">
-                                                {(
-                                                    item.price * item.quantity
-                                                ).toLocaleString('ja-JP')}
-                                                円
-                                            </span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium text-slate-800">
+                                                    {(
+                                                        item.price *
+                                                        item.quantity
+                                                    ).toLocaleString('ja-JP')}
+                                                    円
+                                                </span>
+                                                <Button
+                                                    asChild
+                                                    size="sm"
+                                                    variant="outline"
+                                                    className="text-xs"
+                                                >
+                                                    <Link
+                                                        href={
+                                                            show(item.productId)
+                                                                .url
+                                                        }
+                                                    >
+                                                        レビューを書く
+                                                    </Link>
+                                                </Button>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
