@@ -2,12 +2,13 @@
 
 namespace App\Actions\Checkout;
 
+use App\Models\Address;
 use App\Models\Order;
 use App\Models\User;
 
 class ProcessCheckout
 {
-    public function handle(User $user): Order
+    public function handle(User $user, int $addressId): Order
     {
         $cart = $user->currentCart();
         $cartItems = $cart->products()->get();
@@ -20,9 +21,17 @@ class ProcessCheckout
             return $product->price * $product->pivot->quantity;
         });
 
+        $delivaryAddress = Address::find($addressId);
+
         $order = Order::create([
             'user_id'      => $cart->user_id,
             'total_amount' => $totalAmount,
+            'full_name' => $delivaryAddress->full_name,
+            'postal_code' => $delivaryAddress->postal_code,
+            'prefecture' => $delivaryAddress->prefecture,
+            'city' => $delivaryAddress->city,
+            'address_line' => $delivaryAddress->address_line,
+            'phone_number' => $delivaryAddress->phone_number,
         ]);
 
         foreach ($cartItems as $product) {
