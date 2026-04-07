@@ -93,15 +93,19 @@ class CheckoutControllerTest extends TestCase
     // store
     public function test_user_can_process_checkout()
     {
+        $address = Address::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
+
         $this->mockAction(
             ProcessCheckout::class,
-            [$this->user],
+            [$this->user, $address->id],
         );
 
         $response = $this
             ->actingAs($this->user)
             ->from(route('checkout.index'))
-            ->post(route('checkout.store'));
+            ->post(route('checkout.store'), ['address_id' => $address->id]);
 
         $response->assertRedirect(route('checkout.success'));
 
