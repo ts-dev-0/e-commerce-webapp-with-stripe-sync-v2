@@ -15,6 +15,11 @@ class Order extends Model
         'status',
         'total_amount',
         'ordered_at',
+        'postal_code',
+        'prefecture',
+        'city',
+        'address_line',
+        'phone_number',
     ];
 
     protected $casts = [
