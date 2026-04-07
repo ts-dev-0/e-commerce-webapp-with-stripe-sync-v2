@@ -15,6 +15,7 @@ class Order extends Model
         'status',
         'total_amount',
         'ordered_at',
+        'full_name',
         'postal_code',
         'prefecture',
         'city',
