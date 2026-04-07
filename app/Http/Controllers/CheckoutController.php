@@ -26,7 +26,7 @@ class CheckoutController extends Controller
 
     public function store(StoreCheckoutRequest $request, ProcessCheckout $action)
     {
-        $action->handle($request->user());
+        $action->handle($request->user(), $request->validated()['address_id']);
 
         return redirect()
             ->route('checkout.success')
