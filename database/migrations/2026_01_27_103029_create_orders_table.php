@@ -17,6 +17,14 @@ return new class extends Migration
             $table->unsignedTinyInteger('status')->default(0);
             $table->unsignedInteger('total_amount');
             $table->timestamp('ordered_at')->nullable();
+
+            $table->string('full_name');
+            $table->string('postal_code', 7);
+            $table->string('prefecture');
+            $table->string('city');
+            $table->string('address_line');
+            $table->string('phone_number');
+
             $table->timestamps();
         });
     }
