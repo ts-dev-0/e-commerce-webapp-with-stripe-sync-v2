@@ -21,6 +21,8 @@ interface CheckoutProps {
 export default function Checkout({ data }: CheckoutProps) {
     const cartItems = data['cartItems'];
     const addresses = data['addresses'];
+    const defaultAddress = data['defaultAddress'];
+    const anotherAddresses = data['anotherAddresses'];
     const shippingFee = data['shippingFee'];
     const subtotal = data['subtotal'];
     const total = data['total'];
@@ -37,7 +39,11 @@ export default function Checkout({ data }: CheckoutProps) {
                 <div className="grid gap-6 lg:grid-cols-3">
                     <section className="lg:col-span-2">
                         <div className="space-y-6">
-                            <DeliveryAddressSection addresses={addresses} />
+                            <DeliveryAddressSection
+                                addresses={addresses}
+                                defaultAddress={defaultAddress}
+                                anotherAddresses={anotherAddresses}
+                            />
                             <PaymentMethodSection />
                             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                                 <div className="flex">

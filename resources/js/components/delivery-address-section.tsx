@@ -8,6 +8,8 @@ import { Button } from './ui/button';
 
 interface DeliveryAddressSectionProps {
     addresses: Address[];
+    defaultAddress?: Address;
+    anotherAddresses: Address[];
 }
 
 interface SetDefaultAddressForm {
@@ -16,11 +18,12 @@ interface SetDefaultAddressForm {
 
 export function DeliveryAddressSection({
     addresses,
+    defaultAddress,
+    anotherAddresses,
 }: DeliveryAddressSectionProps) {
     const openModal = useModalStore((state) => state.openModal);
 
     const [isExpanded, setIsExpanded] = useState(false);
-    const defaultAddress: Address | undefined = addresses[0];
 
     const { data, setData, patch, processing, reset } =
         useForm<SetDefaultAddressForm>({
@@ -60,20 +63,17 @@ export function DeliveryAddressSection({
             )}
             {addresses.length >= 1 && (
                 <div className="mt-4 space-y-4">
-                    {!isExpanded && (
-                        <AddressCard
-                            key={defaultAddress?.id}
-                            address={defaultAddress!}
-                            isSelected={
-                                data.selectAddressId === defaultAddress?.id
-                            }
-                            onSelect={() =>
-                                setData({ selectAddressId: defaultAddress?.id })
-                            }
-                        />
-                    )}
+                    <AddressCard
+                        key={defaultAddress?.id}
+                        address={defaultAddress!}
+                        isSelected={data.selectAddressId === defaultAddress?.id}
+                        onSelect={() =>
+                            setData({ selectAddressId: defaultAddress?.id })
+                        }
+                    />
+
                     {isExpanded &&
-                        addresses.map((address) => (
+                        anotherAddresses.map((address) => (
                             <AddressCard
                                 key={address.id}
                                 address={address}
