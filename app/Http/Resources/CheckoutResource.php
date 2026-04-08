@@ -16,10 +16,12 @@ class CheckoutResource extends JsonResource
     {
         return [
             'cartItems' => CartItemResource::collection($this->cartItems),
-            'subtotal' => $this->subtotal,
-            'deliveryDate' => $this->deliveryDate,
             'addresses' => AddressResource::collection($this->addresses),
+            'defaultAddress' => AddressResource::make($this->defaultAddress),
+            'anotherAddresses' => AddressResource::collection($this->anotherAddresses),
+            'deliveryDate' => $this->deliveryDate,
             'shippingFee' => $this->shippingFee,
+            'subtotal' => $this->subtotal,
             'total' => $this->total,
         ];
     }

@@ -3,9 +3,11 @@ import { CartItem } from './cart-item';
 
 export interface Checkout {
     cartItems: CartItem[];
-    subtotal: number;
-    deliveryDate: string[];
     addresses: Address[];
+    defaultAddress: Address;
+    anotherAddresses: Address[];
+    deliveryDate: string[];
     shippingFee: number;
+    subtotal: number;
     total: number;
 }

@@ -12,6 +12,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
 use App\DTOs\CheckoutData;
+use Illuminate\Database\Eloquent\Collection;
 
 class CheckoutControllerTest extends TestCase
 {
@@ -35,9 +36,18 @@ class CheckoutControllerTest extends TestCase
         $product1 = Product::factory()->make(['price' => 100]);
         $product2 = Product::factory()->make(['price' => 200]);
 
-        $items = collect([
+        $items = new Collection([
             new CartItem(['product' => $product1, 'quantity' => 2]),
             new CartItem(['product' => $product2, 'quantity' => 1]),
+        ]);
+
+        $defaultAddress = Address::factory()->make([
+            'user_id' => $this->user->id,
+            'is_default' => true,
+        ]);
+
+        $anotherAddress = Address::factory()->make([
+            'user_id' => $this->user->id,
         ]);
 
         $deliveryDate = [
@@ -47,26 +57,18 @@ class CheckoutControllerTest extends TestCase
             '2026-03-23',
         ];
 
-        $addresses = collect([
-            Address::factory()->make([
-                'user_id' => $this->user->id,
-                'is_default' => true,
-            ]),
-            Address::factory()->make([
-                'user_id' => $this->user->id,
-            ]),
-        ]);
-
         $subtotal = 400;
         $shippingFee = 0;
         $total = $subtotal + $shippingFee;
 
         $checkoutData = new CheckoutData(
             cartItems: $items,
-            subtotal: $subtotal,
+            addresses: new Collection([$defaultAddress, $anotherAddress]),
+            defaultAddress: $defaultAddress,
+            anotherAddresses: new Collection([$anotherAddress]),
             deliveryDate: $deliveryDate,
-            addresses: $addresses,
             shippingFee: $shippingFee,
+            subtotal: $subtotal,
             total: $total,
         );
 
@@ -93,15 +95,19 @@ class CheckoutControllerTest extends TestCase
     // store
     public function test_user_can_process_checkout()
     {
+        $address = Address::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
+
         $this->mockAction(
             ProcessCheckout::class,
-            [$this->user],
+            [$this->user, $address->id],
         );
 
         $response = $this
             ->actingAs($this->user)
             ->from(route('checkout.index'))
-            ->post(route('checkout.store'));
+            ->post(route('checkout.store'), ['address_id' => $address->id]);
 
         $response->assertRedirect(route('checkout.success'));
 

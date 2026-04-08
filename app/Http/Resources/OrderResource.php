@@ -19,6 +19,12 @@ class OrderResource extends JsonResource
             'status' => $this->status->name,
             'totalAmount' => $this->total_amount,
             'orderedAt' => $this->ordered_at,
+            'fullName' => $this->full_name,
+            'postalCode' => $this->postal_code,
+            'prefecture' => $this->prefecture,
+            'city' => $this->city,
+            'addressLine' => $this->address_line,
+            'phoneNumber' => $this->phone_number,
             'items' => OrderItemResource::collection($this->items),
         ];
     }

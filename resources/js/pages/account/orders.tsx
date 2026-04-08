@@ -1,4 +1,9 @@
 import { Button } from '@/components/ui/button';
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from '@/components/ui/hover-card';
 import AccountLayout from '@/layouts/account-layout';
 import { show } from '@/routes/product';
 import { Order } from '@/types/order';
@@ -51,6 +56,33 @@ export default function Orders({ data }: OrdersProps) {
                                         >
                                             {STATUS_LABELS[order.status]}
                                         </span>
+                                        <div className="flex flex-col">
+                                            <span className="text-xs text-slate-700">
+                                                お届け先
+                                            </span>
+                                            <HoverCard>
+                                                <HoverCardTrigger asChild>
+                                                    <span className="cursor-pointer font-bold text-slate-900 hover:underline">
+                                                        {order.fullName}
+                                                    </span>
+                                                </HoverCardTrigger>
+                                                <HoverCardContent>
+                                                    <div className="flex flex-col gap-0.5 text-[13px] leading-relaxed text-slate-600">
+                                                        <p>
+                                                            〒{order.postalCode}
+                                                        </p>
+                                                        <p>
+                                                            {order.prefecture}{' '}
+                                                            {order.city}{' '}
+                                                            {order.addressLine}
+                                                        </p>
+                                                        <p className="mt-1 font-medium text-slate-500">
+                                                            {order.phoneNumber}
+                                                        </p>
+                                                    </div>
+                                                </HoverCardContent>
+                                            </HoverCard>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="text-right">

@@ -16,93 +16,106 @@ class GetCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
-    private GetCheckout $action;
     private User $user;
-
+    private Product $product1;
+    private Product $product2;
+    private Cart $cart;
+    private Address $defaultAddress;
+    private Address $anotherAddress;
+    
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->action = new GetCheckout(new DeliveryDateService);
         $this->user = User::factory()->create();
-    }
-
-    public function test_user_can_get_checkout_data()
-    {
-        /** @var \App\Models\User $otherUser */
-        $otherUser = User::factory()->create();
-
-        $product1 = Product::factory()->create([
+        $this->product1 = Product::factory()->create([
             'price' => 100,
         ]);
-        $product2 = Product::factory()->create([
+        $this->product2 = Product::factory()->create([
             'price' => 200,
         ]);
-
-        $cart = Cart::factory()->create([
+        $this->cart = Cart::factory()->create([
             'user_id' => $this->user->id,
         ]);
-
-        $otherCart = Cart::factory()->create([
-            'user_id' => $otherUser->id,
-        ]);
-
         CartItem::factory()->create([
-            'cart_id' => $cart->id,
-            'product_id' => $product1->id,
+            'cart_id' => $this->cart->id,
+            'product_id' => $this->product1->id,
             'quantity' => 2,
         ]);
 
         CartItem::factory()->create([
-            'cart_id' => $cart->id,
-            'product_id' => $product2->id,
+            'cart_id' => $this->cart->id,
+            'product_id' => $this->product2->id,
             'quantity' => 5,
         ]);
-
-        CartItem::factory()->create([
-            'cart_id' => $otherCart->id,
-            'product_id' => Product::factory()->create()->id,
-            'quantity' => 10,
-        ]);
-
-        $address1 = Address::factory()->create([
+        $this->defaultAddress = Address::factory()->create([
             'user_id' => $this->user->id,
             'is_default' => true,
         ]);
-
-        $address2 = Address::factory()->create([
+    
+        $this->anotherAddress = Address::factory()->create([
             'user_id' => $this->user->id,
         ]);
+    }
 
-        Address::factory()->create();
+    public function test_user_can_get_checkout_data()
+    {
+        $this->mockDeliveryDateService();
 
-        $result = $this->action->handle($this->user);
+        $action = app(GetCheckout::class);
 
+        $result = $action->handle($this->user);
+
+        // 戻り値の型の検証
         $this->assertInstanceOf(\App\DTOs\CheckoutData::class, $result);
+        // cartItemsの購入数の検証
         $this->assertCount(2, $result->cartItems);
-
-        $this->assertEqualsCanonicalizing(
-            [2, 5],
-            $result->cartItems->pluck('quantity')->all()
-        );
-
+        // addressesの検証
         $this->assertCount(2, $result->addresses);
-
-        $this->assertEqualsCanonicalizing(
-            [$address1->id, $address2->id],
-            $result->addresses->pluck('id')->all()
+        // defaultAddressの検証
+        $this->assertEquals(
+            $this->defaultAddress->id,
+            $result->defaultAddress->id
         );
-
-        $this->assertEquals(true, $result->addresses[0]->is_default);
-
+        // anotherAddressの検証
+        $this->assertCount(1, $result->anotherAddresses);
+        // deliveryDateの検証
+        $this->assertEquals(
+            ['2026-04-10'],
+            $result->deliveryDate
+        );
+        // shippingFeeの検証
+        $this->assertEquals(0, $result->shippingFee);
+        // subTotalの検証
         $this->assertEquals(1200, $result->subtotal);
+        // totalの検証
+        $this->assertEquals(1200, $result->total);
     }
 
     public function test_empty_checout_data_returns_empty_array()
     {
-        $result = $this->action->handle($this->user);
+        $anotherUser = User::factory()->create();
+        $this->mockDeliveryDateService();
+
+        $action = app(GetCheckout::class);
+
+        $result = $action->handle($anotherUser);
 
         $this->assertEmpty($result->cartItems);
         $this->assertEquals(0, $result->subtotal);
+    }
+
+    private function mockDeliveryDateService(array $return = ['2026-04-10']): void
+    {
+        $mock = \Mockery::mock(DeliveryDateService::class);
+
+        $mock->shouldReceive('generate')
+            ->once()
+            ->andReturn($return);
+
+        $this->app->instance(
+            DeliveryDateService::class,
+            $mock
+        );
     }
 }

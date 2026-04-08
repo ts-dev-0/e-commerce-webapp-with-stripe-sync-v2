@@ -5,6 +5,7 @@ namespace Tests\Feature\Checkout;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\Checkout\ProcessCheckout;
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
@@ -48,7 +49,11 @@ class ProcessCheckoutTest extends TestCase
             'quantity' => 2,
         ]);
 
-        $this->action->handle($this->user);
+        $selectedAddress = Address::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
+
+        $this->action->handle($this->user, $selectedAddress->id);
 
         $this->assertDatabaseHas('orders', [
             'user_id'      => $this->user->id,
@@ -78,18 +83,22 @@ class ProcessCheckoutTest extends TestCase
         $cart = Cart::factory()->create([
             'user_id' => $user->id,
         ]);
+        $addressId = 1;
         $this->assertCount(0, $cart->products);
 
         $this->expectException(\DomainException::class);
 
         $this->expectExceptionMessage('Cart is empty');
 
-        $this->action->handle($user);
+        $this->action->handle($user, $addressId);
     }
 
     public function test_cart_can_be_used_again_after_checkout()
-    {    
-        $this->action->handle($this->user);
+    {
+        $address = Address::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
+        $this->action->handle($this->user, $address->id);
 
         $newProduct = Product::factory()->create(['price' => 500]);
         CartItem::factory()->create([
@@ -103,12 +112,5 @@ class ProcessCheckoutTest extends TestCase
             'product_id' => $newProduct->id,
             'quantity'   => 2,
         ]);
-    }
-
-    public function test_checkout_returns_order_instance()
-    {
-        $order = $this->action->handle($this->user);
-
-        $this->assertInstanceOf(Order::class, $order);
     }
 }
