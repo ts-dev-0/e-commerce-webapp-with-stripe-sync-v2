@@ -3,9 +3,10 @@ import { CartItem } from './cart-item';
 
 export interface Checkout {
     cartItems: CartItem[];
-    subtotal: number;
+    defaultAddress: Address;
+    anotherAddresses: Address[];
     deliveryDate: string[];
-    addresses: Address[];
     shippingFee: number;
+    subtotal: number;
     total: number;
 }
