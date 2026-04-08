@@ -70,6 +70,8 @@ class GetCheckoutTest extends TestCase
         $this->assertInstanceOf(\App\DTOs\CheckoutData::class, $result);
         // cartItemsの購入数の検証
         $this->assertCount(2, $result->cartItems);
+        // addressesの検証
+        $this->assertCount(2, $result->addresses);
         // defaultAddressの検証
         $this->assertEquals(
             $this->defaultAddress->id,

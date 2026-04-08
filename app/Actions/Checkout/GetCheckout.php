@@ -44,6 +44,7 @@ class GetCheckout
 
         return new CheckoutData(
             $cartItems,
+            $addresses,
             $defaultAddress,
             $anotherAddresses,
             $deliveryDate,

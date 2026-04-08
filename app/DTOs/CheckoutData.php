@@ -9,10 +9,12 @@ readonly class CheckoutData
 {
     /**
      * @param Collection<int, \App\Models\CartItem> $cartItems
+     * @param Collection<int, \App\Models\Address> $addresses
      * @param Collection<int, \App\Models\Address> $anotherAddresses
      */
     public function __construct(
         public Collection $cartItems,
+        public Collection $addresses,
         public ?Address $defaultAddress,
         public Collection $anotherAddresses,
         public array $deliveryDate,
