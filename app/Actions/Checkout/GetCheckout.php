@@ -21,10 +21,6 @@ class GetCheckout
             })
             ->get();
 
-        $subtotal = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
-
         $deliveryDate = $this->deliveryDateService->generate();
 
         $addresses = $user
@@ -32,10 +28,28 @@ class GetCheckout
             ->orderByDesc('is_default')
             ->get();
 
-        $shippingFee = 0;
+        /** @var \App\Models\Address|null $defaultAddress */
+        $defaultAddress = $addresses->firstWhere('is_default', true);
+        
+        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Address> $anotherAddresses */
+        $anotherAddresses = $addresses
+            ->where('is_default', false)
+            ->values();
 
+        $shippingFee = 0;
+        $subtotal = $cartItems->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
         $total = $subtotal + $shippingFee;
 
-        return new CheckoutData($cartItems, $subtotal, $deliveryDate, $addresses, $shippingFee, $total);
+        return new CheckoutData(
+            $cartItems,
+            $defaultAddress,
+            $anotherAddresses,
+            $deliveryDate,
+            $shippingFee,
+            $subtotal,
+            $total,
+        );
     }
 }
