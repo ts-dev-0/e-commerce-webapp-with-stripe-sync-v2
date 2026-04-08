@@ -18,15 +18,17 @@ interface CheckoutProps {
     data: CheckoutType;
 }
 
-export default function Checkout({ data }: CheckoutProps) {
-    const cartItems = data['cartItems'];
-    const addresses = data['addresses'];
-    const defaultAddress = data['defaultAddress'];
-    const anotherAddresses = data['anotherAddresses'];
-    const shippingFee = data['shippingFee'];
-    const subtotal = data['subtotal'];
-    const total = data['total'];
-
+export default function Checkout({
+    data: {
+        cartItems,
+        addresses,
+        defaultAddress,
+        anotherAddresses,
+        shippingFee,
+        subtotal,
+        total,
+    },
+}: CheckoutProps) {
     function handleCheckout() {
         router.post(store().url);
     }
