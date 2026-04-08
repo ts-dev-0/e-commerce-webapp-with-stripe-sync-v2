@@ -1,4 +1,4 @@
-import { Head, router } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 
 import AppLayout from '@/layouts/app-layout';
 
@@ -12,10 +12,16 @@ import { Label } from '@/components/ui/label';
 
 import { store } from '@/routes/checkout';
 
+import { update } from '@/routes/addresses/default';
 import { Checkout as CheckoutType } from '@/types/checkout';
+import { useState } from 'react';
 
 interface CheckoutProps {
     data: CheckoutType;
+}
+
+interface SetDefaultAddressForm {
+    selectAddressId?: number;
 }
 
 export default function Checkout({
@@ -29,8 +35,29 @@ export default function Checkout({
         total,
     },
 }: CheckoutProps) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const { data, setData, patch, processing, reset } =
+        useForm<SetDefaultAddressForm>({
+            selectAddressId: defaultAddress?.id,
+        });
+
+    const handleSetDefaultAddress = () => {
+        if (data.selectAddressId === undefined) return;
+
+        patch(update(data.selectAddressId).url, {
+            preserveState: false,
+            onSuccess: () => {
+                setIsExpanded(false);
+            },
+        });
+    };
+
     function handleCheckout() {
-        router.post(store().url);
+        if (data.selectAddressId === undefined) return;
+        router.post(store().url, {
+            address_id: data.selectAddressId,
+        });
     }
 
     return (
@@ -45,6 +72,17 @@ export default function Checkout({
                                 addresses={addresses}
                                 defaultAddress={defaultAddress}
                                 anotherAddresses={anotherAddresses}
+                                selectedAddressId={data.selectAddressId}
+                                setData={(id: number) =>
+                                    setData({ selectAddressId: id })
+                                }
+                                processing={processing}
+                                reset={() => reset()}
+                                setDefaultAddress={handleSetDefaultAddress}
+                                isExpanded={isExpanded}
+                                setIsExpanded={(isExpanded) =>
+                                    setIsExpanded(isExpanded)
+                                }
                             />
                             <PaymentMethodSection />
                             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
