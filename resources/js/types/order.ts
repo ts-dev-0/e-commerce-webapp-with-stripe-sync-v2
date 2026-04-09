@@ -4,6 +4,7 @@ type OrderStatus = 'Pending' | 'Paid' | 'Completed' | 'Canceled';
 
 export interface Order {
     orderId: number;
+    orderNumber: string;
     status: OrderStatus;
     totalAmount: number;
     orderedAt: string;

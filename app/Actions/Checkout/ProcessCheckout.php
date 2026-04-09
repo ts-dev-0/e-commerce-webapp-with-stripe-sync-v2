@@ -5,6 +5,7 @@ namespace App\Actions\Checkout;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 class ProcessCheckout
 {
@@ -23,8 +24,11 @@ class ProcessCheckout
 
         $delivaryAddress = Address::find($addressId);
 
+        $orderNumber = 'ORD-' . strtoupper(Str::random(8));
+
         $order = Order::create([
             'user_id'      => $cart->user_id,
+            'order_number' => $orderNumber,
             'total_amount' => $totalAmount,
             'full_name' => $delivaryAddress->full_name,
             'postal_code' => $delivaryAddress->postal_code,

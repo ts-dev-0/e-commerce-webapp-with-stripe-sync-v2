@@ -20,6 +20,7 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'order_number' => $this->faker->unique()->numerify('########'),
             'total_amount' => $this->faker->numberBetween(1000, 2000),
             'status' => OrderStatus::Pending,
             'ordered_at' => now()->subDays(rand(0, 30)),
