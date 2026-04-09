@@ -83,6 +83,9 @@ export default function Orders({ data }: OrdersProps) {
                                                 </HoverCardContent>
                                             </HoverCard>
                                         </div>
+                                        <div className='text-xs text-slate-500'>
+                                            注文番号: {order.orderNumber}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="text-right">
