@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button';
 import AccountLayout from '@/layouts/account-layout';
+import { update } from '@/routes/addresses/default';
 import { useModalStore } from '@/stores/modalStore';
 import { Address } from '@/types/address';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 
 interface AddressesProps {
     data: Address[];
@@ -10,6 +11,10 @@ interface AddressesProps {
 export default function Addresses({ data }: AddressesProps) {
     const addresses = data;
     const openModal = useModalStore((state) => state.openModal);
+
+    function handleSetDefaultAddress(id: number) {
+        router.patch(update(id).url);
+    }
 
     return (
         <AccountLayout
@@ -71,30 +76,43 @@ export default function Addresses({ data }: AddressesProps) {
                                 </p>
                             </div>
 
-                            <div className="mt-4 flex justify-end gap-2 border-t border-slate-200 pt-4">
-                                <Button
-                                    className="bg-emerald-600 hover:bg-emerald-700"
-                                    onClick={() =>
-                                        openModal(
-                                            'editDeliveryAddress',
-                                            address,
-                                        )
-                                    }
-                                >
-                                    編集
-                                </Button>
+                            <div className="mt-4 flex items-center justify-between gap-2 border-t border-slate-200 pt-4">
+                                <div>
+                                    {!address.isDefault && (
+                                        <Button
+                                            variant={'link'}
+                                            className="cursor-pointer"
+                                            onClick={() => handleSetDefaultAddress(address.id)}
+                                        >
+                                            既定の住所に設定
+                                        </Button>
+                                    )}
+                                </div>
+                                <div className="flex gap-x-2">
+                                    <Button
+                                        className="bg-emerald-600 hover:bg-emerald-700"
+                                        onClick={() =>
+                                            openModal(
+                                                'editDeliveryAddress',
+                                                address,
+                                            )
+                                        }
+                                    >
+                                        編集
+                                    </Button>
 
-                                <Button
-                                    type="button"
-                                    variant="destructive"
-                                    onClick={() =>
-                                        openModal('deleteDeliveryAddress', {
-                                            id: address.id,
-                                        })
-                                    }
-                                >
-                                    削除
-                                </Button>
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                        onClick={() =>
+                                            openModal('deleteDeliveryAddress', {
+                                                id: address.id,
+                                            })
+                                        }
+                                    >
+                                        削除
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     ))}
