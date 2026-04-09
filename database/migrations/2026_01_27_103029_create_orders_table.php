@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+            $table->string('order_number');
             $table->unsignedTinyInteger('status')->default(0);
             $table->unsignedInteger('total_amount');
             $table->timestamp('ordered_at')->nullable();
