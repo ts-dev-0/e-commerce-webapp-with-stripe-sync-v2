@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button';
 import AccountLayout from '@/layouts/account-layout';
+import { update } from '@/routes/addresses/default';
 import { useModalStore } from '@/stores/modalStore';
 import { Address } from '@/types/address';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 
 interface AddressesProps {
     data: Address[];
@@ -10,6 +11,10 @@ interface AddressesProps {
 export default function Addresses({ data }: AddressesProps) {
     const addresses = data;
     const openModal = useModalStore((state) => state.openModal);
+
+    function handleSetDefaultAddress(id: number) {
+        router.patch(update(id).url);
+    }
 
     return (
         <AccountLayout
@@ -77,6 +82,7 @@ export default function Addresses({ data }: AddressesProps) {
                                         <Button
                                             variant={'link'}
                                             className="cursor-pointer"
+                                            onClick={() => handleSetDefaultAddress(address.id)}
                                         >
                                             既定の住所に設定
                                         </Button>
