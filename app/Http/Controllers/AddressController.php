@@ -53,7 +53,7 @@ class AddressController extends Controller
         $action->handle($request->user(), $address);
 
         return redirect()
-            ->route('checkout.index')
+            ->back()
             ->with('success', 'Update default address.');
     }
 
