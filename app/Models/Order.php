@@ -26,6 +26,7 @@ class Order extends Model
 
     protected $casts = [
         'status' => OrderStatus::class,
+        'ordered_at' => 'datetime',
     ];
 
     public function user()
