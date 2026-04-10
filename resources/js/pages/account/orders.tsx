@@ -1,3 +1,4 @@
+import OrderTimeFilterSelect from '@/components/order-time-filter-select';
 import { Button } from '@/components/ui/button';
 import {
     HoverCard,
@@ -38,6 +39,7 @@ export default function Orders({ data }: OrdersProps) {
                 </div>
             ) : (
                 <div className="space-y-4">
+                    <OrderTimeFilterSelect />
                     {data.map((order) => (
                         <div
                             key={order.orderId}
