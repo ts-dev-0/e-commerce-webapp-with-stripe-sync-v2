@@ -10,6 +10,7 @@ use App\Actions\Order\CancelOrder;
 use App\Actions\Order\ViewOrderHistory;
 use App\Models\User;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Collection;
 
 class OrderControllerTest extends TestCase
 {
@@ -35,12 +36,13 @@ class OrderControllerTest extends TestCase
     public function test_authenticated_user_can_view_order_history()
     {
         $queryParameter = ['timeFilter' => 'last30'];
-        $action = new ViewOrderHistory();
-        $orders = $action->handle($this->user);
+        $orders = new Collection([
+            $this->order,
+        ]);
 
         $this->mockAction(
             ViewOrderHistory::class,
-            [$this->user],
+            [$this->user, $queryParameter['timeFilter']],
             $orders,
         );
 

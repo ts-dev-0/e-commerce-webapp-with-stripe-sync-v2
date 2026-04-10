@@ -14,7 +14,8 @@ class OrderController extends Controller
 {
     public function index(IndexOrderRequest $request, ViewOrderHistory $action)
     {
-        $data = $action->handle($request->user());
+        $validatedData = $request->validated();
+        $data = $action->handle($request->user(), $validatedData['timeFilter']);
 
         return Inertia::render('account/orders', [
             'data' => OrderResource::collection($data),
