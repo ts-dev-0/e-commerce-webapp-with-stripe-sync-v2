@@ -4,7 +4,6 @@ namespace Tests\Feature\Order;
 
 use Mockery;
 use Tests\TestCase;
-use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Traits\MocksActions;
 use App\Actions\Order\CancelOrder;
@@ -35,6 +34,7 @@ class OrderControllerTest extends TestCase
     // index
     public function test_authenticated_user_can_view_order_history()
     {
+        $queryParameter = ['timeFilter' => 'last30'];
         $action = new ViewOrderHistory();
         $orders = $action->handle($this->user);
 
@@ -46,7 +46,7 @@ class OrderControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->get(route('account.orders'));
+            ->get(route('account.orders', $queryParameter));
 
         $response->assertOk();
     }

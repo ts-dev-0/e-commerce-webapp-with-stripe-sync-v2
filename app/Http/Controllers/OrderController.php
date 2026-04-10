@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Actions\Order\CancelOrder;
 use App\Actions\Order\ViewOrderHistory;
+use App\Http\Requests\IndexOrderRequest;
 use App\Http\Requests\User\Order\CancelOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class OrderController extends Controller
 {
-    public function index(Request $request, ViewOrderHistory $action)
+    public function index(IndexOrderRequest $request, ViewOrderHistory $action)
     {
         $data = $action->handle($request->user());
 
