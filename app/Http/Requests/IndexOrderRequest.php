@@ -22,7 +22,7 @@ class IndexOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'timeFilter' => ['required', 'string'],
+            'timeFilter' => ['nullable', 'string'],
         ];
     }
 }
