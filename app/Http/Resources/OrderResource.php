@@ -19,7 +19,7 @@ class OrderResource extends JsonResource
             'orderNumber' => $this->order_number,
             'status' => $this->status->name,
             'totalAmount' => $this->total_amount,
-            'orderedAt' => $this->ordered_at,
+            'orderedAt' => $this->ordered_at->format('Y/m/d'),
             'fullName' => $this->full_name,
             'postalCode' => $this->postal_code,
             'prefecture' => $this->prefecture,
