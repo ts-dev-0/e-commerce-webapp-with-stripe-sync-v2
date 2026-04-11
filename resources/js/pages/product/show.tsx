@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
+import { cn } from '@/lib/utils';
 import { store } from '@/routes/cart';
 import { Product } from '@/types/product';
 import { Review } from '@/types/review';
@@ -71,9 +72,18 @@ export default function Show({
                             </span>
                         </div>
 
-                        <div className="mt-4">
+                        <div className="mt-4 flex items-center gap-x-4">
                             <span className="text-xl font-bold text-slate-800">
                                 {product.price.toLocaleString('ja-JP')}円
+                            </span>
+                            <span
+                                className={cn(
+                                    'text-sm font-semibold text-red-600',
+                                    product.stockStatus['status'] ===
+                                        'inStock' && 'text-emerald-600',
+                                )}
+                            >
+                                {product.stockStatus['label']}
                             </span>
                         </div>
 
