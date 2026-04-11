@@ -54,12 +54,12 @@ class ViewOrderHistoryTest extends TestCase
     {
         $oldOrder = Order::factory()->create([
             'user_id' => $this->user->id,
-            'created_at' => now()->subDays(2),
+            'ordered_at' => now()->subDays(2),
         ]);
 
         $newOrder = Order::factory()->create([
             'user_id' => $this->user->id,
-            'created_at' => now(),
+            'ordered_at' => now(),
         ]);
 
         $orders = $this->action->handle($this->user, $this->timeFilter);
