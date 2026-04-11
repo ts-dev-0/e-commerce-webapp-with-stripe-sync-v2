@@ -1,3 +1,4 @@
+import OrderTimeFilterSelect from '@/components/order-time-filter-select';
 import { Button } from '@/components/ui/button';
 import {
     HoverCard,
@@ -23,22 +24,29 @@ const STATUS_COLORS = {
     Canceled: 'bg-red-100 text-red-700',
 };
 
-interface OrdersProps {
-    data: Order[];
+interface Years {
+    label: string;
+    value: string;
 }
 
-export default function Orders({ data }: OrdersProps) {
+interface OrdersProps {
+    orders: Order[];
+    years: Years[];
+}
+
+export default function Orders({ orders, years }: OrdersProps) {
     return (
         <AccountLayout title="注文履歴" description="過去の注文一覧です">
             <Head title="注文履歴" />
 
-            {data.length === 0 ? (
+            <OrderTimeFilterSelect years={years} />
+            {orders.length === 0 ? (
                 <div className="rounded-lg border border-slate-200 bg-white p-8 text-center">
                     <p className="text-slate-600">注文履歴がありません</p>
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {data.map((order) => (
+                    {orders.map((order) => (
                         <div
                             key={order.orderId}
                             className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
@@ -83,7 +91,7 @@ export default function Orders({ data }: OrdersProps) {
                                                 </HoverCardContent>
                                             </HoverCard>
                                         </div>
-                                        <div className='text-xs text-slate-500'>
+                                        <div className="text-xs text-slate-500">
                                             注文番号: {order.orderNumber}
                                         </div>
                                     </div>
