@@ -14,6 +14,7 @@ class ViewOrderHistoryTest extends TestCase
 
     private ViewOrderHistory $action;
     private User $user;
+    private string $timeFilter;
 
     protected function setUp(): void
     {
@@ -21,6 +22,7 @@ class ViewOrderHistoryTest extends TestCase
 
         $this->action = new ViewOrderHistory();
         $this->user = User::factory()->create();
+        $this->timeFilter = 'last30';
     }
 
     public function test_user_can_view_their_order_history()
@@ -35,7 +37,7 @@ class ViewOrderHistoryTest extends TestCase
             'user_id' => $otherUser->id,
         ]);
 
-        $orders = $this->action->handle($this->user);
+        $orders = $this->action->handle($this->user, $this->timeFilter);
 
         $this->assertCount(2, $orders);
 
@@ -60,8 +62,7 @@ class ViewOrderHistoryTest extends TestCase
             'created_at' => now(),
         ]);
 
-        $orders = $this->action->handle($this->user)
-            ->values();
+        $orders = $this->action->handle($this->user, $this->timeFilter);
 
         $this->assertCount(2, $orders);
 
@@ -71,7 +72,7 @@ class ViewOrderHistoryTest extends TestCase
 
     public function test_returns_empty_collection_when_user_has_no_orders()
     {
-        $orders = $this->action->handle($this->user);
+        $orders = $this->action->handle($this->user, $this->timeFilter);
 
         $this->assertCount(0, $orders);
         $this->assertTrue($orders->isEmpty());
