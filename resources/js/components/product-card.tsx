@@ -1,23 +1,16 @@
 import { show } from '@/routes/product';
+import { Product } from '@/types/product';
 import { Link } from '@inertiajs/react';
 
 interface ProductCardProps {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
+    product: Product;
 }
 
-export default function ProductCard({
-    id,
-    name,
-    description,
-    price,
-}: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
     return (
         <Link
-            key={id}
-            href={show(id)}
+            key={product.id}
+            href={show(product.id)}
             className="block overflow-hidden rounded-lg border border-slate-200 bg-white transition hover:shadow-md"
         >
             <div className="flex h-40 w-full items-center justify-center bg-slate-100">
@@ -25,14 +18,21 @@ export default function ProductCard({
             </div>
 
             <div className="p-3">
-                <h2 className="text-sm font-medium text-slate-800">{name}</h2>
+                <h2 className="text-sm font-medium text-slate-800">
+                    {product.name}
+                </h2>
                 <p className="mt-1 line-clamp-4 text-xs text-slate-500">
-                    {description}
+                    {product.description}
                 </p>
-                <div className="mt-3 flex items-center justify-between">
+                <div className="mt-3 flex items-center gap-x-4">
                     <span className="text-sm font-semibold text-slate-800">
-                        {price.toLocaleString('ja-JP')}円
+                        {product.price.toLocaleString('ja-JP')}円
                     </span>
+                    {product.stockStatus['status'] === 'lowStock' && (
+                        <span className="text-sm font-semibold text-red-600">
+                            {product.stockStatus['label']}
+                        </span>
+                    )}
                 </div>
             </div>
         </Link>

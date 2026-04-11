@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Home\HomeIndex;
-use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -13,7 +13,7 @@ class HomeController extends Controller
         $data = $action->handle();
 
         return Inertia::render('home', [
-            'data' => $data,
+            'data' => ProductResource::collection($data),
         ]);
     }
 }
