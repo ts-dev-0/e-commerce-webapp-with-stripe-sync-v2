@@ -27,7 +27,7 @@ class ViewOrderHistoryTest extends TestCase
 
     public function test_user_can_view_their_order_history()
     {
-       $otherUser = User::factory()->create();
+        $otherUser = User::factory()->create();
 
         $userOrders = Order::factory()->count(2)->create([
             'user_id' => $this->user->id,
