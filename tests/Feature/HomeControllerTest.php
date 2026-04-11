@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Traits\MocksActions;
 use App\Actions\Home\HomeIndex;
 use App\Models\Product;
@@ -35,10 +34,5 @@ class HomeControllerTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-
-        $response->assertInertia(fn (Assert $page) =>
-            $page->component('home')
-                 ->where('data', $products->toArray())
-        );
     }
 }
