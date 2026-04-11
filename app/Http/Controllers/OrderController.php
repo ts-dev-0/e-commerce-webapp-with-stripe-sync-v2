@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Actions\Order\CancelOrder;
+use App\Actions\Order\GetAvailableOrderYears;
 use App\Actions\Order\ViewOrderHistory;
 use App\Http\Requests\IndexOrderRequest;
 use App\Http\Requests\User\Order\CancelOrderRequest;
@@ -12,13 +13,15 @@ use App\Models\Order;
 
 class OrderController extends Controller
 {
-    public function index(IndexOrderRequest $request, ViewOrderHistory $action)
+    public function index(IndexOrderRequest $request, ViewOrderHistory $action, GetAvailableOrderYears $getYears)
     {
         $validatedData = $request->validated();
-        $data = $action->handle($request->user(), $validatedData['timeFilter'] ?? null);
+        $orders = $action->handle($request->user(), $validatedData['timeFilter'] ?? null);
+        $years = $getYears->handle($request->user());
 
         return Inertia::render('account/orders', [
-            'data' => OrderResource::collection($data),
+            'orders' => OrderResource::collection($orders),
+            'years' => $years,
         ]);
     }
 
