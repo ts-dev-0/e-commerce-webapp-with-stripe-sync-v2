@@ -19,7 +19,6 @@ class ProductController extends Controller
             'data' => ProductResource::make($product),
             'reviews' => ReviewResource::collection($result['reviews']),
             'averageRating' => $result['averageRating'],
-            'stockStatus' => $result['stockStatus'],
         ]);
     }
 }

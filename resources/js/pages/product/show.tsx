@@ -10,15 +10,10 @@ import { Product } from '@/types/product';
 import { Review } from '@/types/review';
 import { Head, useForm } from '@inertiajs/react';
 
-interface StockStatus {
-    status: 'inStock' | 'lowStock' | 'outOfStock';
-    label: string;
-}
 interface ShowProps {
     data: Product;
     reviews: Review[];
     averageRating: number;
-    stockStatus: StockStatus;
 }
 
 interface LocalQuantityForm {
@@ -30,7 +25,6 @@ export default function Show({
     data: product,
     reviews,
     averageRating,
-    stockStatus,
 }: ShowProps) {
     const { data, setData, transform, post, processing } =
         useForm<LocalQuantityForm>({
@@ -85,11 +79,11 @@ export default function Show({
                             <span
                                 className={cn(
                                     'text-sm font-semibold text-red-600',
-                                    stockStatus['status'] === 'inStock' &&
-                                        'text-emerald-600',
+                                    product.stockStatus['status'] ===
+                                        'inStock' && 'text-emerald-600',
                                 )}
                             >
-                                {stockStatus['label']}
+                                {product.stockStatus['label']}
                             </span>
                         </div>
 

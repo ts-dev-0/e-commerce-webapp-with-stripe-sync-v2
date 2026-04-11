@@ -18,6 +18,8 @@ class Product extends Model
         'is_published',
     ];
 
+    protected $appends = ['stock_status'];
+
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
@@ -45,7 +47,7 @@ class Product extends Model
         return $query->latest()->limit($limit);
     }
 
-    public function stockStatus(): array
+    public function getStockStatusAttribute(): array
     {
         $threshold = 10;
 
