@@ -24,22 +24,28 @@ const STATUS_COLORS = {
     Canceled: 'bg-red-100 text-red-700',
 };
 
-interface OrdersProps {
-    orders: Order[];
+interface Years {
+    label: string;
+    value: string;
 }
 
-export default function Orders({ orders }: OrdersProps) {
+interface OrdersProps {
+    orders: Order[];
+    years: Years[];
+}
+
+export default function Orders({ orders, years }: OrdersProps) {
     return (
         <AccountLayout title="注文履歴" description="過去の注文一覧です">
             <Head title="注文履歴" />
 
+            <OrderTimeFilterSelect years={years} />
             {orders.length === 0 ? (
                 <div className="rounded-lg border border-slate-200 bg-white p-8 text-center">
                     <p className="text-slate-600">注文履歴がありません</p>
                 </div>
             ) : (
                 <div className="space-y-4">
-                    <OrderTimeFilterSelect />
                     {orders.map((order) => (
                         <div
                             key={order.orderId}

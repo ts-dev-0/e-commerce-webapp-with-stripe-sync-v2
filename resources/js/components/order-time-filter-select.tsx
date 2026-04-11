@@ -9,7 +9,15 @@ import {
     SelectValue,
 } from './ui/select';
 
-export default function OrderTimeFilterSelect() {
+interface Years {
+    label: string;
+    value: string;
+}
+interface Props {
+    years: Years[];
+}
+
+export default function OrderTimeFilterSelect({ years }: Props) {
     const { url } = usePage();
     const params = new URLSearchParams(url.split('?')[1]);
     const timeFilter = params.get('timeFilter') ?? 'last30';
@@ -21,7 +29,7 @@ export default function OrderTimeFilterSelect() {
     }
 
     return (
-        <div className="w-fit">
+        <div className="mb-6 w-fit">
             <Select
                 defaultValue={timeFilter}
                 onValueChange={(val) => handleValueChange(val)}
@@ -33,8 +41,11 @@ export default function OrderTimeFilterSelect() {
                     <SelectGroup>
                         <SelectItem value="last30">過去30日間</SelectItem>
                         <SelectItem value="months-3">過去3ヵ月</SelectItem>
-                        <SelectItem value="year-2026">2026年</SelectItem>
-                        <SelectItem value="year-2025">2025年</SelectItem>
+                        {years.map(({ label, value }) => (
+                            <SelectItem key={label} value={value}>
+                                {label}年
+                            </SelectItem>
+                        ))}
                     </SelectGroup>
                 </SelectContent>
             </Select>
