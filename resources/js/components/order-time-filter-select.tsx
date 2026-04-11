@@ -34,7 +34,7 @@ export default function OrderTimeFilterSelect({ years }: Props) {
                 defaultValue={timeFilter}
                 onValueChange={(val) => handleValueChange(val)}
             >
-                <SelectTrigger>
+                <SelectTrigger className="bg-white">
                     <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
