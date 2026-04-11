@@ -44,4 +44,26 @@ class Product extends Model
     {
         return $query->latest()->limit($limit);
     }
+
+    public function stockStatus(): array
+    {
+        $threshold = 10;
+
+        if ($this->stock === 0) {
+            return [
+                'status' => 'outOfStock',
+                'label' => '在庫なし',
+            ];
+        } elseif ($this->stock < $threshold) {
+            return [
+                'status' => 'lowStock',
+                'label' => "残り{$this->stock}点",
+            ];
+        } else {
+            return [
+                'status' => 'inStock',
+                'label' => '在庫あり',
+            ];
+        }
+    }
 }

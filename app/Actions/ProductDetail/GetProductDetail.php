@@ -8,6 +8,8 @@ class GetProductDetail
 {
   public function handle(Product $product): array
   {
+    $stockStatus = $product->stockStatus();
+
     $reviews = $product
       ->reviews()
       ->with('user:id,name')
@@ -19,6 +21,7 @@ class GetProductDetail
     return [
       'reviews' => $reviews,
       'averageRating' => $averageRating,
+      'stockStatus' => $stockStatus,
     ];
   }
 }
