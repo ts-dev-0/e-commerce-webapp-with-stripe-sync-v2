@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Actions\Cart\AddItemToCart;
 use App\Actions\Cart\RemoveCartItem;
 use App\Actions\Cart\UpdateCartItemQuantity;
-use App\Http\Requests\User\Cart\AddItemToCartRequest;
 use App\Http\Requests\User\Cart\RemoveCartItemRequest;
+use App\Http\Requests\User\Cart\StoreCartItemRequest;
 use App\Http\Requests\User\Cart\UpdateCartItemQuantityRequest;
 
 class CartItemController extends Controller
 {
-    public function store(AddItemToCartRequest $request, AddItemToCart $action)
+    public function store(StoreCartItemRequest $request, AddItemToCart $action)
     {
         $validatedData = $request->validated();
         $action->handle(
