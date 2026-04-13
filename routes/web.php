@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
@@ -15,13 +16,15 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('products/{product}', [ProductController::class, 'show'])->name('product.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('cart', CartController::class)
-        ->only(['index', 'store']);
-    Route::patch('cart/items', [CartController::class, 'update'])->name('cart.items.update');
-    Route::delete('cart/items', [CartController::class, 'destroy'])->name('cart.items.destroy');
+    Route::get('cart', CartController::class)
+        ->name('cart.index');
+
+    Route::resource('cart/items', CartItemController::class)
+        ->only(['store', 'update', 'destroy'])
+        ->names('cart.items');
 
     Route::get('favorites', [FavoriteController::class, 'index'])
-    ->name('favorites.index');
+        ->name('favorites.index');
 
     Route::post('favorites', [FavoriteController::class, 'store'])
         ->name('favorites.store');
@@ -46,12 +49,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('search/products', SearchPublishedProductController::class)->name('search.products');
 
-    Route::post('addresses', [AddressController::class, 'store'])->name('addresses.store');    
-    Route::patch('addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');    
+    Route::post('addresses', [AddressController::class, 'store'])->name('addresses.store');
+    Route::patch('addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');
     Route::patch('addresses/{address}/default', [AddressController::class, 'updateDefault'])
         ->name('addresses.default.update');
     Route::delete('addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/account.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/account.php';
