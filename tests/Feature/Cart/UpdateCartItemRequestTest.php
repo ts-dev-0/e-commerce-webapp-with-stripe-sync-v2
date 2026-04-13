@@ -2,23 +2,22 @@
 
 namespace Tests\Feature\Cart;
 
-use App\Http\Requests\User\Cart\AddItemToCartRequest;
-use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\User\Cart\UpdateCartItemRequest;
+use App\Models\Product;
 
-class AddItemToCartRequestTest extends TestCase
+class UpdateCartItemRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    private AddItemToCartRequest $request;
+    private UpdateCartItemRequest $request;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = new AddItemToCartRequest();
+        $this->request = new UpdateCartItemRequest();
     }
 
     public function test_validation_passes_with_valid_data()

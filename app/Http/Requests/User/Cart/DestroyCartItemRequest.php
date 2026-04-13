@@ -4,7 +4,7 @@ namespace App\Http\Requests\User\Cart;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCartItemQuantityRequest extends FormRequest
+class DestroyCartItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,6 @@ class UpdateCartItemQuantityRequest extends FormRequest
     {
         return [
             'product_id' => ['bail', 'required', 'integer', 'exists:products,id'],
-            'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ];
     }
 }

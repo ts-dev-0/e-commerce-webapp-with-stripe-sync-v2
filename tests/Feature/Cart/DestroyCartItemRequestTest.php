@@ -2,23 +2,22 @@
 
 namespace Tests\Feature\Cart;
 
-use App\Http\Requests\User\Cart\RemoveCartItemRequest;
-use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\User\Cart\DestroyCartItemRequest;
+use App\Models\Product;
 
-class RemoveCartItemRequestTest extends TestCase
+class DestroyCartItemRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    private RemoveCartItemRequest $request;
+    private DestroyCartItemRequest $request;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = new RemoveCartItemRequest();
+        $this->request = new DestroyCartItemRequest();
     }
 
     public function test_validation_passes_with_valid_data()
