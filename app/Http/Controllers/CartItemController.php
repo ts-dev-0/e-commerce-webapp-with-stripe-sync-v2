@@ -7,7 +7,7 @@ use App\Actions\Cart\RemoveCartItem;
 use App\Actions\Cart\UpdateCartItemQuantity;
 use App\Http\Requests\User\Cart\RemoveCartItemRequest;
 use App\Http\Requests\User\Cart\StoreCartItemRequest;
-use App\Http\Requests\User\Cart\UpdateCartItemQuantityRequest;
+use App\Http\Requests\User\Cart\UpdateCartItemRequest;
 
 class CartItemController extends Controller
 {
@@ -25,7 +25,7 @@ class CartItemController extends Controller
             ->with('success', 'Product added to cart.');
     }
 
-    public function update(UpdateCartItemQuantityRequest $request, UpdateCartItemQuantity $action)
+    public function update(UpdateCartItemRequest $request, UpdateCartItemQuantity $action)
     {
         $validatedData = $request->validated();
         $action->handle(
