@@ -15,7 +15,7 @@ class CartController extends Controller
         $data = $action->handle($request->user());
 
         return Inertia::render('cart', [
-            'data' => CartResource::make($data),
+            'cart' => CartResource::make($data),
         ]);
     }
 }
