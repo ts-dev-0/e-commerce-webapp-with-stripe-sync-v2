@@ -5,7 +5,7 @@ import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
-import { store } from '@/routes/cart';
+import { store } from '@/routes/cart/items';
 import { Product } from '@/types/product';
 import { Review } from '@/types/review';
 import { Head, useForm } from '@inertiajs/react';
