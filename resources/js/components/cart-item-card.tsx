@@ -5,16 +5,17 @@ import { Link, useForm } from '@inertiajs/react';
 import { QuantitySelector } from './quantity-selector';
 
 interface CartItemCartProps {
+    cartItemId: number;
     product: Product;
     initialQuantity: number;
 }
 
 interface CartItemQuantityForm {
-    productId: number;
     quantity: number;
 }
 
 export default function CartItemCard({
+    cartItemId,
     product,
     initialQuantity,
 }: CartItemCartProps) {
@@ -26,27 +27,26 @@ export default function CartItemCard({
         patch,
         delete: deleteCartItem,
     } = useForm<CartItemQuantityForm>({
-        productId: product.id,
         quantity: initialQuantity,
     });
 
     function updateQuantity(updatedQuantity: number) {
         transform((prev) => ({
             ...prev,
-            product_id: data.productId,
+            product_id: product.id,
             quantity: updatedQuantity,
         }));
 
-        patch(update().url);
+        patch(update(cartItemId).url);
     }
 
     function removeCartItem() {
         transform(() => ({
             ...data,
-            product_id: data.productId,
+            product_id: product.id,
         }));
 
-        deleteCartItem(destroy().url);
+        deleteCartItem(destroy(cartItemId).url);
     }
 
     return (

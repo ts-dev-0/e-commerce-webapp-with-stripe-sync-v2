@@ -20,7 +20,7 @@ class CheckoutController extends Controller
         }
 
         return Inertia::render('checkout', [
-            'data' => CheckoutResource::make($checkoutData),
+            'checkout' => CheckoutResource::make($checkoutData),
         ]);
     }
 
