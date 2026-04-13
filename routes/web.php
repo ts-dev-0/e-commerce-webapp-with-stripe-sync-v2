@@ -12,8 +12,10 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchPublishedProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('products/{product}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
+Route::get('products/{product}', [ProductController::class, 'show'])
+    ->name('product.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('cart', CartController::class)
@@ -32,8 +34,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('favorites', [FavoriteController::class, 'destroy'])
         ->name('favorites.destroy');
 
-    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('orders', [OrderController::class, 'index'])
+        ->name('orders.index');
+
+    Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])
+        ->name('orders.cancel');
 
     Route::resource('checkout', CheckoutController::class)
         ->only(['index', 'store']);
@@ -47,13 +52,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('reviews', ReviewController::class)
         ->only(['index', 'store', 'update', 'destroy']);
 
-    Route::get('search/products', SearchPublishedProductController::class)->name('search.products');
+    Route::get('search/products', SearchPublishedProductController::class)
+        ->name('search.products');
 
-    Route::post('addresses', [AddressController::class, 'store'])->name('addresses.store');
-    Route::patch('addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');
+    Route::post('addresses', [AddressController::class, 'store'])
+        ->name('addresses.store');
+
+    Route::patch('addresses/{address}', [AddressController::class, 'update'])
+        ->name('addresses.update');
+
     Route::patch('addresses/{address}/default', [AddressController::class, 'updateDefault'])
         ->name('addresses.default.update');
-    Route::delete('addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
+
+    Route::delete('addresses/{address}', [AddressController::class, 'destroy'])
+        ->name('addresses.destroy');
 });
 
 require __DIR__ . '/settings.php';
