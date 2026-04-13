@@ -17,7 +17,7 @@ import { Checkout as CheckoutType } from '@/types/checkout';
 import { useState } from 'react';
 
 interface CheckoutProps {
-    data: CheckoutType;
+    checkout: CheckoutType;
 }
 
 interface SetDefaultAddressForm {
@@ -25,7 +25,7 @@ interface SetDefaultAddressForm {
 }
 
 export default function Checkout({
-    data: {
+    checkout: {
         cartItems,
         addresses,
         defaultAddress,
@@ -89,10 +89,11 @@ export default function Checkout({
                                 <div className="flex">
                                     <div className="mt-4 max-w-96 space-y-4">
                                         {cartItems.map(
-                                            ({ product, quantity }) => {
+                                            ({ id, product, quantity }) => {
                                                 return (
                                                     <CartItemCard
-                                                        key={product.id}
+                                                        key={id}
+                                                        cartItemId={id}
                                                         product={product}
                                                         initialQuantity={
                                                             quantity
