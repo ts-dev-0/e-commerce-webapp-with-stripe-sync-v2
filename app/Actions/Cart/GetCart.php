@@ -18,7 +18,7 @@ class GetCart
             ->get();
 
         $subtotal = $cartItems->sum(function ($item) {
-                        return $item->product->price * $item->quantity;
+            return $item->product->price * $item->quantity;
         });
 
         return new CartData($cartItems, $subtotal);
