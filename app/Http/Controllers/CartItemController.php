@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Cart\AddItemToCart;
 use App\Actions\Cart\RemoveCartItem;
 use App\Actions\Cart\UpdateCartItemQuantity;
-use App\Http\Requests\User\Cart\RemoveCartItemRequest;
+use App\Http\Requests\User\Cart\DestroyCartItemRequest;
 use App\Http\Requests\User\Cart\StoreCartItemRequest;
 use App\Http\Requests\User\Cart\UpdateCartItemRequest;
 
@@ -39,7 +39,7 @@ class CartItemController extends Controller
             ->with('success', 'Cart updated.');
     }
 
-    public function destroy(RemoveCartItemRequest $request, RemoveCartItem $action)
+    public function destroy(DestroyCartItemRequest $request, RemoveCartItem $action)
     {
         $validatedData = $request->validated();
         $action->handle(
