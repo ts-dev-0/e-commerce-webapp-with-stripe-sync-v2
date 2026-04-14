@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Actions\Review\CreateReview;
 use App\Actions\Review\DeleteReview;
 use App\Actions\Review\GetUserReviews;
 use App\Actions\Review\UpdateReview;
-use App\Http\Requests\User\Review\CreateReviewRequest;
 use App\Http\Requests\User\Review\DeleteReviewRequest;
+use App\Http\Requests\User\Review\StoreReviewRequest;
 use App\Http\Requests\User\Review\UpdateReviewRequest;
 use App\Models\Review;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class ReviewController extends Controller
 {
@@ -24,7 +24,7 @@ class ReviewController extends Controller
         ]);
     }
 
-    public function store(CreateReviewRequest $request, CreateReview $action)
+    public function store(StoreReviewRequest $request, CreateReview $action)
     {
         $validatedData = $request->validated();
 
@@ -43,7 +43,7 @@ class ReviewController extends Controller
     public function update(UpdateReviewRequest $request, UpdateReview $action, Review $review)
     {
         $action->handle(
-            $review, 
+            $review,
             $request->validated(),
         );
 

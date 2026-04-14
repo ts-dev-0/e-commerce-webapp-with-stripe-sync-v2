@@ -2,23 +2,22 @@
 
 namespace Tests\Feature\Review;
 
-use App\Http\Requests\User\Review\CreateReviewRequest;
-use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\User\Review\StoreReviewRequest;
+use App\Models\Product;
 
-class CreateReviewRequestTest extends TestCase
+class StoreReviewRequestTest extends TestCase
 {
     use RefreshDatabase;
 
-    private CreateReviewRequest $request;
+    private StoreReviewRequest $request;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = new CreateReviewRequest();
+        $this->request = new StoreReviewRequest();
     }
 
     public function test_validation_passes_with_valid_data()
