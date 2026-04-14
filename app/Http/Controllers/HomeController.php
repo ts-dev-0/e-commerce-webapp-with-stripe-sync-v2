@@ -10,10 +10,10 @@ class HomeController extends Controller
 {
     public function index(HomeIndex $action)
     {
-        $data = $action->handle();
+        $home = $action->handle();
 
         return Inertia::render('home', [
-            'data' => ProductResource::collection($data),
+            'home' => ProductResource::collection($home),
         ]);
     }
 }
