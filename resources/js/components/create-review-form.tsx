@@ -1,6 +1,7 @@
 import { store } from '@/routes/reviews';
 import { useForm } from '@inertiajs/react';
 import { Star } from 'lucide-react';
+import ErrorMessage from './error-message';
 import { Button } from './ui/button';
 import { Spinner } from './ui/spinner';
 
@@ -15,7 +16,7 @@ interface ReviewFormProps {
 }
 
 export default function CreateReviewForm({ productId }: ReviewFormProps) {
-    const { data, setData, transform, processing, post, reset } =
+    const { data, setData, transform, processing, post, reset, errors } =
         useForm<ReviewFormData>({
             productId,
             rating: 5,
@@ -78,7 +79,6 @@ export default function CreateReviewForm({ productId }: ReviewFormProps) {
                     rows={4}
                     className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
                     placeholder="レビューを入力してください"
-                    required
                 />
             </div>
 
@@ -90,6 +90,8 @@ export default function CreateReviewForm({ productId }: ReviewFormProps) {
                 {processing && <Spinner />}
                 レビューを投稿する
             </Button>
+            <ErrorMessage message={errors.rating} />
+            <ErrorMessage message={errors.comment} />
         </form>
     );
 }
