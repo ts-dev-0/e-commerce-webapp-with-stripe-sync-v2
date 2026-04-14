@@ -11,7 +11,7 @@ class CreateReview
         User $user,
         int $productId,
         int $rating,
-        string $comment,
+        ?string $comment,
     ): Review
     {
         if (Review::alreadyReviewed($user->id, $productId)) {
