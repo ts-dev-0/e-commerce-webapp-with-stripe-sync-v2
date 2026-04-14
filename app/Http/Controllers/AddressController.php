@@ -47,8 +47,10 @@ class AddressController extends Controller
             ->with('success', 'Updated Address.');
     }
 
-    public function updateDefault(SetDefaultAddressRequest $request, Address $address, SetDefaultAddress $action)
+    public function updateDefault(Request $request, Address $address, SetDefaultAddress $action)
     {
+        $this->authorize('setDefault', $address);
+
         $action->handle($request->user(), $address);
 
         return redirect()
