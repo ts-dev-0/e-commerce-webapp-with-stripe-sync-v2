@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Actions\Address\DeleteAddress;
 use App\Actions\Address\SetDefaultAddress;
 use App\Actions\Address\StoreAddress;
 use App\Actions\Address\UpdateAddress;
-use App\Http\Requests\DeleteAddressRequest;
+use App\Http\Requests\DestroyAddressRequest;
 use App\Http\Requests\SetDefaultAddressRequest;
 use App\Http\Requests\StoreAddressRequest;
 use App\Http\Requests\UpdateAddressRequest;
 use App\Http\Resources\AddressResource;
 use App\Models\Address;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class AddressController extends Controller
 {
@@ -57,7 +57,7 @@ class AddressController extends Controller
             ->with('success', 'Update default address.');
     }
 
-    public function destroy(DeleteAddressRequest $request, DeleteAddress $action, Address $address)
+    public function destroy(DestroyAddressRequest $request, DeleteAddress $action, Address $address)
     {
         $action->handle($address);
 
