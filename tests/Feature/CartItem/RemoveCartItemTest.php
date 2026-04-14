@@ -4,7 +4,7 @@ namespace Tests\Feature\CartItem;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\Cart\RemoveCartItem;
+use App\Actions\CartItem\RemoveCartItem;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
