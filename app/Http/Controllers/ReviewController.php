@@ -8,7 +8,7 @@ use App\Actions\Review\CreateReview;
 use App\Actions\Review\DeleteReview;
 use App\Actions\Review\GetUserReviews;
 use App\Actions\Review\UpdateReview;
-use App\Http\Requests\User\Review\DeleteReviewRequest;
+use App\Http\Requests\User\Review\DestroyReviewRequest;
 use App\Http\Requests\User\Review\StoreReviewRequest;
 use App\Http\Requests\User\Review\UpdateReviewRequest;
 use App\Models\Review;
@@ -52,7 +52,7 @@ class ReviewController extends Controller
             ->with('success', 'Review updated.');
     }
 
-    public function destroy(DeleteReviewRequest $request, DeleteReview $action, Review $review)
+    public function destroy(DestroyReviewRequest $request, DeleteReview $action, Review $review)
     {
         $action->handle($review);
 
