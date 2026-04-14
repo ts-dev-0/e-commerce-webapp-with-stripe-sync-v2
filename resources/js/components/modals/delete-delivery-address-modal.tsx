@@ -2,6 +2,7 @@ import { destroy } from '@/routes/addresses';
 import { useModalStore } from '@/stores/modalStore';
 import { useForm } from '@inertiajs/react';
 import React from 'react';
+import ErrorMessage from '../error-message';
 import { Button } from '../ui/button';
 import { Spinner } from '../ui/spinner';
 import ModalWrapper from './modal-wrapper';
@@ -13,7 +14,7 @@ interface DeleteDeliveryAddressModalProps {
 export default function DeleteDeliveryAddressModal({
     id,
 }: DeleteDeliveryAddressModalProps) {
-    const { processing, delete: deleteAddress } = useForm({ id });
+    const { processing, delete: deleteAddress, errors } = useForm({ id });
     const closeModal = useModalStore((state) => state.closeModal);
 
     function handleDeleteAddress(event: React.FormEvent) {
@@ -57,6 +58,9 @@ export default function DeleteDeliveryAddressModal({
                             {processing && <Spinner />}
                             削除する
                         </Button>
+                    </div>
+                    <div className="text-end">
+                        <ErrorMessage message={errors.id} />
                     </div>
                 </form>
             </div>

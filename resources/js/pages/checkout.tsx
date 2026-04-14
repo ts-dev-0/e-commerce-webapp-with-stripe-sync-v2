@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 
 import { store } from '@/routes/checkout';
 
+import ErrorMessage from '@/components/error-message';
 import { update } from '@/routes/addresses/default';
 import { Checkout as CheckoutType } from '@/types/checkout';
 import { useState } from 'react';
@@ -37,7 +38,7 @@ export default function Checkout({
 }: CheckoutProps) {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    const { data, setData, patch, processing, reset } =
+    const { data, setData, patch, processing, reset, errors } =
         useForm<SetDefaultAddressForm>({
             selectAddressId: defaultAddress?.id,
         });
@@ -83,6 +84,7 @@ export default function Checkout({
                                 setIsExpanded={(isExpanded) =>
                                     setIsExpanded(isExpanded)
                                 }
+                                errorMessage={errors.selectAddressId}
                             />
                             <PaymentMethodSection />
                             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
@@ -196,6 +198,7 @@ export default function Checkout({
                         >
                             注文を確定する
                         </Button>
+                        <ErrorMessage message={errors.selectAddressId} />
                     </aside>
                 </div>
             </div>

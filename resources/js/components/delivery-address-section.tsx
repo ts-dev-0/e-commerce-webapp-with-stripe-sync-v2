@@ -1,6 +1,7 @@
 import { useModalStore } from '@/stores/modalStore';
 import { Address } from '@/types/address';
 import AddressCard from './address-card';
+import ErrorMessage from './error-message';
 import { Button } from './ui/button';
 
 interface DeliveryAddressSectionProps {
@@ -14,6 +15,7 @@ interface DeliveryAddressSectionProps {
     setDefaultAddress: () => void;
     isExpanded: boolean;
     setIsExpanded: (isExpanded: boolean) => void;
+    errorMessage?: string;
 }
 
 export function DeliveryAddressSection({
@@ -27,6 +29,7 @@ export function DeliveryAddressSection({
     setDefaultAddress,
     isExpanded,
     setIsExpanded,
+    errorMessage,
 }: DeliveryAddressSectionProps) {
     const openModal = useModalStore((state) => state.openModal);
 
@@ -80,13 +83,16 @@ export function DeliveryAddressSection({
 
                     {isExpanded && (
                         <div className="flex items-center justify-between">
-                            <Button
-                                onClick={setDefaultAddress}
-                                className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
-                                disabled={processing}
-                            >
-                                この住所に配達する
-                            </Button>
+                            <div>
+                                <Button
+                                    onClick={setDefaultAddress}
+                                    className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
+                                    disabled={processing}
+                                >
+                                    この住所に配達する
+                                </Button>
+                                <ErrorMessage message={errorMessage} />
+                            </div>
                             <button
                                 onClick={() => {
                                     setIsExpanded(false);

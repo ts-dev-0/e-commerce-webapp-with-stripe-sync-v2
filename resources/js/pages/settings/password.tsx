@@ -1,3 +1,4 @@
+import ErrorMessage from '@/components/error-message';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -36,19 +37,13 @@ export default function Password() {
     };
 
     return (
-        <AccountLayout>
+        <AccountLayout
+            title="パスワード変更"
+            description="セキュリティのために定期的にパスワードを変更してください。"
+        >
             <Head title="パスワード変更" />
 
             <div className="mx-auto max-w-2xl">
-                <div className="mb-6">
-                    <h1 className="text-3xl font-bold text-slate-900">
-                        パスワード変更
-                    </h1>
-                    <p className="mt-2 text-sm text-slate-600">
-                        セキュリティのために定期的にパスワードを変更してください。
-                    </p>
-                </div>
-
                 <Card>
                     <CardHeader>
                         <CardTitle>新しいパスワードを設定</CardTitle>
@@ -96,11 +91,9 @@ export default function Password() {
                                         </span>
                                     </button>
                                 </div>
-                                {errors.current_password && (
-                                    <p className="mt-1 text-sm text-red-600">
-                                        {errors.current_password}
-                                    </p>
-                                )}
+                                <ErrorMessage
+                                    message={errors.current_password}
+                                />
                             </div>
 
                             <div>
@@ -134,11 +127,7 @@ export default function Password() {
                                         </span>
                                     </button>
                                 </div>
-                                {errors.password && (
-                                    <p className="mt-1 text-sm text-red-600">
-                                        {errors.password}
-                                    </p>
-                                )}
+                                <ErrorMessage message={errors.password} />
                             </div>
 
                             <div>
@@ -179,11 +168,6 @@ export default function Password() {
                                         </span>
                                     </button>
                                 </div>
-                                {errors.password_confirmation && (
-                                    <p className="mt-1 text-sm text-red-600">
-                                        {errors.password_confirmation}
-                                    </p>
-                                )}
                             </div>
 
                             <div className="flex justify-end">

@@ -11,13 +11,14 @@ import { store } from '@/routes/addresses';
 import { useModalStore } from '@/stores/modalStore';
 import { CreateAddress } from '@/types/address';
 import { useForm } from '@inertiajs/react';
+import ErrorMessage from './error-message';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Spinner } from './ui/spinner';
 
 export default function CreateDeliveryAddressForm() {
-    const { data, setData, transform, post, processing, reset } =
+    const { data, setData, transform, post, processing, reset, errors } =
         useForm<CreateAddress>({
             fullName: '',
             postalCode: '',
@@ -62,6 +63,7 @@ export default function CreateDeliveryAddressForm() {
                         placeholder="山田 太郎"
                         onChange={(e) => setData('fullName', e.target.value)}
                     />
+                    <ErrorMessage message={errors.fullName} />
                 </div>
 
                 <div className="col-span-2 flex flex-col gap-y-4">
@@ -79,6 +81,7 @@ export default function CreateDeliveryAddressForm() {
                                     setData('postalCode', e.target.value)
                                 }
                             />
+                            <ErrorMessage message={errors.postalCode} />
                         </div>
                     </div>
                     <div className="flex flex-col gap-y-4">
@@ -106,6 +109,7 @@ export default function CreateDeliveryAddressForm() {
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
+                            <ErrorMessage message={errors.prefecture} />
                         </div>
                         <div>
                             <label className="text-xs font-medium text-slate-600">
@@ -118,6 +122,7 @@ export default function CreateDeliveryAddressForm() {
                                     setData('city', e.target.value)
                                 }
                             />
+                            <ErrorMessage message={errors.city} />
                         </div>
                         <div>
                             <label className="text-xs font-medium text-slate-600">
@@ -131,6 +136,7 @@ export default function CreateDeliveryAddressForm() {
                                     setData('addressLine', e.target.value)
                                 }
                             />
+                            <ErrorMessage message={errors.addressLine} />
                         </div>
                     </div>
                 </div>
@@ -145,6 +151,7 @@ export default function CreateDeliveryAddressForm() {
                         maxLength={11}
                         onChange={(e) => setData('phoneNumber', e.target.value)}
                     />
+                    <ErrorMessage message={errors.phoneNumber} />
                 </div>
             </div>
             <div className="mt-4 flex items-center justify-start gap-2">
