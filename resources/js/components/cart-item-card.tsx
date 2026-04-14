@@ -26,6 +26,7 @@ export default function CartItemCard({
         transform,
         patch,
         delete: deleteCartItem,
+        errors,
     } = useForm<CartItemQuantityForm>({
         quantity: initialQuantity,
     });
@@ -104,6 +105,7 @@ export default function CartItemCard({
                             }}
                             quantity={data.quantity}
                             onRemove={removeCartItem}
+                            errorMessage={errors.quantity}
                         />
                     </div>
                 </div>
