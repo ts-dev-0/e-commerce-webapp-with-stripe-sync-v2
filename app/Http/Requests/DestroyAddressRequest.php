@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Address;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteAddressRequest extends FormRequest
+class DestroyAddressRequest extends FormRequest
 {
     public function authorize(): bool
     {
