@@ -1,3 +1,4 @@
+import ErrorMessage from '@/components/error-message';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -86,11 +87,7 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
                                         className="mt-1"
                                         placeholder="ユーザー名を入力"
                                     />
-                                    {errors.name && (
-                                        <p className="mt-1 text-sm text-red-600">
-                                            {errors.name}
-                                        </p>
-                                    )}
+                                    <ErrorMessage message={errors.name} />
                                 </div>
 
                                 <div>
@@ -107,11 +104,7 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
                                         className="mt-1"
                                         placeholder="メールアドレスを入力"
                                     />
-                                    {errors.email && (
-                                        <p className="mt-1 text-sm text-red-600">
-                                            {errors.email}
-                                        </p>
-                                    )}
+                                    <ErrorMessage message={errors.email} />
                                 </div>
 
                                 <div className="flex justify-end gap-3">
