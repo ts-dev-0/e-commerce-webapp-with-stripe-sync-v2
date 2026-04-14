@@ -8,9 +8,9 @@ use App\Actions\Review\CreateReview;
 use App\Actions\Review\DeleteReview;
 use App\Actions\Review\GetUserReviews;
 use App\Actions\Review\UpdateReview;
-use App\Http\Requests\User\Review\DestroyReviewRequest;
-use App\Http\Requests\User\Review\StoreReviewRequest;
-use App\Http\Requests\User\Review\UpdateReviewRequest;
+use App\Http\Requests\Review\DestroyReviewRequest;
+use App\Http\Requests\Review\StoreReviewRequest;
+use App\Http\Requests\Review\UpdateReviewRequest;
 use App\Models\Review;
 
 class ReviewController extends Controller

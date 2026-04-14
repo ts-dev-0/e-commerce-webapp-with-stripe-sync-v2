@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\Favorite\AddFavorite;
 use App\Actions\Favorite\RemoveFavorite;
 use App\Actions\Favorite\ViewFavoriteProducts;
-use App\Http\Requests\User\Favorite\AddFavoriteRequest;
-use App\Http\Requests\User\Favorite\RemoveFavoriteRequest;
+use App\Http\Requests\Favorite\AddFavoriteRequest;
+use App\Http\Requests\Favorite\RemoveFavoriteRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 

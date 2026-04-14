@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User\Favorite;
+namespace App\Http\Requests\Search;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RemoveFavoriteRequest extends FormRequest
+class SearchPublishedProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class RemoveFavoriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => ['bail', 'required', 'integer', 'exists:products,id'],
+            'keyword' => ['required', 'string'],
         ];
     }
 }

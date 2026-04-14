@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Http\Requests\User\Review;
+namespace App\Http\Requests\Review;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreReviewRequest extends FormRequest
+class DestroyReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        /** @var \App\Models\Review $review */
+        $review = $this->route('review');
+
+        return $this->user()->id === $review->user_id;
     }
 
     /**
@@ -22,9 +25,7 @@ class StoreReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => ['bail', 'required', 'integer', 'exists:products,id'],
-            'rating' => ['required', 'integer', 'between:1,5'],
-            'comment' => ['nullable', 'string', 'max:1000'],
+            //
         ];
     }
 }

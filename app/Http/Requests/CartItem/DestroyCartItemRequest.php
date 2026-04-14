@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Requests\User\Review;
+namespace App\Http\Requests\CartItem;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DestroyReviewRequest extends FormRequest
+class DestroyCartItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        /** @var \App\Models\Review $review */
-        $review = $this->route('review');
-
-        return $this->user()->id === $review->user_id;
+        return true;
     }
 
     /**
@@ -25,7 +22,7 @@ class DestroyReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'product_id' => ['bail', 'required', 'integer', 'exists:products,id'],
         ];
     }
 }

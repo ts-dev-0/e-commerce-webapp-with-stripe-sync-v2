@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Actions\Cart\AddItemToCart;
 use App\Actions\Cart\RemoveCartItem;
 use App\Actions\Cart\UpdateCartItemQuantity;
-use App\Http\Requests\User\Cart\DestroyCartItemRequest;
-use App\Http\Requests\User\Cart\StoreCartItemRequest;
-use App\Http\Requests\User\Cart\UpdateCartItemRequest;
+use App\Http\Requests\CartItem\DestroyCartItemRequest;
+use App\Http\Requests\CartItem\StoreCartItemRequest;
+use App\Http\Requests\CartItem\UpdateCartItemRequest;
 
 class CartItemController extends Controller
 {

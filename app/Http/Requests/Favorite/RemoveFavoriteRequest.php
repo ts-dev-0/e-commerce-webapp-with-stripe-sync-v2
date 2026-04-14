@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User\Cart;
+namespace App\Http\Requests\Favorite;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCartItemRequest extends FormRequest
+class RemoveFavoriteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,6 @@ class UpdateCartItemRequest extends FormRequest
     {
         return [
             'product_id' => ['bail', 'required', 'integer', 'exists:products,id'],
-            'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ];
     }
 }

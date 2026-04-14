@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User\Search;
+namespace App\Http\Requests\CartItem;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchPublishedProductRequest extends FormRequest
+class StoreCartItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class SearchPublishedProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'keyword' => ['required', 'string'],
+            'product_id' => ['bail', 'required', 'integer', 'exists:products,id'],
+            'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ];
     }
 }

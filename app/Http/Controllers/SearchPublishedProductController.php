@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Search\SearchPublishedProduct;
-use App\Http\Requests\User\Search\SearchPublishedProductRequest;
+use App\Http\Requests\Search\SearchPublishedProductRequest;
 use Inertia\Inertia;
 
 class SearchPublishedProductController extends Controller

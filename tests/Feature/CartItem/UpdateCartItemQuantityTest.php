@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Cart;
+namespace Tests\Feature\CartItem;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
