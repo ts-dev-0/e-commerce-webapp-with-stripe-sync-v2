@@ -13,7 +13,15 @@ class AddressPolicy
      */
     public function update(User $user, Address $address): bool
     {
-        return false;
+        return $user->id === $address->user_id;
+    }
+
+    /**
+     * Determine whether the user can set the address as their default address.
+     */
+    public function setDefault(User $user, Address $address): bool
+    {
+        return $user->id === $address->user_id;
     }
 
     /**
