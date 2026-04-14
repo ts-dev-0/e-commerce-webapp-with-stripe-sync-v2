@@ -17,10 +17,10 @@ class ReviewController extends Controller
 {
     public function index(Request $request, GetUserReviews $action)
     {
-        $data = $action->handle($request->user());
+        $reviews = $action->handle($request->user());
 
         return Inertia::render('reviews', [
-            'data' => $data,
+            'reviews' => $reviews,
         ]);
     }
 
