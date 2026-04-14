@@ -57,8 +57,10 @@ class AddressController extends Controller
             ->with('success', 'Update default address.');
     }
 
-    public function destroy(DestroyAddressRequest $request, DeleteAddress $action, Address $address)
+    public function destroy(DeleteAddress $action, Address $address)
     {
+        $this->authorize('delete', $address);
+
         $action->handle($address);
 
         return redirect()
