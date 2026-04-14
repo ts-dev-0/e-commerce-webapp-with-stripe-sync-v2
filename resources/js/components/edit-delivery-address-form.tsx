@@ -11,6 +11,7 @@ import { update } from '@/routes/addresses';
 import { useModalStore } from '@/stores/modalStore';
 import { Address, UpdateAddress } from '@/types/address';
 import { useForm } from '@inertiajs/react';
+import ErrorMessage from './error-message';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -23,7 +24,7 @@ interface EditDeliveryAddressFormProps {
 export default function EditDeliveryAddressForm({
     address,
 }: EditDeliveryAddressFormProps) {
-    const { data, setData, transform, patch, processing, reset } =
+    const { data, setData, transform, patch, processing, reset, errors } =
         useForm<UpdateAddress>({
             id: address.id,
             fullName: address.fullName,
@@ -69,6 +70,7 @@ export default function EditDeliveryAddressForm({
                         placeholder="山田 太郎"
                         onChange={(e) => setData('fullName', e.target.value)}
                     />
+                    <ErrorMessage message={errors.fullName} />
                 </div>
 
                 <div className="col-span-2 flex flex-col gap-y-4">
@@ -76,7 +78,7 @@ export default function EditDeliveryAddressForm({
                         <label className="text-xs font-medium text-slate-600">
                             郵便番号(半角数字・ハイフンなし)
                         </label>
-                        <div className="flex items-center gap-x-2">
+                        <div className="flex flex-col">
                             <Input
                                 value={data.postalCode}
                                 placeholder="0000000"
@@ -86,6 +88,7 @@ export default function EditDeliveryAddressForm({
                                     setData('postalCode', e.target.value)
                                 }
                             />
+                            <ErrorMessage message={errors.postalCode} />
                         </div>
                     </div>
                     <div className="flex flex-col gap-y-4">
@@ -115,6 +118,7 @@ export default function EditDeliveryAddressForm({
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
+                            <ErrorMessage message={errors.prefecture} />
                         </div>
                         <div>
                             <label className="text-xs font-medium text-slate-600">
@@ -127,6 +131,7 @@ export default function EditDeliveryAddressForm({
                                     setData('city', e.target.value)
                                 }
                             />
+                            <ErrorMessage message={errors.city} />
                         </div>
                         <div>
                             <label className="text-xs font-medium text-slate-600">
@@ -140,6 +145,7 @@ export default function EditDeliveryAddressForm({
                                     setData('addressLine', e.target.value)
                                 }
                             />
+                            <ErrorMessage message={errors.addressLine} />
                         </div>
                     </div>
                 </div>
@@ -154,6 +160,7 @@ export default function EditDeliveryAddressForm({
                         maxLength={11}
                         onChange={(e) => setData('phoneNumber', e.target.value)}
                     />
+                    <ErrorMessage message={errors.phoneNumber} />
                 </div>
             </div>
             <div className="mt-4 flex items-center justify-start gap-2">
