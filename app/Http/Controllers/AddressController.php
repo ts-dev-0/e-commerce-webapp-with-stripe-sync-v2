@@ -8,10 +8,9 @@ use App\Actions\Address\DeleteAddress;
 use App\Actions\Address\SetDefaultAddress;
 use App\Actions\Address\StoreAddress;
 use App\Actions\Address\UpdateAddress;
-use App\Http\Requests\DestroyAddressRequest;
-use App\Http\Requests\SetDefaultAddressRequest;
-use App\Http\Requests\StoreAddressRequest;
-use App\Http\Requests\UpdateAddressRequest;
+use App\Http\Requests\Address\SetDefaultAddressRequest;
+use App\Http\Requests\Address\StoreAddressRequest;
+use App\Http\Requests\Address\UpdateAddressRequest;
 use App\Http\Resources\AddressResource;
 use App\Models\Address;
 
