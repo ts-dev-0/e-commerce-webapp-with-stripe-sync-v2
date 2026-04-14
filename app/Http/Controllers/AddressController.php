@@ -8,7 +8,6 @@ use App\Actions\Address\DeleteAddress;
 use App\Actions\Address\SetDefaultAddress;
 use App\Actions\Address\StoreAddress;
 use App\Actions\Address\UpdateAddress;
-use App\Http\Requests\Address\SetDefaultAddressRequest;
 use App\Http\Requests\Address\StoreAddressRequest;
 use App\Http\Requests\Address\UpdateAddressRequest;
 use App\Http\Resources\AddressResource;
@@ -21,7 +20,7 @@ class AddressController extends Controller
         $addresses = $request->user()->addresses()->get();
 
         return Inertia::render('account/addresses', [
-            'data' => AddressResource::collection($addresses),
+            'addresses' => AddressResource::collection($addresses),
         ]);
     }
 

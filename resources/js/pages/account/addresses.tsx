@@ -6,10 +6,9 @@ import { Address } from '@/types/address';
 import { Head, router } from '@inertiajs/react';
 
 interface AddressesProps {
-    data: Address[];
+    addresses: Address[];
 }
-export default function Addresses({ data }: AddressesProps) {
-    const addresses = data;
+export default function Addresses({ addresses }: AddressesProps) {
     const openModal = useModalStore((state) => state.openModal);
 
     function handleSetDefaultAddress(id: number) {
@@ -82,7 +81,11 @@ export default function Addresses({ data }: AddressesProps) {
                                         <Button
                                             variant={'link'}
                                             className="cursor-pointer"
-                                            onClick={() => handleSetDefaultAddress(address.id)}
+                                            onClick={() =>
+                                                handleSetDefaultAddress(
+                                                    address.id,
+                                                )
+                                            }
                                         >
                                             既定の住所に設定
                                         </Button>
