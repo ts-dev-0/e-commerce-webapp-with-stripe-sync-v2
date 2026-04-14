@@ -11,7 +11,7 @@ import { Review } from '@/types/review';
 import { Head, useForm } from '@inertiajs/react';
 
 interface ShowProps {
-    data: Product;
+    product: Product;
     reviews: Review[];
     averageRating: number;
 }
@@ -21,11 +21,7 @@ interface LocalQuantityForm {
     quantity: number;
 }
 
-export default function Show({
-    data: product,
-    reviews,
-    averageRating,
-}: ShowProps) {
+export default function Show({ product, reviews, averageRating }: ShowProps) {
     const { data, setData, transform, post, processing } =
         useForm<LocalQuantityForm>({
             productId: product.id,

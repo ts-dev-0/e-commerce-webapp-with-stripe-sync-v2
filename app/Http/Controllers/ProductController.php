@@ -16,7 +16,7 @@ class ProductController extends Controller
         $result = $action->handle($product);
 
         return Inertia::render('product/show', [
-            'data' => ProductResource::make($product),
+            'product' => ProductResource::make($product),
             'reviews' => ReviewResource::collection($result['reviews']),
             'averageRating' => $result['averageRating'],
         ]);
