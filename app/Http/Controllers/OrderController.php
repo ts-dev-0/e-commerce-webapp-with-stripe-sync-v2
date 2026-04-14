@@ -7,7 +7,6 @@ use App\Actions\Order\CancelOrder;
 use App\Actions\Order\GetAvailableOrderYears;
 use App\Actions\Order\ViewOrderHistory;
 use App\Http\Requests\IndexOrderRequest;
-use App\Http\Requests\User\Order\CancelOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 
@@ -25,8 +24,9 @@ class OrderController extends Controller
         ]);
     }
 
-    public function cancel(CancelOrderRequest $request, CancelOrder $action, Order $order)
+    public function cancel(CancelOrder $action, Order $order)
     {
+        $this->authorize('cancel', $order);
         $action->handle($order);
 
         return redirect()
