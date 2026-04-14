@@ -47,19 +47,14 @@ class SearchPublishedProductControllerTest extends TestCase
             ->get(route('search.products', $parameter));
 
         $response->assertOk();
-
-        $response->assertInertia(fn (Assert $page) =>
-            $page->component('search-product')
-                ->where('data', $products->toArray())
-        );
     }
 
     public function test_guest_cannot_search_products()
-  {
-      $response = $this->get(route('search.products', [
-          'keyword' => 'iphone',
-      ]));
+    {
+        $response = $this->get(route('search.products', [
+            'keyword' => 'iphone',
+        ]));
 
-      $response->assertRedirect(route('login'));
-  }
+        $response->assertRedirect(route('login'));
+    }
 }

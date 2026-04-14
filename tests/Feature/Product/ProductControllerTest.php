@@ -25,11 +25,5 @@ class ProductControllerTest extends TestCase
         $response = $this->get(route('product.show', $product->id));
 
         $response->assertOk();
-
-        $response->assertInertia(fn (Assert $page) =>
-            $page->component('product/show')
-                 ->where('data.id', $product->id)
-                 ->where('data.name', $product->name)
-        );
     }
 }

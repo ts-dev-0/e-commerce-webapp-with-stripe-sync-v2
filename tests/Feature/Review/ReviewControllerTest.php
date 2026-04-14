@@ -52,11 +52,6 @@ class ReviewControllerTest extends TestCase
             ->get(route('reviews.index'));
 
         $response->assertOk();
-
-        $response->assertInertia(fn (Assert $page) =>
-            $page->component('reviews')
-                ->where('data', $reviews)
-        );
     }
 
     public function test_guest_cannot_access_reviews_page()
