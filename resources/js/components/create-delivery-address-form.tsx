@@ -54,7 +54,7 @@ export default function CreateDeliveryAddressForm() {
     return (
         <>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                <div>
+                <div className="flex flex-col gap-y-2">
                     <label className="text-xs font-medium text-slate-600">
                         お名前
                     </label>
@@ -67,25 +67,24 @@ export default function CreateDeliveryAddressForm() {
                 </div>
 
                 <div className="col-span-2 flex flex-col gap-y-4">
-                    <div>
+                    <div className="flex flex-col gap-y-2">
                         <label className="text-xs font-medium text-slate-600">
                             郵便番号(半角数字・ハイフンなし)
                         </label>
-                        <div className="flex items-center gap-x-2">
-                            <Input
-                                value={data['postalCode']}
-                                placeholder="0000000"
-                                className="w-fit"
-                                maxLength={7}
-                                onChange={(e) =>
-                                    setData('postalCode', e.target.value)
-                                }
-                            />
-                            <ErrorMessage message={errors.postalCode} />
-                        </div>
+
+                        <Input
+                            value={data['postalCode']}
+                            placeholder="0000000"
+                            className="w-fit"
+                            maxLength={7}
+                            onChange={(e) =>
+                                setData('postalCode', e.target.value)
+                            }
+                        />
+                        <ErrorMessage message={errors.postalCode} />
                     </div>
                     <div className="flex flex-col gap-y-4">
-                        <div>
+                        <div className="flex flex-col gap-y-2">
                             <label className="text-xs font-medium text-slate-600">
                                 都道府県
                             </label>
@@ -111,7 +110,7 @@ export default function CreateDeliveryAddressForm() {
                             </Select>
                             <ErrorMessage message={errors.prefecture} />
                         </div>
-                        <div>
+                        <div className="flex flex-col gap-y-2">
                             <label className="text-xs font-medium text-slate-600">
                                 市区町村
                             </label>
@@ -124,7 +123,7 @@ export default function CreateDeliveryAddressForm() {
                             />
                             <ErrorMessage message={errors.city} />
                         </div>
-                        <div>
+                        <div className="flex flex-col gap-y-2">
                             <label className="text-xs font-medium text-slate-600">
                                 丁目・番地・号 建物名／会社名・部屋番号
                                 （数字は半角数字）
@@ -141,7 +140,7 @@ export default function CreateDeliveryAddressForm() {
                     </div>
                 </div>
 
-                <div>
+                <div className="flex flex-col gap-y-2">
                     <label className="text-xs font-medium text-slate-600">
                         電話番号
                     </label>
