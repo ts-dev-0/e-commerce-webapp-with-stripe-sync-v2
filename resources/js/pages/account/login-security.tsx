@@ -1,3 +1,4 @@
+import EditPasswordForm from '@/components/edit-password-form';
 import ErrorMessage from '@/components/error-message';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AccountLayout from '@/layouts/account-layout';
 import { update } from '@/routes/profile';
-import { Link, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 interface LoginSecurityProps {
@@ -21,6 +22,8 @@ interface LoginSecurityProps {
 
 export default function LoginSecurity({ name, email }: LoginSecurityProps) {
     const [isEditing, setIsEditing] = useState(false);
+    const [isPasswordEditing, setIsPasswordEditing] = useState(false);
+
     const { data, setData, patch, processing, errors, reset } = useForm({
         name: name,
         email: email,
@@ -151,25 +154,41 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>パスワード</CardTitle>
-                        <CardDescription>
-                            セキュリティのために定期的に変更してください。
-                        </CardDescription>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <CardTitle>パスワード</CardTitle>
+                                <CardDescription>
+                                    セキュリティのために定期的に変更してください。
+                                </CardDescription>
+                            </div>
+                            {!isPasswordEditing && (
+                                <Button
+                                    type="button"
+                                    variant="primary"
+                                    onClick={() => setIsPasswordEditing(true)}
+                                >
+                                    変更
+                                </Button>
+                            )}
+                        </div>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
-                            <div>
-                                <p className="text-sm font-medium text-slate-700">
-                                    現在のパスワード
-                                </p>
-                                <p className="mt-1 text-base font-semibold text-slate-900">
-                                    ********
-                                </p>
+                        {isPasswordEditing ? (
+                            <EditPasswordForm
+                                handleCancel={() => setIsPasswordEditing(false)}
+                            />
+                        ) : (
+                            <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                                <div>
+                                    <p className="text-sm font-medium text-slate-700">
+                                        現在のパスワード
+                                    </p>
+                                    <p className="mt-1 text-base font-semibold text-slate-900">
+                                        ********
+                                    </p>
+                                </div>
                             </div>
-                            <Button type="button" asChild variant="primary">
-                                <Link href="/account/settings">変更</Link>
-                            </Button>
-                        </div>
+                        )}
                     </CardContent>
                 </Card>
             </div>
