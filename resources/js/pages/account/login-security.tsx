@@ -1,5 +1,5 @@
 import EditPasswordForm from '@/components/edit-password-form';
-import ErrorMessage from '@/components/error-message';
+import EditUserProfileForm from '@/components/edit-user-profile-form';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -8,11 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import AccountLayout from '@/layouts/account-layout';
-import { update } from '@/routes/profile';
-import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 interface LoginSecurityProps {
@@ -21,33 +17,8 @@ interface LoginSecurityProps {
 }
 
 export default function LoginSecurity({ name, email }: LoginSecurityProps) {
-    const [isEditing, setIsEditing] = useState(false);
+    const [isUserProfileEditing, setIsUserProfileEditing] = useState(false);
     const [isPasswordEditing, setIsPasswordEditing] = useState(false);
-
-    const { data, setData, patch, processing, errors, reset } = useForm({
-        name: name,
-        email: email,
-    });
-
-    const handleEdit = () => {
-        setIsEditing(true);
-        setData({ name, email });
-    };
-
-    const handleCancel = () => {
-        setIsEditing(false);
-        reset();
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        patch(update().url, {
-            onSuccess: () => {
-                setIsEditing(false);
-                alert('アカウント情報が更新されました。');
-            },
-        });
-    };
 
     return (
         <AccountLayout
@@ -55,143 +26,122 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
             description="ログイン情報とメールアドレスの管理を行います"
         >
             <div className="grid gap-6">
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <CardTitle>アカウント情報</CardTitle>
-                                <CardDescription>
-                                    現在のログイン名とメールアドレスです。
-                                </CardDescription>
-                            </div>
-                            {!isEditing && (
-                                <Button
-                                    type="button"
-                                    variant="primary"
-                                    onClick={handleEdit}
-                                >
-                                    編集
-                                </Button>
-                            )}
-                        </div>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        {isEditing ? (
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="flex flex-col gap-2">
-                                    <Label htmlFor="name">ユーザー名</Label>
-                                    <Input
-                                        id="name"
-                                        type="text"
-                                        value={data.name}
-                                        onChange={(e) =>
-                                            setData('name', e.target.value)
-                                        }
-                                        className="mt-1"
-                                        placeholder="ユーザー名を入力"
-                                    />
-                                    <ErrorMessage message={errors.name} />
-                                </div>
+                <EditableCard
+                    title="アカウント情報"
+                    description="現在のログイン名とメールアドレスです。"
+                    isEditing={isUserProfileEditing}
+                    onEdit={() => setIsUserProfileEditing(true)}
+                    edit={
+                        <EditUserProfileForm
+                            name={name}
+                            email={email}
+                            handleCancel={() => setIsUserProfileEditing(false)}
+                        />
+                    }
+                    view={<UserProfileSummary name={name} email={email} />}
+                />
 
-                                <div className="flex flex-col gap-2">
-                                    <Label htmlFor="email">
-                                        メールアドレス
-                                    </Label>
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        value={data.email}
-                                        onChange={(e) =>
-                                            setData('email', e.target.value)
-                                        }
-                                        className="mt-1"
-                                        placeholder="メールアドレスを入力"
-                                    />
-                                    <ErrorMessage message={errors.email} />
-                                </div>
-
-                                <div className="flex justify-end gap-3">
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        onClick={handleCancel}
-                                        disabled={processing}
-                                    >
-                                        キャンセル
-                                    </Button>
-                                    <Button
-                                        type="submit"
-                                        disabled={processing}
-                                        variant="primary"
-                                    >
-                                        {processing ? '保存中...' : '保存'}
-                                    </Button>
-                                </div>
-                            </form>
-                        ) : (
-                            <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                <div className="flex flex-col gap-1">
-                                    <p className="text-sm font-medium text-slate-700">
-                                        ユーザー名
-                                    </p>
-                                    <p className="text-base font-semibold text-slate-900">
-                                        {name}
-                                    </p>
-                                </div>
-
-                                <div className="flex flex-col gap-1">
-                                    <p className="text-sm font-medium text-slate-700">
-                                        メールアドレス
-                                    </p>
-                                    <p className="text-base font-semibold text-slate-900">
-                                        {email}
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <CardTitle>パスワード</CardTitle>
-                                <CardDescription>
-                                    セキュリティのために定期的に変更してください。
-                                </CardDescription>
-                            </div>
-                            {!isPasswordEditing && (
-                                <Button
-                                    type="button"
-                                    variant="primary"
-                                    onClick={() => setIsPasswordEditing(true)}
-                                >
-                                    変更
-                                </Button>
-                            )}
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        {isPasswordEditing ? (
-                            <EditPasswordForm
-                                handleCancel={() => setIsPasswordEditing(false)}
-                            />
-                        ) : (
-                            <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                <div>
-                                    <p className="text-sm font-medium text-slate-700">
-                                        現在のパスワード
-                                    </p>
-                                    <p className="mt-1 text-base font-semibold text-slate-900">
-                                        ********
-                                    </p>
-                                </div>
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
+                <EditableCard
+                    title="パスワード"
+                    description="セキュリティのために定期的に変更してください。"
+                    isEditing={isPasswordEditing}
+                    onEdit={() => setIsPasswordEditing(true)}
+                    edit={
+                        <EditPasswordForm
+                            handleCancel={() => setIsPasswordEditing(false)}
+                        />
+                    }
+                    view={<PasswordSummary />}
+                />
             </div>
         </AccountLayout>
+    );
+}
+
+type EditableCardProps = {
+    title: string;
+    description: string;
+    isEditing: boolean;
+    onEdit: () => void;
+    view: React.ReactNode;
+    edit: React.ReactNode;
+    editLabel?: string;
+};
+
+function EditableCard({
+    title,
+    description,
+    isEditing,
+    onEdit,
+    view,
+    edit,
+    editLabel = '編集',
+}: EditableCardProps) {
+    return (
+        <Card>
+            <CardHeader>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <CardTitle>{title}</CardTitle>
+                        <CardDescription>{description}</CardDescription>
+                    </div>
+
+                    {!isEditing && (
+                        <Button
+                            type="button"
+                            variant="primary"
+                            onClick={onEdit}
+                        >
+                            {editLabel}
+                        </Button>
+                    )}
+                </div>
+            </CardHeader>
+
+            <CardContent>{isEditing ? edit : view}</CardContent>
+        </Card>
+    );
+}
+
+type UserProfileSummaryProps = {
+    name: string;
+    email: string;
+};
+
+export function UserProfileSummary({ name, email }: UserProfileSummaryProps) {
+    return (
+        <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <div className="flex flex-col gap-1">
+                <p className="text-sm font-medium text-slate-700">ユーザー名</p>
+
+                <p className="text-base font-semibold text-slate-900">{name}</p>
+            </div>
+
+            <div className="flex flex-col gap-1">
+                <p className="text-sm font-medium text-slate-700">
+                    メールアドレス
+                </p>
+
+                <p className="text-base font-semibold text-slate-900">
+                    {email}
+                </p>
+            </div>
+        </div>
+    );
+}
+
+export function PasswordSummary() {
+    return (
+        <div className="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <div className="flex flex-col gap-1">
+                <p className="text-sm font-medium text-slate-700">
+                    現在のパスワード
+                </p>
+
+                <p className="text-base font-semibold tracking-widest text-slate-900">
+                    ********
+                </p>
+            </div>
+        </div>
     );
 }

@@ -34,87 +34,38 @@ export default function EditPasswordForm({
     };
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-                <Label htmlFor="current_password">現在のパスワード</Label>
-                <div className="relative mt-1">
-                    <Input
-                        id="current_password"
-                        type={showCurrentPassword ? 'text' : 'password'}
-                        value={data.current_password}
-                        onChange={(e) =>
-                            setData('current_password', e.target.value)
-                        }
-                        className="pr-10"
-                        placeholder="現在のパスワードを入力"
-                    />
-                    <button
-                        type="button"
-                        className="absolute inset-y-0 right-0 flex items-center pr-3"
-                        onClick={() =>
-                            setShowCurrentPassword(!showCurrentPassword)
-                        }
-                    >
-                        <span className="text-sm text-slate-500">
-                            {showCurrentPassword ? '隠す' : '表示'}
-                        </span>
-                    </button>
-                </div>
-                <ErrorMessage
-                    message={errors.current_password}
-                    className="mt-2"
-                />
-            </div>
+            <PasswordField
+                id="current_password"
+                label="現在のパスワード"
+                value={data.current_password}
+                placeholder="現在のパスワードを入力"
+                show={showCurrentPassword}
+                toggle={() => setShowCurrentPassword(!showCurrentPassword)}
+                onChange={(value) => setData('current_password', value)}
+                error={errors.current_password}
+            />
 
-            <div>
-                <Label htmlFor="password">新しいパスワード</Label>
-                <div className="relative mt-1">
-                    <Input
-                        id="password"
-                        type={showNewPassword ? 'text' : 'password'}
-                        value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
-                        className="pr-10"
-                        placeholder="新しいパスワードを入力"
-                    />
-                    <button
-                        type="button"
-                        className="absolute inset-y-0 right-0 flex items-center pr-3"
-                        onClick={() => setShowNewPassword(!showNewPassword)}
-                    >
-                        <span className="text-sm text-slate-500">
-                            {showNewPassword ? '隠す' : '表示'}
-                        </span>
-                    </button>
-                    <ErrorMessage message={errors.password} className="mt-2" />
-                </div>
-            </div>
+            <PasswordField
+                id="password"
+                label="新しいパスワード"
+                value={data.password}
+                placeholder="新しいパスワードを入力"
+                show={showNewPassword}
+                toggle={() => setShowNewPassword(!showNewPassword)}
+                onChange={(value) => setData('password', value)}
+                error={errors.password}
+            />
 
-            <div>
-                <Label htmlFor="password_confirmation">パスワード確認</Label>
-                <div className="relative mt-1">
-                    <Input
-                        id="password_confirmation"
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        value={data.password_confirmation}
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                        className="pr-10"
-                        placeholder="新しいパスワードを再入力"
-                    />
-                    <button
-                        type="button"
-                        className="absolute inset-y-0 right-0 flex items-center pr-3"
-                        onClick={() =>
-                            setShowConfirmPassword(!showConfirmPassword)
-                        }
-                    >
-                        <span className="text-sm text-slate-500">
-                            {showConfirmPassword ? '隠す' : '表示'}
-                        </span>
-                    </button>
-                </div>
-            </div>
+            <PasswordField
+                id="password_confirmation"
+                label="パスワード確認"
+                value={data.password_confirmation}
+                placeholder="新しいパスワードを再入力"
+                show={showConfirmPassword}
+                toggle={() => setShowConfirmPassword(!showConfirmPassword)}
+                onChange={(value) => setData('password_confirmation', value)}
+                error={errors.password_confirmation}
+            />
 
             <div className="flex justify-end gap-3">
                 <Button
@@ -130,5 +81,54 @@ export default function EditPasswordForm({
                 </Button>
             </div>
         </form>
+    );
+}
+
+type PasswordFieldProps = {
+    id: string;
+    label: string;
+    value: string;
+    placeholder: string;
+    show: boolean;
+    toggle: () => void;
+    onChange: (value: string) => void;
+    error?: string;
+};
+
+function PasswordField({
+    id,
+    label,
+    value,
+    placeholder,
+    show,
+    toggle,
+    onChange,
+    error,
+}: PasswordFieldProps) {
+    return (
+        <div className="flex flex-col gap-2">
+            <Label htmlFor={id}>{label}</Label>
+
+            <div className="relative">
+                <Input
+                    id={id}
+                    type={show ? 'text' : 'password'}
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    className="pr-12"
+                    placeholder={placeholder}
+                />
+
+                <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-sm text-slate-500"
+                    onClick={toggle}
+                >
+                    {show ? '隠す' : '表示'}
+                </button>
+            </div>
+
+            <ErrorMessage message={error} />
+        </div>
     );
 }
