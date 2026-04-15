@@ -1,3 +1,4 @@
+import ErrorMessage from '@/components/error-message';
 import { QuantitySelector } from '@/components/quantity-selector';
 import ReviewSection from '@/components/review-section';
 import { Button } from '@/components/ui/button';
@@ -22,7 +23,7 @@ interface LocalQuantityForm {
 }
 
 export default function Show({ product, reviews, averageRating }: ShowProps) {
-    const { data, setData, transform, post, processing } =
+    const { data, setData, transform, post, processing, errors } =
         useForm<LocalQuantityForm>({
             productId: product.id,
             quantity: 1,
@@ -109,6 +110,8 @@ export default function Show({ product, reviews, averageRating }: ShowProps) {
                                     カートに入れる
                                 </Button>
                             </form>
+                            <ErrorMessage message={errors.productId} />
+                            <ErrorMessage message={errors.quantity} />
                         </div>
                     </div>
                 </div>
