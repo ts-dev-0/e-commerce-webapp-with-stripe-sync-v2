@@ -1,6 +1,7 @@
 import { update } from '@/routes/reviews';
 import { useForm } from '@inertiajs/react';
 import { Star } from 'lucide-react';
+import ErrorMessage from './error-message';
 import { Button } from './ui/button';
 import { Spinner } from './ui/spinner';
 
@@ -22,7 +23,7 @@ export default function EditReviewForm({
     comment,
     setEditMode,
 }: ReviewFormProps) {
-    const { data, setData, transform, processing, patch, reset } =
+    const { data, setData, transform, processing, patch, reset, errors } =
         useForm<EditReviewFormData>({
             rating,
             comment,
@@ -94,6 +95,8 @@ export default function EditReviewForm({
                 {processing && <Spinner />}
                 レビューを更新する
             </Button>
+            <ErrorMessage message={errors.rating} />
+            <ErrorMessage message={errors.comment} />
         </form>
     );
 }
