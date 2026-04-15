@@ -75,7 +75,7 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
                     <CardContent className="space-y-6">
                         {isEditing ? (
                             <form onSubmit={handleSubmit} className="space-y-6">
-                                <div>
+                                <div className="flex flex-col gap-2">
                                     <Label htmlFor="name">ユーザー名</Label>
                                     <Input
                                         id="name"
@@ -90,7 +90,7 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
                                     <ErrorMessage message={errors.name} />
                                 </div>
 
-                                <div>
+                                <div className="flex flex-col gap-2">
                                     <Label htmlFor="email">
                                         メールアドレス
                                     </Label>
