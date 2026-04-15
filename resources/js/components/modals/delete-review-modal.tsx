@@ -2,6 +2,7 @@ import { destroy } from '@/routes/reviews';
 import { useModalStore } from '@/stores/modalStore';
 import { useForm } from '@inertiajs/react';
 import React from 'react';
+import ErrorMessage from '../error-message';
 import { Button } from '../ui/button';
 import { Spinner } from '../ui/spinner';
 import ModalWrapper from './modal-wrapper';
@@ -15,6 +16,7 @@ export default function DeleteReviewModal({ id }: DeleteReviewModalProps) {
         data,
         processing,
         delete: deleteReview,
+        errors,
     } = useForm<{ id: number }>({ id });
     const closeModal = useModalStore((state) => state.closeModal);
 
@@ -29,7 +31,7 @@ export default function DeleteReviewModal({ id }: DeleteReviewModalProps) {
 
     return (
         <ModalWrapper>
-            <div className="space-y-4">
+            <div className="space-y-2">
                 <div>
                     <h2 className="text-lg font-semibold text-slate-800">
                         レビューを削除しますか？
@@ -60,6 +62,9 @@ export default function DeleteReviewModal({ id }: DeleteReviewModalProps) {
                         </Button>
                     </div>
                 </form>
+                <div className="flex items-center justify-end">
+                    <ErrorMessage message={errors.id} />
+                </div>
             </div>
         </ModalWrapper>
     );

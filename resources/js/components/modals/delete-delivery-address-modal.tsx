@@ -29,7 +29,7 @@ export default function DeleteDeliveryAddressModal({
 
     return (
         <ModalWrapper>
-            <div className="space-y-4">
+            <div className="space-y-2">
                 <div>
                     <h2 className="text-lg font-semibold text-slate-800">
                         住所を削除しますか？
@@ -59,7 +59,7 @@ export default function DeleteDeliveryAddressModal({
                             削除する
                         </Button>
                     </div>
-                    <div className="text-end">
+                    <div className="flex items-center justify-end">
                         <ErrorMessage message={errors.id} />
                     </div>
                 </form>
