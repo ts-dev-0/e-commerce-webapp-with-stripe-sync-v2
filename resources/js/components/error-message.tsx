@@ -16,7 +16,7 @@ export default function ErrorMessage({
         <div
             role="alert"
             className={cn(
-                'mt-2 flex w-fit items-start gap-2 rounded-md border border-rose-200 bg-rose-50 px-3 py-2',
+                'flex w-fit items-start gap-2 rounded-md border border-rose-200 bg-rose-50 px-3 py-2',
                 className,
             )}
         >
