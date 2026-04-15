@@ -15,7 +15,7 @@ import { store } from '@/routes/checkout';
 import ErrorMessage from '@/components/error-message';
 import { update } from '@/routes/addresses/default';
 import { Checkout as CheckoutType } from '@/types/checkout';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 interface CheckoutProps {
     checkout: CheckoutType;
@@ -43,7 +43,9 @@ export default function Checkout({
             selectAddressId: defaultAddress?.id,
         });
 
-    const handleSetDefaultAddress = () => {
+    const handleSetDefaultAddress = (e: React.FormEvent) => {
+        e.preventDefault();
+
         if (data.selectAddressId === undefined) return;
 
         patch(update(data.selectAddressId).url, {
@@ -54,8 +56,11 @@ export default function Checkout({
         });
     };
 
-    function handleCheckout() {
+    function handleCheckout(e: React.FormEvent) {
+        e.preventDefault();
+
         if (data.selectAddressId === undefined) return;
+
         router.post(store().url, {
             address_id: data.selectAddressId,
         });
@@ -191,14 +196,16 @@ export default function Checkout({
                             </div>
                         </div>
 
-                        <Button
-                            className="mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
-                            variant="default"
-                            onClick={handleCheckout}
-                        >
-                            注文を確定する
-                        </Button>
-                        <ErrorMessage message={errors.selectAddressId} />
+                        <form onSubmit={handleCheckout}>
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                className="mt-6 w-full"
+                            >
+                                注文を確定する
+                            </Button>
+                            <ErrorMessage message={errors.selectAddressId} />
+                        </form>
                     </aside>
                 </div>
             </div>

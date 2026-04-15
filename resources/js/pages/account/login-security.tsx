@@ -63,8 +63,8 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
                             </div>
                             {!isEditing && (
                                 <Button
-                                    variant="outline"
-                                    className="text-slate-900"
+                                    type="button"
+                                    variant="primary"
                                     onClick={handleEdit}
                                 >
                                     編集
@@ -119,7 +119,7 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
                                     <Button
                                         type="submit"
                                         disabled={processing}
-                                        className="bg-emerald-600 hover:bg-emerald-700"
+                                        variant="primary"
                                     >
                                         {processing ? '保存中...' : '保存'}
                                     </Button>
@@ -166,11 +166,7 @@ export default function LoginSecurity({ name, email }: LoginSecurityProps) {
                                     ********
                                 </p>
                             </div>
-                            <Button
-                                asChild
-                                variant="outline"
-                                className="text-slate-900"
-                            >
+                            <Button type="button" asChild variant="primary">
                                 <Link href="/account/settings">変更</Link>
                             </Button>
                         </div>

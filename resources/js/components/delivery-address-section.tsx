@@ -12,7 +12,7 @@ interface DeliveryAddressSectionProps {
     setData: (id: number) => void;
     processing: boolean;
     reset: () => void;
-    setDefaultAddress: () => void;
+    setDefaultAddress: (e: React.FormEvent) => void;
     isExpanded: boolean;
     setIsExpanded: (isExpanded: boolean) => void;
     errorMessage?: string;
@@ -41,7 +41,8 @@ export function DeliveryAddressSection({
                 </h2>
 
                 <Button
-                    className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
+                    type="button"
+                    variant="primary"
                     onClick={() => openModal('createDeliveryAddress')}
                 >
                     新しい配送先を登録する
@@ -74,6 +75,7 @@ export function DeliveryAddressSection({
 
                     {!isExpanded && addresses.length > 1 && (
                         <button
+                            type="button"
                             onClick={() => setIsExpanded(true)}
                             className="text-sm text-emerald-600 hover:underline"
                         >
@@ -83,25 +85,28 @@ export function DeliveryAddressSection({
 
                     {isExpanded && (
                         <div className="flex items-center justify-between">
-                            <div>
+                            <form onSubmit={setDefaultAddress}>
                                 <Button
-                                    onClick={setDefaultAddress}
-                                    className="rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
+                                    type="submit"
+                                    variant="primary"
                                     disabled={processing}
                                 >
                                     この住所に配達する
                                 </Button>
-                                <ErrorMessage message={errorMessage} />
-                            </div>
-                            <button
+                            </form>
+                            <ErrorMessage message={errorMessage} />
+
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
                                 onClick={() => {
                                     setIsExpanded(false);
                                     reset();
                                 }}
-                                className="text-sm text-emerald-600 hover:underline"
                             >
                                 他の配送先を閉じる
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </div>

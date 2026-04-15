@@ -34,10 +34,7 @@ export function SearchProductsForm() {
                     value={data.keyword}
                     onChange={(e) => setData({ keyword: e.target.value })}
                 />
-                <Button
-                    type="submit"
-                    className="bg-emerald-600 hover:bg-emerald-700"
-                >
+                <Button type="submit" variant="primary">
                     検索
                 </Button>
             </div>

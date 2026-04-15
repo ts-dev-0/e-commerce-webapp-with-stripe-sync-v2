@@ -56,9 +56,11 @@ export default function EditReviewForm({
 
                 <div className="flex gap-1">
                     {[1, 2, 3, 4, 5].map((value) => (
-                        <button
+                        <Button
                             key={value}
                             type="button"
+                            variant="ghost"
+                            size="icon"
                             onClick={() => setData('rating', value)}
                         >
                             <Star
@@ -68,7 +70,7 @@ export default function EditReviewForm({
                                         : 'text-slate-300'
                                 }`}
                             />
-                        </button>
+                        </Button>
                     ))}
                 </div>
             </div>
@@ -88,11 +90,7 @@ export default function EditReviewForm({
                 />
             </div>
 
-            <Button
-                type="submit"
-                className="bg-emerald-600 hover:bg-emerald-700"
-                disabled={processing}
-            >
+            <Button type="submit" variant="primary" disabled={processing}>
                 {processing && <Spinner />}
                 レビューを更新する
             </Button>

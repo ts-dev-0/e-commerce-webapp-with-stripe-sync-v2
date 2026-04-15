@@ -30,6 +30,7 @@ export default function ReviewCard({ review, isOwnReview }: ReviewCardProps) {
                     {isOwnReview && (
                         <div className="flex items-center gap-2">
                             <Button
+                                type="button"
                                 size={'icon'}
                                 variant={'ghost'}
                                 className="text-slate-400 transition-colors duration-150 hover:text-slate-600"
@@ -39,6 +40,7 @@ export default function ReviewCard({ review, isOwnReview }: ReviewCardProps) {
                             </Button>
 
                             <Button
+                                type="button"
                                 size={'icon'}
                                 variant={'ghost'}
                                 className="text-slate-400 transition-colors duration-150 hover:bg-red-200 hover:text-red-500"

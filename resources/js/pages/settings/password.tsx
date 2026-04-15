@@ -174,7 +174,7 @@ export default function Password() {
                                 <Button
                                     type="submit"
                                     disabled={processing}
-                                    className="bg-emerald-600 hover:bg-emerald-700"
+                                    variant={'primary'}
                                 >
                                     {processing
                                         ? '変更中...'

@@ -41,7 +41,7 @@ export default function Cart({ cart }: CartProps) {
                         </div>
                     </section>
 
-                    <aside className="h-fit rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+                    <aside className="flex h-fit flex-col gap-6 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
                         <h2 className="text-lg font-semibold text-slate-800">
                             注文内容
                         </h2>
@@ -56,8 +56,9 @@ export default function Cart({ cart }: CartProps) {
 
                         <Link href={index()}>
                             <Button
-                                className="mt-6 w-full cursor-pointer rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
-                                variant="default"
+                                type="button"
+                                variant="primary"
+                                className="w-full"
                                 disabled={cart.items.length === 0}
                             >
                                 購入手続きへ進む

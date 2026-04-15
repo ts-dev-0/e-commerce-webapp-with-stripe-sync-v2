@@ -82,11 +82,7 @@ export default function CreateReviewForm({ productId }: ReviewFormProps) {
                 />
             </div>
 
-            <Button
-                type="submit"
-                className="bg-emerald-600 hover:bg-emerald-700"
-                disabled={processing}
-            >
+            <Button type="submit" variant="primary" disabled={processing}>
                 {processing && <Spinner />}
                 レビューを投稿する
             </Button>
