@@ -5,7 +5,7 @@ namespace App\Actions\Search;
 use App\Queries\SearchProduct;
 use Illuminate\Support\Collection;
 
-class SearchPublishedProduct
+class SearchPublishedProducts
 {
     public function __construct(protected SearchProduct $searchProduct)
     {}
