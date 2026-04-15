@@ -2,6 +2,7 @@ import { destroy, update } from '@/routes/cart/items';
 import { show } from '@/routes/product';
 import { Product } from '@/types/product';
 import { Link, useForm } from '@inertiajs/react';
+import ErrorMessage from './error-message';
 import { QuantitySelector } from './quantity-selector';
 
 interface CartItemCartProps {
@@ -85,28 +86,30 @@ export default function CartItemCard({
                         </p>
                     </div>
 
-                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-                        <span className="text-sm font-semibold text-slate-800">
-                            {product.price.toLocaleString('ja-JP')}円
-                        </span>
+                    <div className="flex flex-col gap-y-1 pt-3">
+                        <div className="flex items-center gap-3">
+                            <span className="text-sm font-semibold text-slate-800">
+                                {product.price.toLocaleString('ja-JP')}円
+                            </span>
 
-                        <QuantitySelector
-                            decrement={() => {
-                                const next = data.quantity - 1;
+                            <QuantitySelector
+                                decrement={() => {
+                                    const next = data.quantity - 1;
 
-                                setData('quantity', next);
-                                updateQuantity(next);
-                            }}
-                            increment={() => {
-                                const next = data.quantity + 1;
+                                    setData('quantity', next);
+                                    updateQuantity(next);
+                                }}
+                                increment={() => {
+                                    const next = data.quantity + 1;
 
-                                setData('quantity', next);
-                                updateQuantity(next);
-                            }}
-                            quantity={data.quantity}
-                            onRemove={removeCartItem}
-                            errorMessage={errors.quantity}
-                        />
+                                    setData('quantity', next);
+                                    updateQuantity(next);
+                                }}
+                                quantity={data.quantity}
+                                onRemove={removeCartItem}
+                            />
+                        </div>
+                        <ErrorMessage message={errors.quantity} />
                     </div>
                 </div>
             </div>
