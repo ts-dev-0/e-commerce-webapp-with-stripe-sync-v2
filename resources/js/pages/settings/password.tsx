@@ -93,6 +93,7 @@ export default function Password() {
                                 </div>
                                 <ErrorMessage
                                     message={errors.current_password}
+                                    className="mt-2"
                                 />
                             </div>
 
@@ -126,8 +127,11 @@ export default function Password() {
                                             {showNewPassword ? '隠す' : '表示'}
                                         </span>
                                     </button>
+                                    <ErrorMessage
+                                        message={errors.password}
+                                        className="mt-2"
+                                    />
                                 </div>
-                                <ErrorMessage message={errors.password} />
                             </div>
 
                             <div>
