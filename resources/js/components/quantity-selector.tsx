@@ -1,5 +1,4 @@
 import { Trash2 } from 'lucide-react';
-import ErrorMessage from './error-message';
 import { Button } from './ui/button';
 
 interface QuantitySelectorProps {
@@ -9,7 +8,6 @@ interface QuantitySelectorProps {
     onRemove?: () => void;
     min?: number;
     max?: number;
-    errorMessage?: string;
 }
 
 export function QuantitySelector({
@@ -19,7 +17,6 @@ export function QuantitySelector({
     onRemove,
     min = 1,
     max = 10,
-    errorMessage,
 }: QuantitySelectorProps) {
     const isMin = quantity <= min;
     const isMax = quantity >= max;
@@ -55,7 +52,6 @@ export function QuantitySelector({
                 disabled={!shouldShowRemoveButton && isMin}
             >
                 {shouldShowRemoveButton ? <Trash2 className="size-3.5" /> : '-'}
-                <ErrorMessage message={errorMessage} />
             </Button>
             <span className="text-xs text-slate-700">{quantity}</span>
             <Button
