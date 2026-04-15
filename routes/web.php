@@ -9,7 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\SearchPublishedProductController;
+use App\Http\Controllers\SearchPublishedProductsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])
@@ -52,7 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('reviews', ReviewController::class)
         ->only(['index', 'store', 'update', 'destroy']);
 
-    Route::get('search/products', SearchPublishedProductController::class)
+    Route::get('search/products', SearchPublishedProductsController::class)
         ->name('search.products');
 
     Route::post('addresses', [AddressController::class, 'store'])

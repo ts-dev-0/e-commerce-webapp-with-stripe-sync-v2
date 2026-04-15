@@ -7,7 +7,7 @@ use App\Actions\Search\SearchPublishedProducts;
 use App\Http\Requests\Search\SearchPublishedProductRequest;
 use App\Http\Resources\ProductResource;
 
-class SearchPublishedProductController extends Controller
+class SearchPublishedProductsController extends Controller
 {
     public function __invoke(SearchPublishedProductRequest $request, SearchPublishedProducts $action)
     {

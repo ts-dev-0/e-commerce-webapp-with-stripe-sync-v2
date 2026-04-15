@@ -4,14 +4,13 @@ namespace Tests\Feature\Product;
 
 use Tests\TestCase;
 use Tests\Traits\MocksActions;
-use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\Search\SearchPublishedProducts;
 use App\Models\Product;
 use App\Models\User;
 
-class SearchPublishedProductControllerTest extends TestCase
+class SearchPublishedProductsControllerTest extends TestCase
 {
     use RefreshDatabase;
     use MocksActions;

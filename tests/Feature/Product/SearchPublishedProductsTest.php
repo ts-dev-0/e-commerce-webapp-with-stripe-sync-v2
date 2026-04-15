@@ -2,22 +2,23 @@
 
 namespace Tests\Feature\Product;
 
+use App\Actions\Search\SearchPublishedProducts;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\Search\SearchPublishedProduct;
+
 use App\Models\Product;
 use App\Queries\SearchProduct;
 
-class SearchPublishedProductTest extends TestCase
+class SearchPublishedProductsTest extends TestCase
 {
     use RefreshDatabase;
 
-    private SearchPublishedProduct $action;
+    private SearchPublishedProducts $action;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->action = new SearchPublishedProduct(new SearchProduct);
+        $this->action = new SearchPublishedProducts(new SearchProduct);
     }
 
     public function test_user_can_published_products_by_keyword()
