@@ -36,6 +36,7 @@ class ProcessCheckout
             'city' => $delivaryAddress->city,
             'address_line' => $delivaryAddress->address_line,
             'phone_number' => $delivaryAddress->phone_number,
+            'ordered_at' => now(),
         ]);
 
         foreach ($cartItems as $product) {
