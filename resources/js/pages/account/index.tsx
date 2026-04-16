@@ -1,4 +1,4 @@
-import AccountCard from '@/components/account/account-card';
+import AccountCard from '@/components/account-card';
 import AccountLayout from '@/layouts/account-layout';
 import { Head } from '@inertiajs/react';
 import { Lock, MapPin, ShoppingBag } from 'lucide-react';
