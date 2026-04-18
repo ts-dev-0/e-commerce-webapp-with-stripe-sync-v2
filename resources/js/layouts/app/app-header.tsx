@@ -13,7 +13,7 @@ export default function AppHeader() {
                             href={home()}
                             className="text-xl font-semibold text-slate-800"
                         >
-                            EC-Site V2
+                            <img src='logo.svg'/>
                         </Link>
                     </div>
 
