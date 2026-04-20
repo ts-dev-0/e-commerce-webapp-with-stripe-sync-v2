@@ -10,7 +10,7 @@ use Inertia\Inertia;
 Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
   Route::get('/', function() {
     return Inertia::render('account/index');
-  });
+  })->name('account.index');
 
   Route::get('orders', [OrderController::class, 'index'])->name('account.orders');
   Route::get('addresses', [AddressController::class, 'index'])->name('account.addresses');
