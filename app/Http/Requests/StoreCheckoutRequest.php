@@ -32,4 +32,13 @@ class StoreCheckoutRequest extends FormRequest
             ],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'address_id.required' => '住所の指定は必須です。',
+            'address_id.integer' => '住所の指定が不正です。',
+            'address_id.exists' => '指定された住所が存在しないか、利用できません。',
+        ];
+    }
 }
