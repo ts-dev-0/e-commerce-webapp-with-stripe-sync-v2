@@ -25,19 +25,19 @@ export function SearchProductsForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="flex items-center gap-2">
+        <div className="w-full px-2">
+            <form onSubmit={handleSubmit} className="flex items-center gap-2">
                 <Input
                     type="search"
-                    placeholder="Search"
-                    className="rounded-md border border-slate-300 px-2 py-1 text-sm placeholder-slate-400 focus:outline-none"
+                    placeholder="キーワード検索"
+                    className="rounded-md border border-slate-200 px-2 py-1 text-sm placeholder-slate-400 focus:outline-none bg-white"
                     value={data.keyword}
                     onChange={(e) => setData({ keyword: e.target.value })}
                 />
                 <Button type="submit" variant="primary">
                     検索
                 </Button>
-            </div>
-        </form>
+            </form>
+        </div>
     );
 }

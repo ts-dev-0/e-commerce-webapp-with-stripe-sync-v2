@@ -7,7 +7,7 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children }: AppLayoutProps) {
     return (
-        <div className="flex min-h-svh flex-col gap-y-5 bg-slate-50">
+        <div className="flex min-h-svh flex-col gap-y-5">
             <AppHeader />
 
             <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
