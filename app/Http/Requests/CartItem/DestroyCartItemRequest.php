@@ -25,4 +25,13 @@ class DestroyCartItemRequest extends FormRequest
             'product_id' => ['bail', 'required', 'integer', 'exists:products,id'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'product_id.required' => '商品IDは必須です。',
+            'product_id.integer' => '商品IDは整数で入力してください。',
+            'product_id.exists' => '指定された商品が存在しません。',
+        ];
+    }
 }

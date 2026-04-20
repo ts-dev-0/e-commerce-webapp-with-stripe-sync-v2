@@ -84,4 +84,33 @@ class UpdateAddressRequest extends FormRequest
             'is_default' => ['required', 'boolean'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'full_name.required' => '氏名は必須です。',
+            'full_name.string' => '氏名は文字列で入力してください。',
+
+            'postal_code.required' => '郵便番号は必須です。',
+            'postal_code.digits' => '郵便番号は7桁の数字で入力してください。',
+
+            'prefecture.required' => '都道府県は必須です。',
+            'prefecture.string' => '都道府県は文字列で入力してください。',
+            'prefecture.in' => '選択された都道府県が不正です。',
+
+            'city.required' => '市区町村は必須です。',
+            'city.string' => '市区町村は文字列で入力してください。',
+            'city.max' => '市区町村は50文字以内で入力してください。',
+
+            'address_line.required' => '番地・建物名は必須です。',
+            'address_line.string' => '番地・建物名は文字列で入力してください。',
+            'address_line.max' => '番地・建物名は100文字以内で入力してください。',
+
+            'phone_number.required' => '電話番号は必須です。',
+            'phone_number.digits_between' => '電話番号は10桁または11桁の数字で入力してください。',
+
+            'is_default.required' => 'デフォルト住所の指定は必須です。',
+            'is_default.boolean' => 'デフォルト住所の指定が不正です。',
+        ];
+    }
 }
