@@ -13,6 +13,8 @@ Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
   })->name('account.index');
 
   Route::get('orders', [OrderController::class, 'index'])->name('account.orders');
+  Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])
+        ->name('orders.cancel');
   Route::get('addresses', [AddressController::class, 'index'])->name('account.addresses');
 
   Route::get('security', [SecurityController::class, 'index'])->name('account.security');
