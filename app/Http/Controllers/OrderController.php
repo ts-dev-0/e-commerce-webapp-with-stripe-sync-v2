@@ -41,7 +41,7 @@ class OrderController extends Controller
         $action->handle($order);
 
         return redirect()
-            ->route('account.orders')
+            ->route('account.orders.cancel.complete', $order->id)
             ->with('success', 'Order has been cancelled.');
     }
 
