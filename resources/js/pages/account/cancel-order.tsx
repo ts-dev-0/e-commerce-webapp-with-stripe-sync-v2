@@ -1,16 +1,10 @@
 import { Button } from '@/components/ui/button';
 import AccountLayout from '@/layouts/account-layout';
-import cancel from '@/routes/account/orders/cancel';
+import { useModalStore } from '@/stores/modalStore';
 import { Order } from '@/types/order';
-import { useForm } from '@inertiajs/react';
-import React from 'react';
 
 interface OrderCancelProps {
     order: Order;
-}
-
-interface CancelOrderForm {
-    orderId: number;
 }
 
 // construct directoryにfileを作り、移動させる
@@ -29,15 +23,7 @@ const STATUS_COLORS = {
 };
 
 export default function CancelOrder({ order }: OrderCancelProps) {
-    const { data, patch } = useForm<CancelOrderForm>({
-        orderId: order.orderId,
-    });
-
-    function handleCancelOrder(e: React.FormEvent) {
-        e.preventDefault();
-
-        patch(cancel.update(data.orderId).url);
-    }
+    const openModal = useModalStore((state) => state.openModal);
 
     return (
         <AccountLayout title="注文キャンセル">
@@ -104,17 +90,17 @@ export default function CancelOrder({ order }: OrderCancelProps) {
                     </div>
                 </div>
             </div>
-            <form
-                onSubmit={handleCancelOrder}
-                className="flex items-center justify-end py-4"
-            >
-                <Button type="submit" variant={'destructive'}>
+            <div className="flex items-center justify-end py-4">
+                <Button
+                    type="button"
+                    variant={'destructive'}
+                    onClick={() =>
+                        openModal('cancelOrderConfirm', { id: order.orderId })
+                    }
+                >
                     注文をキャンセルする
                 </Button>
-                <Button type="button" variant={'link'}>
-                    戻る
-                </Button>
-            </form>
+            </div>
         </AccountLayout>
     );
 }
