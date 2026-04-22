@@ -6,6 +6,7 @@ import {
     HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import AccountLayout from '@/layouts/account-layout';
+import cancel from '@/routes/account/orders/cancel';
 import { show } from '@/routes/product';
 import { Order } from '@/types/order';
 import { Head, Link } from '@inertiajs/react';
@@ -104,6 +105,17 @@ export default function Orders({ orders, years }: OrdersProps) {
                                         )}
                                     </p>
                                 </div>
+                                {order.status === 'Pending' && (
+                                    <Button asChild variant={'link'}>
+                                        <Link
+                                            href={
+                                                cancel.show(order.orderId).url
+                                            }
+                                        >
+                                            この注文をキャンセルする
+                                        </Link>
+                                    </Button>
+                                )}
                             </div>
 
                             <div className="mt-4 border-t border-slate-200 pt-4">
