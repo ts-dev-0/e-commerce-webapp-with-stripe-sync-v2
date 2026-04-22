@@ -1,4 +1,5 @@
 import { useModalStore } from '@/stores/modalStore';
+import CancelOrderConfirmModal from './cancel-order-confirm-modal';
 import CreateDeliveryAddressModal from './create-delivery-address-modal';
 import DeleteDeliveryAddressModal from './delete-delivery-address-modal';
 import DeleteReviewModal from './delete-review-modal';
@@ -18,6 +19,8 @@ export default function ModalRenderer() {
             return <DeleteReviewModal id={modal.props.id} />;
         case 'deleteDeliveryAddress':
             return <DeleteDeliveryAddressModal id={modal.props.id} />;
+        case 'cancelOrderConfirm':
+            return <CancelOrderConfirmModal id={modal.props.id} />;
 
         default:
             return null;

@@ -16,6 +16,10 @@ export interface ModalPropsMap {
         id: number;
     };
 
+    cancelOrderConfirm: {
+        id: number;
+    };
+
     createDeliveryAddress: undefined;
 
     editDeliveryAddress: Address;

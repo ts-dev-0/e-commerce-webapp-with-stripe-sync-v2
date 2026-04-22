@@ -37,9 +37,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('orders', [OrderController::class, 'index'])
         ->name('orders.index');
 
-    Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])
-        ->name('orders.cancel');
-
     Route::resource('checkout', CheckoutController::class)
         ->only(['index', 'store']);
 
