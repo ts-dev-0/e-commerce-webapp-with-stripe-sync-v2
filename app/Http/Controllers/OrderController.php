@@ -28,6 +28,8 @@ class OrderController extends Controller
     {
         $this->authorize('cancel', $order);
 
+        abort_unless($order->status->canCancel(), 404);
+
         return Inertia::render('account/cancel-order', [
             'order' => OrderResource::make($order),
         ]);
