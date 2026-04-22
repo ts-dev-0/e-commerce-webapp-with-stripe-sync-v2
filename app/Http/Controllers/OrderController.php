@@ -44,4 +44,11 @@ class OrderController extends Controller
             ->route('account.orders')
             ->with('success', 'Order has been cancelled.');
     }
+
+    public function complete(Order $order)
+    {
+        return Inertia::render('account/cancel-order-complete', [
+            'orderNumber' => $order->order_number,
+        ]);
+    }
 }
