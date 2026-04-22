@@ -70,15 +70,15 @@ class OrderControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->post(route('orders.cancel', $this->order));
+            ->patch(route('account.orders.cancel.update', $this->order->id));
 
-        $response->assertRedirect(route('account.orders'));
+        $response->assertRedirect(route('account.orders.cancel.complete', $this->order->id));
         $response->assertSessionHas('success', 'Order has been cancelled.');
     }
 
     public function test_guest_cannot_cancel_order()
     {
-        $response = $this->post(route('orders.cancel', $this->order));
+        $response = $this->patch(route('account.orders.cancel.update', $this->order->id));
         
         $response->assertRedirect(route('login'));
     }
