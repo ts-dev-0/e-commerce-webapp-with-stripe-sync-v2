@@ -13,7 +13,7 @@ export default function AppHeader() {
     const { auth } = usePage<SharedData>().props;
 
     return (
-        <header className="mx-auto flex w-full max-w-7xl items-center gap-4 py-4">
+        <header className="mx-auto flex h-16 w-full max-w-7xl items-center gap-4 py-4">
             <AppLogo />
             <SearchProductsForm />
             <Link href={account.index().url}>
@@ -26,8 +26,8 @@ export default function AppHeader() {
 
 function AppLogo() {
     return (
-        <Link href={home()}>
-            <img src="/logo.svg" alt="app-logo" />
+        <Link href={home()} className="flex h-full justify-items-center">
+            <img src="/logo.svg" alt="app-logo" className="h-8 w-auto" />
         </Link>
     );
 }
