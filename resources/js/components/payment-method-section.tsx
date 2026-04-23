@@ -12,7 +12,7 @@ export function PaymentMethodSection() {
                         name="payment"
                         id="payment-stripe"
                         defaultChecked
-                        className="h-4 w-4 accent-emerald-600 focus:ring-emerald-500"
+                        className="h-4 w-4 accent-indigo-600 focus:ring-indigo-500"
                     />
                     <label
                         htmlFor="payment-stripe"

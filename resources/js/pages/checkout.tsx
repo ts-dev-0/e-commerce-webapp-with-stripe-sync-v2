@@ -122,7 +122,7 @@ export default function Checkout({
                                                     name="deliveryDate"
                                                     value={'delivery-date'}
                                                     defaultChecked
-                                                    className="h-4 w-4 accent-emerald-600 focus:ring-emerald-500"
+                                                    className="h-4 w-4 accent-indigo-600 focus:ring-indigo-500"
                                                 />
 
                                                 <Label

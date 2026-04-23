@@ -77,7 +77,7 @@ export function DeliveryAddressSection({
                         <button
                             type="button"
                             onClick={() => setIsExpanded(true)}
-                            className="text-sm text-emerald-600 hover:underline"
+                            className="text-sm text-indigo-600 hover:underline"
                         >
                             他の配送先を表示
                         </button>
