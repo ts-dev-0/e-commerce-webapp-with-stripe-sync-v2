@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AccountLayout from '@/layouts/account-layout';
 import { update } from '@/routes/addresses/default';
@@ -24,7 +25,7 @@ export default function Addresses({ addresses }: AddressesProps) {
 
             <div className="mb-6 flex items-center justify-end">
                 <Button
-                    className="bg-emerald-600 hover:bg-emerald-700"
+                    variant="primary"
                     onClick={() => openModal('createDeliveryAddress')}
                 >
                     新しい住所を追加
@@ -49,9 +50,9 @@ export default function Addresses({ addresses }: AddressesProps) {
                                             {address.fullName}
                                         </h2>
                                         {address.isDefault && (
-                                            <span className="inline-block rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                                            <Badge variant="primary">
                                                 デフォルト
-                                            </span>
+                                            </Badge>
                                         )}
                                     </div>
                                     <p className="mt-1 text-sm text-slate-600">
@@ -93,7 +94,7 @@ export default function Addresses({ addresses }: AddressesProps) {
                                 </div>
                                 <div className="flex gap-x-2">
                                     <Button
-                                        className="bg-emerald-600 hover:bg-emerald-700"
+                                        variant="primary"
                                         onClick={() =>
                                             openModal(
                                                 'editDeliveryAddress',
@@ -106,7 +107,7 @@ export default function Addresses({ addresses }: AddressesProps) {
 
                                     <Button
                                         type="button"
-                                        variant="destructive"
+                                        variant="ghost"
                                         onClick={() =>
                                             openModal('deleteDeliveryAddress', {
                                                 id: address.id,
