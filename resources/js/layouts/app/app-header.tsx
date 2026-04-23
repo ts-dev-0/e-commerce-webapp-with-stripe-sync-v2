@@ -1,59 +1,95 @@
-import { SearchProductsForm } from '@/components/search-products-form';
+import { Input } from '@/components/ui/input';
+import { UserInfo } from '@/components/user-info';
 import { home } from '@/routes';
-import account from '@/routes/account';
+import account, { orders } from '@/routes/account';
 import cart from '@/routes/cart';
-import { Link } from '@inertiajs/react';
+import search from '@/routes/search';
+import { SharedData } from '@/types';
+import { Link, useForm, usePage } from '@inertiajs/react';
+import { Package, ShoppingCartIcon } from 'lucide-react';
+import React from 'react';
 
 export default function AppHeader() {
+    const { auth } = usePage<SharedData>().props;
+
     return (
-        <header className="pb-2">
-            <Main />
-            <Sub />
+        <header className="mx-auto flex w-full max-w-7xl items-center gap-4 py-4">
+            <AppLogo />
+            <SearchProductsForm />
+            <Link href={account.index().url}>
+                <UserInfo user={auth.user} />
+            </Link>
+            <Navigation />
         </header>
     );
 }
 
-function Main() {
+function AppLogo() {
     return (
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 items-center justify-between">
-                <div className="flex items-center">
-                    <Link
-                        href={home()}
-                        className="text-xl font-semibold text-slate-800"
-                    >
-                        <img src="/logo.svg" alt="app-logo" />
-                    </Link>
-                </div>
-
-                <SearchProductsForm />
-            </div>
-        </div>
+        <Link href={home()}>
+            <img src="/logo.svg" alt="app-logo" />
+        </Link>
     );
 }
 
-function Sub() {
+function Navigation() {
     return (
-        <nav className="mx-auto hidden max-w-7xl space-x-4 sm:px-6 md:flex lg:px-8">
-            <SubItem href={home().url} label="ホーム" />
-            <SubItem href={cart.index().url} label="カート" />
-            <SubItem href={account.index().url} label="アカウント" />
+        <nav className="flex flex-1 items-center gap-4">
+            <NavItem
+                href={cart.index().url}
+                label="カート"
+                Icon={ShoppingCartIcon}
+            />
+            <NavItem href={orders().url} label="注文履歴" Icon={Package} />
         </nav>
     );
 }
 
-interface SubItemProps {
+interface NavItemProps {
     href: string;
     label: string;
+    Icon: React.ComponentType;
 }
 
-function SubItem({ href, label }: SubItemProps) {
+function NavItem({ href, label, Icon }: NavItemProps) {
     return (
-        <Link
-            href={href}
-            className="text-slate-700 hover:text-slate-900 hover:underline hover:underline-offset-2"
-        >
-            {label}
+        <Link href={href} className="group flex w-fit flex-col items-center">
+            <Icon />
+            <span className="text-xs group-hover:underline">{label}</span>
         </Link>
+    );
+}
+
+interface SearchProductsForm {
+    keyword: string;
+}
+
+function SearchProductsForm() {
+    const { data, setData, get, reset } = useForm<SearchProductsForm>({
+        keyword: '',
+    });
+
+    function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
+        if (data.keyword.length === 0) return;
+        get(search.products().url, {
+            onSuccess: () => {
+                reset();
+            },
+        });
+    }
+
+    return (
+        <div className="w-full max-w-xl">
+            <form onSubmit={handleSubmit}>
+                <Input
+                    type="search"
+                    placeholder="キーワード検索"
+                    value={data.keyword}
+                    onChange={(e) => setData({ keyword: e.target.value })}
+                />
+            </form>
+        </div>
     );
 }
