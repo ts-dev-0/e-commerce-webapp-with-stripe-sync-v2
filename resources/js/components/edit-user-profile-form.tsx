@@ -54,7 +54,7 @@ export default function EditUserProfileForm({
             <div className="flex justify-end gap-3">
                 <Button
                     type="button"
-                    variant="outline"
+                    variant="ghost"
                     onClick={handleCancel}
                     disabled={processing}
                 >
