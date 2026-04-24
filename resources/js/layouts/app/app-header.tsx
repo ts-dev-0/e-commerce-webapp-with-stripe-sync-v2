@@ -1,7 +1,8 @@
+import DropdownMenuAvatar from '@/components/dropdown-menu-avatar';
+import TextLink from '@/components/text-link';
 import { Input } from '@/components/ui/input';
-import { UserInfo } from '@/components/user-info';
-import { home } from '@/routes';
-import account, { orders } from '@/routes/account';
+import { home, login, register } from '@/routes';
+import { orders } from '@/routes/account';
 import cart from '@/routes/cart';
 import search from '@/routes/search';
 import { SharedData } from '@/types';
@@ -16,10 +17,18 @@ export default function AppHeader() {
         <header className="mx-auto flex h-16 w-full max-w-7xl items-center gap-4 py-4">
             <AppLogo />
             <SearchProductsForm />
-            <Link href={account.index().url}>
-                <UserInfo user={auth.user} />
-            </Link>
-            <Navigation />
+            {auth.user ? (
+                <>
+                    <DropdownMenuAvatar user={auth.user} />
+                    <Navigation />
+                </>
+            ) : (
+                <div className="flex items-center gap-2">
+                    <TextLink href={login().url} className='text-sm'>Log in</TextLink>
+                    <span>/</span>
+                    <TextLink href={register().url} className='text-sm'>Sign in</TextLink>
+                </div>
+            )}
         </header>
     );
 }
