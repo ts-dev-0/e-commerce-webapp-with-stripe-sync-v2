@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Checkout\GetCheckout;
 use App\Actions\Checkout\ProcessCheckout;
+use App\Actions\Stripe\CreateCheckoutSession;
 use App\Http\Requests\StoreCheckoutRequest;
 use App\Http\Resources\CheckoutResource;
 use Illuminate\Http\Request;
@@ -24,13 +25,11 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(StoreCheckoutRequest $request, ProcessCheckout $action)
+    public function store(StoreCheckoutRequest $request, CreateCheckoutSession $action)
     {
-        $action->handle($request->user(), $request->validated()['address_id']);
+        $url = $action->handle($request->user(), $request->validated()['address_id']);
 
-        return redirect()
-            ->route('checkout.success')
-            ->with('success', 'Checkout successfully.');
+        return Inertia::location($url);
     }
 
     public function success()
