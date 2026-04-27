@@ -10,10 +10,8 @@ use Stripe\Checkout\Session;
 
 class ProcessCheckout
 {
-    public function handle(User $user, string $sessionId)
+    public function handle(User $user, Session $session)
     {
-        $session = Session::retrieve($sessionId);
-
         $addressId = $session->metadata->address_id;
         $deliveryAddress = Address::findOrFail($addressId);
         $totalAmount = $session->amount_total;

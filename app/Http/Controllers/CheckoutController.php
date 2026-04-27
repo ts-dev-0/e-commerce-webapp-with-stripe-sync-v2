@@ -38,8 +38,9 @@ class CheckoutController extends Controller
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $sessionId = $request->string('session_id');
+        $session = Session::retrieve($sessionId);
 
-        $action->handle($request->user(), $sessionId);
+        $action->handle($request->user(), $session);
 
         return Inertia::render('checkout/success');
     }
