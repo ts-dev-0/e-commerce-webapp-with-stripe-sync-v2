@@ -6,28 +6,21 @@ use App\Models\Address;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 
 class ProcessCheckout
 {
-    public function handle(User $user, int $addressId): Order
+    public function handle(User $user, string $sessionId)
     {
-        $cart = $user->currentCart();
-        $cartItems = $cart->products()->get();
-
-        if($cartItems->isEmpty()) {
-            throw new \DomainException('Cart is empty.');
-        }
-
-        $totalAmount = $cartItems->sum(function ($product) {
-            return $product->price * $product->pivot->quantity;
-        });
-
+        $session = Session::retrieve($sessionId);
+        $addressId = $session->metadata->address_id;
         $delivaryAddress = Address::find($addressId);
-
+        $totalAmount = $session->amount_total;
         $orderNumber = 'ORD-' . strtoupper(Str::random(8));
 
         $order = Order::create([
-            'user_id'      => $cart->user_id,
+            'user_id'      => $user->id,
             'order_number' => $orderNumber,
             'total_amount' => $totalAmount,
             'full_name' => $delivaryAddress->full_name,
@@ -39,6 +32,8 @@ class ProcessCheckout
             'ordered_at' => now(),
         ]);
 
+        $cart = $user->currentCart();
+        $cartItems = $cart->products()->get();
         foreach ($cartItems as $product) {
             $quantity = $product->pivot->quantity;
             $price    = $product->price;
