@@ -9,6 +9,7 @@ use App\Http\Requests\StoreCheckoutRequest;
 use App\Http\Resources\CheckoutResource;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
@@ -16,7 +17,7 @@ class CheckoutController extends Controller
     {
         $checkoutData = $action->handle($request->user());
 
-        if($checkoutData->cartItems->isEmpty()) {
+        if ($checkoutData->cartItems->isEmpty()) {
             return redirect()->route('cart.index');
         }
 
@@ -32,8 +33,14 @@ class CheckoutController extends Controller
         return Inertia::location($url);
     }
 
-    public function success()
+    public function success(Request $request, ProcessCheckout $action)
     {
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $sessionId = $request->string('session_id');
+
+        $action->handle($request->user(), $sessionId);
+
         return inertia('checkout/success');
     }
 
