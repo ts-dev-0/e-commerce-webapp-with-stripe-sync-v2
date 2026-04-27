@@ -41,11 +41,11 @@ class CheckoutController extends Controller
 
         $action->handle($request->user(), $sessionId);
 
-        return inertia('checkout/success');
+        return Inertia::render('checkout/success');
     }
 
     public function failed()
     {
-        return inertia('checkout/failed');
+        return Inertia::render('checkout/failed');
     }
 }
