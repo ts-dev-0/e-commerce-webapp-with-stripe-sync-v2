@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Traits\MocksActions;
 use App\Actions\Checkout\GetCheckout;
-use App\Actions\Checkout\ProcessCheckout;
+use App\Actions\Stripe\CreateCheckoutSession;
 use App\Models\Address;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -92,28 +92,34 @@ class CheckoutControllerTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    // store
-    public function test_user_can_process_checkout()
+    public function test_user_can_create_checkout_session()
     {
         $address = Address::factory()->create([
             'user_id' => $this->user->id,
         ]);
 
+        $checkoutUrl = 'https://checkout.stripe.com/test-session';
+
         $this->mockAction(
-            ProcessCheckout::class,
+            CreateCheckoutSession::class,
             [$this->user, $address->id],
+            $checkoutUrl,
         );
 
         $response = $this
             ->actingAs($this->user)
-            ->from(route('checkout.index'))
-            ->post(route('checkout.store'), ['address_id' => $address->id]);
+            ->withHeaders([
+                'X-Inertia' => 'true',
+            ])
+            ->post(route('checkout.store'), [
+                'address_id' => $address->id,
+            ]);
 
-        $response->assertRedirect(route('checkout.success'));
+        $response->assertStatus(409);
 
-        $response->assertSessionHas(
-            'success',
-            'Checkout successfully.'
+        $response->assertHeader(
+            'X-Inertia-Location',
+            $checkoutUrl
         );
     }
 
