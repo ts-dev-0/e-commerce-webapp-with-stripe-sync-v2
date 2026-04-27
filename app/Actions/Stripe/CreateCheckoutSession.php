@@ -40,6 +40,10 @@ class CreateCheckoutSession
             'mode' => 'payment',
             'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout.failed'),
+            'metadata' => [
+                'user_id' => $user->id,
+                'address_id' => $addressId,
+            ],
         ]);
 
         return $session->url;
