@@ -9,7 +9,6 @@ use App\Http\Requests\StoreCheckoutRequest;
 use App\Http\Resources\CheckoutResource;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
@@ -35,12 +34,10 @@ class CheckoutController extends Controller
 
     public function success(Request $request, ProcessCheckout $action)
     {
-        Stripe::setApiKey(config('services.stripe.secret'));
-
-        $sessionId = $request->string('session_id');
-        $session = Session::retrieve($sessionId);
-
-        $action->handle($request->user(), $session);
+        $action->handle(
+            $request->user(),
+            $request->string('session_id'),
+        );
 
         return Inertia::render('checkout/success');
     }
