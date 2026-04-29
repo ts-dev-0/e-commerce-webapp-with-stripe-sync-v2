@@ -1,116 +1,100 @@
 <?php
 
-namespace Tests\Feature\Checkout;
+namespace Tests\Feature\Actions\Checkout;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\Checkout\ProcessCheckout;
 use App\Models\Address;
 use App\Models\Cart;
-use App\Models\CartItem;
-use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Stripe\Checkout\Session;
+use Tests\TestCase;
 
 class ProcessCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
-    private ProcessCheckout $action;
+    /** @var \App\Models\User */
     private User $user;
-    private Cart $cart;
+
+    /** @var \App\Models\Product */
     private Product $product;
-    private CartItem $cartItem;
+
+    /** @var \App\Models\Address */
+    private Address $address;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->action = new ProcessCheckout();
+        /** @var \App\Models\User $user */
         $this->user = User::factory()->create();
-        $this->cart = Cart::factory()->create([
+
+        /** @var \App\Models\Product $product */
+        $this->product = Product::factory()->create([
+            'price' => 1500,
+            'stock' => 10,
+        ]);
+
+        /** @var \App\Models\Address $address */
+        $this->address = Address::factory()->create([
             'user_id' => $this->user->id,
         ]);
-        $this->product = Product::factory()->create(['price' => 1000]);
-        $this->cartItem = CartItem::factory()->create([
-            'cart_id' => $this->cart->id,
-            'product_id' => $this->product->id,
-            'quantity' => 1,
-         ]);
-    }
 
-    public function test_cart_can_be_checked_out_into_order()
-    {
-        $productB = Product::factory()->create(['price' => 2000]);
+        /** @var \App\Models\Cart $cart */
+        $cart = Cart::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
 
-        CartItem::factory()->create([
-            'cart_id' => $this->cart->id,
-            'product_id' => $productB->id,
+        $cart->products()->attach($this->product->id, [
             'quantity' => 2,
         ]);
+    }
 
-        $selectedAddress = Address::factory()->create([
-            'user_id' => $this->user->id,
+    public function test_it_returns_order(): void
+    {
+        $session = Session::constructFrom([
+            'amount_total' => 3000,
+            'metadata' => [
+                'address_id' => $this->address->id,
+            ],
         ]);
 
-        $this->action->handle($this->user, $selectedAddress->id);
+        $action = $this->partialMock(ProcessCheckout::class, function ($mock) use ($session) {
+            $mock->shouldAllowMockingProtectedMethods()
+                ->shouldReceive('retrieveSession')
+                ->once()
+                ->with('cs_test_123')
+                ->andReturn($session);
+        });
+
+        $order = $action->handle(
+            $this->user,
+            'cs_test_123'
+        );
 
         $this->assertDatabaseHas('orders', [
-            'user_id'      => $this->user->id,
-            'total_amount' => 5000,
-        ]);
-
-        $this->assertDatabaseHas('order_items', [
-            'product_id' => $this->product->id,
-            'quantity'   => 1,
-            'price'      => 1000,
-            'subtotal'   => 1000,
-        ]);
-
-        $this->assertDatabaseHas('order_items', [
-            'product_id' => $productB->id,
-            'quantity'   => 2,
-            'price'      => 2000,
-            'subtotal'   => 4000,
-        ]);
-
-        $this->assertDatabaseCount('cart_items', 0);
-    }
-
-    public function test_throws_exception_if_cart_is_empty()
-    {
-        $user = User::factory()->create();
-        $cart = Cart::factory()->create([
-            'user_id' => $user->id,
-        ]);
-        $addressId = 1;
-        $this->assertCount(0, $cart->products);
-
-        $this->expectException(\DomainException::class);
-
-        $this->expectExceptionMessage('Cart is empty');
-
-        $this->action->handle($user, $addressId);
-    }
-
-    public function test_cart_can_be_used_again_after_checkout()
-    {
-        $address = Address::factory()->create([
+            'id' => $order->id,
             'user_id' => $this->user->id,
+            'total_amount' => 3000,
         ]);
-        $this->action->handle($this->user, $address->id);
 
-        $newProduct = Product::factory()->create(['price' => 500]);
-        CartItem::factory()->create([
-            'cart_id' => $this->cart->id,
-            'product_id' => $newProduct->id,
+        $this->assertDatabaseHas('order_items', [
+            'order_id' => $order->id,
+            'product_id' => $this->product->id,
             'quantity' => 2,
+            'price' => 1500,
+            'subtotal' => 3000,
         ]);
 
-        $this->assertDatabaseHas('cart_items', [
-            'cart_id'    => $this->cart->id,
-            'product_id' => $newProduct->id,
-            'quantity'   => 2,
+        $this->assertDatabaseHas('products', [
+            'id' => $this->product->id,
+            'stock' => 8,
+        ]);
+
+        $this->assertDatabaseMissing('cart_items', [
+            'product_id' => $this->product->id,
         ]);
     }
 }

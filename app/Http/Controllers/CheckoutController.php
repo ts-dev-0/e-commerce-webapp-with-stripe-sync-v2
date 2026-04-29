@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Checkout\GetCheckout;
 use App\Actions\Checkout\ProcessCheckout;
+use App\Actions\Stripe\CreateCheckoutSession;
 use App\Http\Requests\StoreCheckoutRequest;
 use App\Http\Resources\CheckoutResource;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class CheckoutController extends Controller
     {
         $checkoutData = $action->handle($request->user());
 
-        if($checkoutData->cartItems->isEmpty()) {
+        if ($checkoutData->cartItems->isEmpty()) {
             return redirect()->route('cart.index');
         }
 
@@ -24,22 +25,25 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(StoreCheckoutRequest $request, ProcessCheckout $action)
+    public function store(StoreCheckoutRequest $request, CreateCheckoutSession $action)
     {
-        $action->handle($request->user(), $request->validated()['address_id']);
+        $url = $action->handle($request->user(), $request->validated()['address_id']);
 
-        return redirect()
-            ->route('checkout.success')
-            ->with('success', 'Checkout successfully.');
+        return Inertia::location($url);
     }
 
-    public function success()
+    public function success(Request $request, ProcessCheckout $action)
     {
-        return inertia('checkout/success');
+        $action->handle(
+            $request->user(),
+            $request->string('session_id'),
+        );
+
+        return Inertia::render('checkout/success');
     }
 
     public function failed()
     {
-        return inertia('checkout/failed');
+        return Inertia::render('checkout/failed');
     }
 }
