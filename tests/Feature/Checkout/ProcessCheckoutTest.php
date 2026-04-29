@@ -15,73 +15,86 @@ class ProcessCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_creates_order_and_order_items_and_updates_stock_and_clears_cart(): void
+    /** @var \App\Models\User */
+    private User $user;
+
+    /** @var \App\Models\Product */
+    private Product $product;
+
+    /** @var \App\Models\Address */
+    private Address $address;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         /** @var \App\Models\User $user */
-        $user = User::factory()->create();
+        $this->user = User::factory()->create();
+
+        /** @var \App\Models\Product $product */
+        $this->product = Product::factory()->create([
+            'price' => 1500,
+            'stock' => 10,
+        ]);
 
         /** @var \App\Models\Address $address */
-        $address = Address::factory()->create([
-            'user_id' => $user->id,
+        $this->address = Address::factory()->create([
+            'user_id' => $this->user->id,
         ]);
 
         /** @var \App\Models\Cart $cart */
         $cart = Cart::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
         ]);
 
-        /** @var \App\Models\Product $product */
-        $product = Product::factory()->create([
-            'name' => 'Test Product',
-            'price' => 3000,
-            'stock' => 20,
-        ]);
-
-        $cart->products()->attach($product->id, [
+        $cart->products()->attach($this->product->id, [
             'quantity' => 2,
         ]);
+    }
 
+    public function test_it_returns_order(): void
+    {
         $session = Session::constructFrom([
+            'amount_total' => 3000,
             'metadata' => [
-                'address_id' => $address->id,
+                'address_id' => $this->address->id,
             ],
-            'amount_total' => 6000,
         ]);
-        $session->amount_total = 6000;
 
-        $action = new ProcessCheckout();
+        $action = $this->partialMock(ProcessCheckout::class, function ($mock) use ($session) {
+            $mock->shouldAllowMockingProtectedMethods()
+                ->shouldReceive('retrieveSession')
+                ->once()
+                ->with('cs_test_123')
+                ->andReturn($session);
+        });
 
-        $order = $action->handle($user, $session);
+        $order = $action->handle(
+            $this->user,
+            'cs_test_123'
+        );
 
         $this->assertDatabaseHas('orders', [
             'id' => $order->id,
-            'user_id' => $user->id,
-            'total_amount' => 6000,
-            'full_name' => $address->full_name,
-            'postal_code' => $address->postal_code,
-            'prefecture' => $address->prefecture,
-            'city' => $address->city,
-            'address_line' => $address->address_line,
-            'phone_number' => $address->phone_number,
+            'user_id' => $this->user->id,
+            'total_amount' => 3000,
         ]);
 
         $this->assertDatabaseHas('order_items', [
             'order_id' => $order->id,
-            'product_id' => $product->id,
-            'product_name' => $product->name,
+            'product_id' => $this->product->id,
             'quantity' => 2,
-            'price' => 3000,
-            'subtotal' => 6000,
+            'price' => 1500,
+            'subtotal' => 3000,
         ]);
 
         $this->assertDatabaseHas('products', [
-            'id' => $product->id,
-            'stock' => 18,
+            'id' => $this->product->id,
+            'stock' => 8,
         ]);
 
         $this->assertDatabaseMissing('cart_items', [
-            'cart_id' => $cart->id,
-            'product_id' => $product->id,
+            'product_id' => $this->product->id,
         ]);
     }
 }

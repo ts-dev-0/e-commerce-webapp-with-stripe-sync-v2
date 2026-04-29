@@ -2,11 +2,11 @@
 
 namespace App\Actions\Stripe;
 
-use App\Models\User;
 use App\Models\Product;
+use App\Models\User;
+use Illuminate\Support\Collection;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
-use Illuminate\Support\Collection;
 
 class CreateCheckoutSession
 {
@@ -26,7 +26,7 @@ class CreateCheckoutSession
             throw new \DomainException('Cart is empty.');
         }
 
-        $session = Session::create([
+        $session = $this->createSession([
             'payment_method_types' => ['card'],
             'line_items' => $this->mapCartItemsToStripeFormat($cartItems),
             'mode' => 'payment',
@@ -39,6 +39,11 @@ class CreateCheckoutSession
         ]);
 
         return $session->url;
+    }
+
+    protected function createSession(array $payload): Session
+    {
+        return Session::create($payload);
     }
 
     private function mapCartItemsToStripeFormat(Collection $items): array

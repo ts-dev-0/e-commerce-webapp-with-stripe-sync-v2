@@ -18,7 +18,7 @@ class ProcessCheckout
 
     public function handle(User $user, string $sessionId)
     {
-        $session = Session::retrieve($sessionId);
+        $session = $this->retrieveSession($sessionId);
 
         $deliveryAddress = $this->resolveAddress($session);
 
@@ -29,6 +29,11 @@ class ProcessCheckout
         $this->clearCart($user);
 
         return $order;
+    }
+
+    protected function retrieveSession(string $sessionId): Session
+    {
+        return Session::retrieve($sessionId);
     }
 
     private function resolveAddress(Session $session): Address
