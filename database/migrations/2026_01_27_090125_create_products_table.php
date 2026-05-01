@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+
+            $table->string('stripe_product_id')->nullable()->unique();
+            $table->string('stripe_price_id')->nullable();
+
             $table->string('name', 255);
             $table->text('description');
             $table->unsignedInteger('price');
