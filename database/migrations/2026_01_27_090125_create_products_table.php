@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('stripe_price_id')->nullable();
 
             $table->string('name', 255);
-            $table->text('description');
-            $table->unsignedInteger('price');
-            $table->unsignedInteger('stock');
-            $table->string('manufacturer');
-            $table->boolean('is_published')->default(false);
+            $table->text('description')->nullable();
+            $table->unsignedInteger('price')->nullable();
+            $table->unsignedInteger('stock')->nullable();
+            $table->string('manufacturer')->nullable();
+            $table->boolean('is_published')->nullable()->default(false);
             $table->timestamps();
         });
     }
