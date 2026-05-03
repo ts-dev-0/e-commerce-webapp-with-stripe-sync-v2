@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedInteger('price')->nullable();
             $table->unsignedInteger('stock')->nullable();
             $table->string('manufacturer')->nullable();
-            $table->boolean('is_published')->nullable()->default(false);
+            $table->boolean('is_published')->default(false);
             $table->timestamps();
         });
     }
