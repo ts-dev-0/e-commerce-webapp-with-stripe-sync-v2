@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Stripe\Event;
 use Stripe\Stripe;
@@ -52,6 +51,32 @@ class StripeWebhookController extends Controller
     }
 
     private function handlePriceCreated(Event $event): void
+    {
+        /** @var \Stripe\Price $stripePrice */
+        $stripePrice = $event->data->object;
+
+        Product::query()
+            ->where('stripe_product_id', $stripePrice->product)
+            ->update([
+                'stripe_price_id' => $stripePrice->id,
+                'price' => $stripePrice->unit_amount,
+            ]);
+    }
+
+    private function handleProductUpdated(Event $event): void
+    {
+        /** @var \Stripe\Product $stripeProduct */
+        $stripeProduct = $event->data->object;
+
+        Product::query()
+            ->where('stripe_product_id', $stripeProduct->id)
+            ->update([
+                'stripe_price_id' => $stripeProduct->id,
+                'name' => $stripeProduct->name,
+            ]);
+    }
+
+    private function handlePriceUpdated(Event $event): void
     {
         /** @var \Stripe\Price $stripePrice */
         $stripePrice = $event->data->object;
