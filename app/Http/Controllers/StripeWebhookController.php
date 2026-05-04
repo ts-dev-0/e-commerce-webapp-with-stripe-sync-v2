@@ -26,7 +26,7 @@ class StripeWebhookController extends Controller
             $signature,
             config('services.stripe.webhook_secret')
         );
-
+        error_log($event->type);
         match ($event->type) {
             'product.created' => $this->handleProductCreated($event),
             'product.updated' => $this->handleProductUpdated($event),
@@ -87,5 +87,15 @@ class StripeWebhookController extends Controller
                 'stripe_price_id' => $stripePrice->id,
                 'price' => $stripePrice->unit_amount,
             ]);
+    }
+
+    private function handleProductDeleted(Event $event): void
+    {
+        /** @var \Stripe\Product $stripeProduct */
+        $stripeProduct = $event->data->object;
+
+        Product::query()
+            ->where('stripe_product_id', $stripeProduct->id)
+            ->delete();
     }
 }
