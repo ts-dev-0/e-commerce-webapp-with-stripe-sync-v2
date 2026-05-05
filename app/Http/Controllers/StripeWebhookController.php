@@ -26,7 +26,7 @@ class StripeWebhookController extends Controller
             $signature,
             config('services.stripe.webhook_secret')
         );
-        error_log($event->type);
+
         match ($event->type) {
             'product.created' => $this->handleProductCreated($event),
             'product.updated' => $this->handleProductUpdated($event),
