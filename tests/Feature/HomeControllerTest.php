@@ -3,13 +3,13 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Tests\Traits\MocksActions;
-use App\Actions\Home\HomeIndex;
 use App\Models\Product;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 
 class HomeControllerTest extends TestCase
 {
-    use MocksActions;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -20,19 +20,22 @@ class HomeControllerTest extends TestCase
 
     public function test_index_returns_products_to_home_page()
     {
-        $products = collect([
-            Product::factory()->make(),
-            Product::factory()->make(),
+        Product::factory()->count(20)->create([
+            'is_published' => true,
         ]);
 
-        $this->mockAction(
-            HomeIndex::class,
-            [],
-            $products,
-        );
+        Product::factory()->create([
+            'is_published' => false,
+        ]);
 
         $response = $this->get(route('home'));
 
         $response->assertOk();
+
+        $response->assertInertia(
+            fn(Assert $page) => $page
+                ->component('home')
+                ->has('products', 15)
+        );
     }
 }
