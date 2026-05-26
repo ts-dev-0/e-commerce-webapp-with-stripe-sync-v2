@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'stripe_product_id',
         'stripe_price_id',
@@ -30,7 +31,7 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class)
-                ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function favoritedUsers()
@@ -44,9 +45,12 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function scopeNewArrivals($query, int $limit)
+    public function scopeNewArrivals(Builder $query, int $limit): Builder
     {
-        return $query->latest()->limit($limit);
+        return $query
+            ->where('is_published', true)
+            ->latest()
+            ->limit($limit);
     }
 
     public function getStockStatusAttribute(): array
