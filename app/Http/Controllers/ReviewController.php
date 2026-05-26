@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Actions\Review\CreateReview;
 use App\Actions\Review\DeleteReview;
-use App\Actions\Review\GetUserReviews;
 use App\Actions\Review\UpdateReview;
 use App\Http\Requests\Review\DestroyReviewRequest;
 use App\Http\Requests\Review\StoreReviewRequest;
@@ -15,15 +12,6 @@ use App\Models\Review;
 
 class ReviewController extends Controller
 {
-    public function index(Request $request, GetUserReviews $action)
-    {
-        $reviews = $action->handle($request->user());
-
-        return Inertia::render('reviews', [
-            'reviews' => $reviews,
-        ]);
-    }
-
     public function store(StoreReviewRequest $request, CreateReview $action)
     {
         $validatedData = $request->validated();
