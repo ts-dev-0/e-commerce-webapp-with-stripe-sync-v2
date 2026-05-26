@@ -23,6 +23,10 @@ class Product extends Model
 
     protected $appends = ['stock_status'];
 
+    protected $casts = [
+        'is_published' => 'boolean',
+    ];
+
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
