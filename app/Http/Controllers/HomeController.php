@@ -15,7 +15,7 @@ class HomeController extends Controller
         $newArrivalProducts = Product::newArrivals(self::Limit)->get();
 
         return Inertia::render('home', [
-            'home' => ProductResource::collection($newArrivalProducts),
+            'products' => ProductResource::collection($newArrivalProducts),
         ]);
     }
 }

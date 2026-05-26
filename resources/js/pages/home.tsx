@@ -4,10 +4,10 @@ import { Product } from '@/types/product';
 import { Head } from '@inertiajs/react';
 
 interface HomeProps {
-    home: Product[];
+    products: Product[];
 }
 
-export default function Home({ home: products }: HomeProps) {
+export default function Home({ products }: HomeProps) {
     return (
         <AppLayout>
             <Head title="Home" />
