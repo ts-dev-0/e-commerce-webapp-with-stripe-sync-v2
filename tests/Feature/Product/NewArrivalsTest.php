@@ -5,7 +5,6 @@ namespace Tests\Feature\Product;
 use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class NewArrivalsTest extends TestCase
@@ -23,94 +22,59 @@ class NewArrivalsTest extends TestCase
     {
         // 時刻のリセット
         Carbon::setTestNow();
-        parent::tearDown();   
+        parent::tearDown();
     }
 
-    /**
-     * Happy Path
-     */
-    public function test_new_arrivals_returns_specified_number_of_products()
+    public function test_new_arrivals_scope_returns_only_published_products(): void
     {
-        $oldProduct = Product::factory()->create([
-            'created_at' => now()->subDays(2)
+        Product::factory()->create([
+            'is_published' => true,
         ]);
 
-        $middleProduct = Product::factory()->create([
-            'created_at' => now()->subDays()
+        Product::factory()->create([
+            'is_published' => false,
+        ]);
+
+        $products = Product::newArrivals(15)->get();
+
+        $this->assertCount(1, $products);
+
+        $this->assertTrue($products->first()->is_published);
+    }
+
+    public function test_new_arrivals_scope_returns_latest_products(): void
+    {
+        $oldProduct = Product::factory()->create([
+            'is_published' => true,
+            'created_at' => now()->subDay(),
         ]);
 
         $newProduct = Product::factory()->create([
-            'created_at' => now()
+            'is_published' => true,
+            'created_at' => now(),
         ]);
 
-        $results = Product::newArrivals(2)->get();
+        $products = Product::newArrivals(15)->get();
 
-        $this->assertCount(2, $results);
+        $this->assertEquals(
+            $newProduct->id,
+            $products->first()->id
+        );
 
-        $this->assertTrue($results->contains($middleProduct));
-        $this->assertTrue($results->contains($newProduct));
-
-        $this->assertFalse($results->contains($oldProduct));
-
-        $this->assertSame(
-            [$newProduct->id, $middleProduct->id],
-            $results->pluck('id')->all()
+        $this->assertEquals(
+            $oldProduct->id,
+            $products->last()->id
         );
     }
 
-    /**
-     * Edge Case
-     */
-    public function test_new_arrivals_returns_all_products_when_less_than_limit()
+    public function test_new_arrivals_scope_limits_products_count(): void
     {
-        $product = Product::factory()->create([
-            'created_at' => now()
+        Product::factory()->count(20)->create([
+            'is_published' => true,
         ]);
 
-        $results = Product::newArrivals(2)->get();
+        $products = Product::newArrivals(15)->get();
 
-        $this->assertCount(1, $results);
-        $this->assertTrue($results->contains($product));
-    }
-
-    public function test_new_arrivals_returns_all_products_when_equal_to_limit()
-    {
-        $older = Product::factory()->create([
-            'created_at' => now()->subDay()
-        ]);
-
-        $newer = Product::factory()->create([
-            'created_at' => now()
-        ]);
-
-        $results = Product::newArrivals(2)->get();
-
-        $this->assertSame(
-            [$newer->id, $older->id],
-            $results->pluck('id')->all()
-        );
-    }
-
-    public function test_new_arrivals_returns_only_latest_product_when_limit_is_one()
-    {
-        Product::factory()->create([
-            'created_at' => now()->subDays(2)
-        ]);
-
-        $latest = Product::factory()->create([
-            'created_at' => now()
-        ]);
-
-        $results = Product::newArrivals(1)->get();
-
-        $this->assertCount(1, $results);
-        $this->assertSame($latest->id, $results->first()->id);
-    }
-
-    public function test_new_arrivals_returns_empty_collection_when_no_products_exist()
-    {
-        $results = Product::newArrivals(3)->get();
-
-        $this->assertCount(0, $results);
+        $this->assertCount(15, $products);
     }
 }

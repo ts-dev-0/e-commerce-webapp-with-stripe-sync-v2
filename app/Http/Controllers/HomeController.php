@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Home\HomeIndex;
 use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use Inertia\Inertia;
 
 class HomeController extends Controller
 {
-    public function index(HomeIndex $action)
+    private const Limit = 15;
+
+    public function index()
     {
-        $home = $action->handle();
+        $newArrivalProducts = Product::newArrivals(self::Limit)->get();
 
         return Inertia::render('home', [
-            'home' => ProductResource::collection($home),
+            'products' => ProductResource::collection($newArrivalProducts),
         ]);
     }
 }
