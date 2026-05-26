@@ -47,7 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('checkout.failed');
 
     Route::resource('reviews', ReviewController::class)
-        ->only(['index', 'store', 'update', 'destroy']);
+        ->only(['store', 'update', 'destroy']);
 
     Route::get('search/products', SearchPublishedProductsController::class)
         ->name('search.products');

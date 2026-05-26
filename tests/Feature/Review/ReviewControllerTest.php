@@ -5,11 +5,9 @@ namespace Tests\Feature\Review;
 use Mockery;
 use Tests\TestCase;
 use Tests\Traits\MocksActions;
-use Inertia\Testing\AssertableInertia as Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\Review\CreateReview;
 use App\Actions\Review\DeleteReview;
-use App\Actions\Review\GetUserReviews;
 use App\Actions\Review\UpdateReview;
 use App\Models\Product;
 use App\Models\Review;
@@ -33,34 +31,6 @@ class ReviewControllerTest extends TestCase
         $this->product = Product::factory()->create();
     }
 
-    // index
-    public function test_authenticated_user_can_view_reviews()
-    {
-        $reviews = collect([
-            Review::factory()->make(),
-            Review::factory()->make(),
-        ]);
-
-        $this->mockAction(
-            GetUserReviews::class,
-            [$this->user],
-            $reviews,
-        );
-
-        $response = $this
-            ->actingAs($this->user)
-            ->get(route('reviews.index'));
-
-        $response->assertOk();
-    }
-
-    public function test_guest_cannot_access_reviews_page()
-    {
-        $response = $this->get(route('reviews.index'));
-
-        $response->assertRedirect(route('login'));
-    }
-
     // store
     public function test_user_can_create_review()
     {
@@ -77,10 +47,10 @@ class ReviewControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->from(route('reviews.index'))
+            ->from(route('product.show', $this->product->id))
             ->post(route('reviews.store'), $review);
 
-        $response->assertRedirect(route('reviews.index'));
+        $response->assertRedirect(route('product.show', $this->product->id));
 
         $response->assertSessionHas('success', 'Review posted.');
     }
@@ -115,10 +85,10 @@ class ReviewControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->from(route('reviews.index'))
+            ->from(route('product.show', $this->product->id))
             ->put(route('reviews.update', $review), $updatedReview);
 
-        $response->assertRedirect(route('reviews.index'));
+        $response->assertRedirect(route('product.show', $this->product->id));
 
         $response->assertSessionHas('success', 'Review updated.');
     }
@@ -149,10 +119,10 @@ class ReviewControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->from(route('reviews.index'))
+            ->from(route('product.show', $this->product->id))
             ->delete(route('reviews.destroy', $review));
 
-        $response->assertRedirect(route('reviews.index'));
+        $response->assertRedirect(route('product.show', $this->product->id));
 
         $response->assertSessionHas('success', 'Review deleted.');
     }
