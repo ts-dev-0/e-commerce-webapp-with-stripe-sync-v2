@@ -4,7 +4,6 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -24,15 +23,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('cart/items', CartItemController::class)
         ->only(['store', 'update', 'destroy'])
         ->names('cart.items');
-
-    Route::get('favorites', [FavoriteController::class, 'index'])
-        ->name('favorites.index');
-
-    Route::post('favorites', [FavoriteController::class, 'store'])
-        ->name('favorites.store');
-
-    Route::delete('favorites', [FavoriteController::class, 'destroy'])
-        ->name('favorites.destroy');
 
     Route::get('orders', [OrderController::class, 'index'])
         ->name('orders.index');
