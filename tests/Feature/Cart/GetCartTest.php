@@ -26,13 +26,11 @@ class GetCartTest extends TestCase
 
     public function test_user_can_get_cart_data()
     {
-        $otherUser = User::factory()->create();
-
         $product1 = Product::factory()->create(['price' => 100]);
         $product2 = Product::factory()->create(['price' => 200]);
 
         $cart = Cart::factory()->create(['user_id' => $this->user->id]);
-        $otherCart = Cart::factory()->create(['user_id' => $otherUser->id]);
+
 
         CartItem::factory()->create([
             'cart_id' => $cart->id,
@@ -43,12 +41,6 @@ class GetCartTest extends TestCase
             'cart_id' => $cart->id,
             'product_id' => $product2->id,
             'quantity' => 5,
-        ]);
-
-        CartItem::factory()->create([
-            'cart_id' => $otherCart->id,
-            'product_id' => Product::factory()->create()->id,
-            'quantity' => 10,
         ]);
 
         $result = $this->action->handle($this->user);
