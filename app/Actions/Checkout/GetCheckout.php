@@ -3,7 +3,7 @@
 namespace App\Actions\Checkout;
 
 use App\DTOs\CheckoutData;
-use App\Models\CartItem;
+use App\Exceptions\EmptyCartItemException;
 use App\Models\User;
 use App\Services\Delivery\DeliveryDateService;
 
@@ -16,6 +16,10 @@ class GetCheckout
     public function handle(User $user): CheckoutData
     {
         $cartItems = $user->currentCart()->items()->get();
+
+        if ($cartItems->empty()) {
+            throw new EmptyCartItemException('Cart items is empty.');
+        }
 
         $deliveryDate = $this->deliveryDateService->generate();
 
