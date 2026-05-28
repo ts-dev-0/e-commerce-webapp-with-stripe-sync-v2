@@ -17,7 +17,7 @@ class GetCheckout
     {
         $cartItems = $user->currentCart()->items()->get();
 
-        if ($cartItems->empty()) {
+        if ($cartItems->isEmpty()) {
             throw new EmptyCartItemException('Cart items is empty.');
         }
 
