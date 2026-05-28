@@ -24,14 +24,6 @@ class GetCheckout
             ->orderByDesc('is_default')
             ->get();
 
-        /** @var \App\Models\Address|null $defaultAddress */
-        $defaultAddress = $addresses->firstWhere('is_default', true);
-        
-        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Address> $anotherAddresses */
-        $anotherAddresses = $addresses
-            ->where('is_default', false)
-            ->values();
-
         $shippingFee = 0;
         $subtotal = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
@@ -41,8 +33,6 @@ class GetCheckout
         return new CheckoutData(
             $cartItems,
             $addresses,
-            $defaultAddress,
-            $anotherAddresses,
             $deliveryDate,
             $shippingFee,
             $subtotal,
