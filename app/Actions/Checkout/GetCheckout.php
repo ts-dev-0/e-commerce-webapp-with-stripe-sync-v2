@@ -15,7 +15,8 @@ class GetCheckout
 
     public function handle(User $user): CheckoutData
     {
-        $cartItems = $user->currentCart()->items()->with('product')->get();
+        $cart = $user->currentCart();
+        $cartItems = $cart->items()->with('product')->get();
 
         if ($cartItems->isEmpty()) {
             throw new EmptyCartItemException('Cart items is empty.');
@@ -29,10 +30,8 @@ class GetCheckout
             ->get();
 
         $shippingFee = 0;
-        $subtotal = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
-        $total = $subtotal + $shippingFee;
+        $subtotal = $cart->subtotal();
+        $total = $cart->total($shippingFee);
 
         return new CheckoutData(
             cartItems: $cartItems,

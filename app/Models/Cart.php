@@ -25,4 +25,16 @@ class Cart extends Model
     {
         return $this->hasMany(CartItem::class);
     }
+
+    public function subtotal(): int
+    {
+        return $this->items->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
+    }
+
+    public function total(int $shippingFee): int
+    {
+        return $this->subtotal() + $shippingFee;
+    }
 }
