@@ -35,12 +35,12 @@ class GetCheckout
         $total = $subtotal + $shippingFee;
 
         return new CheckoutData(
-            $cartItems,
-            $addresses,
-            $deliveryDate,
-            $shippingFee,
-            $subtotal,
-            $total,
+            cartItems: $cartItems,
+            addresses: $addresses,
+            deliveryDate: $deliveryDate,
+            shippingFee: $shippingFee,
+            subtotal: $subtotal,
+            total: $total,
         );
     }
 }
