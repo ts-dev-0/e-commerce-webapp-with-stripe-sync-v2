@@ -6,8 +6,6 @@ import { Button } from './ui/button';
 
 interface DeliveryAddressSectionProps {
     addresses: Address[];
-    defaultAddress?: Address;
-    anotherAddresses: Address[];
     selectedAddressId?: number;
     setData: (id: number) => void;
     processing: boolean;
@@ -20,8 +18,6 @@ interface DeliveryAddressSectionProps {
 
 export function DeliveryAddressSection({
     addresses,
-    defaultAddress,
-    anotherAddresses,
     selectedAddressId,
     setData,
     processing,
@@ -48,30 +44,32 @@ export function DeliveryAddressSection({
                     新しい配送先を登録する
                 </Button>
             </div>
-            {addresses.length === 0 && (
+            {addresses.length === 0 ? (
                 <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
                     登録済みの配送先がありません。
                     <div className="mt-2">新しい配送先を入力してください。</div>
                 </div>
-            )}
-            {addresses.length >= 1 && (
+            ) : (
                 <div className="mt-4 space-y-4">
                     <AddressCard
-                        key={defaultAddress?.id}
-                        address={defaultAddress!}
-                        isSelected={selectedAddressId === defaultAddress?.id}
+                        address={addresses[0]}
+                        isSelected={selectedAddressId === addresses[0].id}
                         onSelect={setData}
                     />
 
                     {isExpanded &&
-                        anotherAddresses.map((address) => (
-                            <AddressCard
-                                key={address.id}
-                                address={address}
-                                isSelected={selectedAddressId === address.id}
-                                onSelect={setData}
-                            />
-                        ))}
+                        addresses
+                            .slice(1)
+                            .map((address) => (
+                                <AddressCard
+                                    key={address.id}
+                                    address={address}
+                                    isSelected={
+                                        selectedAddressId === address.id
+                                    }
+                                    onSelect={setData}
+                                />
+                            ))}
 
                     {!isExpanded && addresses.length > 1 && (
                         <button

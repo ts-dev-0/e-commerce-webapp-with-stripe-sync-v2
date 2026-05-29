@@ -9,12 +9,11 @@ class GetCart
 {
     public function handle(User $user): CartData
     {
-        $cartItems = $user->currentCart()->items()->get();
+        $cart = $user->currentCart();
+        $cartItems = $cart->items()->get();
 
-        $subtotal = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
+        $subtotal = $cart->subtotal();
 
-        return new CartData($cartItems, $subtotal);
+        return new CartData(items: $cartItems, subtotal: $subtotal);
     }
 }

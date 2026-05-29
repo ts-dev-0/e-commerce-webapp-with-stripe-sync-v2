@@ -3,7 +3,7 @@
 namespace App\Actions\Checkout;
 
 use App\DTOs\CheckoutData;
-use App\Models\CartItem;
+use App\Exceptions\EmptyCartItemException;
 use App\Models\User;
 use App\Services\Delivery\DeliveryDateService;
 
@@ -15,11 +15,12 @@ class GetCheckout
 
     public function handle(User $user): CheckoutData
     {
-        $cartItems = CartItem::with('product')
-            ->whereHas('cart', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
-            ->get();
+        $cart = $user->currentCart();
+        $cartItems = $cart->items()->with('product')->get();
+
+        if ($cartItems->isEmpty()) {
+            throw new EmptyCartItemException('Cart items is empty.');
+        }
 
         $deliveryDate = $this->deliveryDateService->generate();
 
@@ -28,29 +29,17 @@ class GetCheckout
             ->orderByDesc('is_default')
             ->get();
 
-        /** @var \App\Models\Address|null $defaultAddress */
-        $defaultAddress = $addresses->firstWhere('is_default', true);
-        
-        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\Address> $anotherAddresses */
-        $anotherAddresses = $addresses
-            ->where('is_default', false)
-            ->values();
-
         $shippingFee = 0;
-        $subtotal = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
-        $total = $subtotal + $shippingFee;
+        $subtotal = $cart->subtotal();
+        $total = $cart->total($shippingFee);
 
         return new CheckoutData(
-            $cartItems,
-            $addresses,
-            $defaultAddress,
-            $anotherAddresses,
-            $deliveryDate,
-            $shippingFee,
-            $subtotal,
-            $total,
+            cartItems: $cartItems,
+            addresses: $addresses,
+            deliveryDate: $deliveryDate,
+            shippingFee: $shippingFee,
+            subtotal: $subtotal,
+            total: $total,
         );
     }
 }

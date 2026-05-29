@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Checkout\GetCheckout;
 use App\Actions\Checkout\ProcessCheckout;
 use App\Actions\Stripe\CreateCheckoutSession;
+use App\Exceptions\EmptyCartItemException;
 use App\Http\Requests\StoreCheckoutRequest;
 use App\Http\Resources\CheckoutResource;
 use Illuminate\Http\Request;
@@ -14,15 +15,17 @@ class CheckoutController extends Controller
 {
     public function index(Request $request, GetCheckout $action)
     {
-        $checkoutData = $action->handle($request->user());
+        try {
+            $checkoutData = $action->handle($request->user());
 
-        if ($checkoutData->cartItems->isEmpty()) {
+            return Inertia::render('checkout', [
+                'checkout' => CheckoutResource::make($checkoutData),
+            ]);
+        } catch (EmptyCartItemException $e) {
+            error_log($e->getMessage());
+
             return redirect()->route('cart.index');
         }
-
-        return Inertia::render('checkout', [
-            'checkout' => CheckoutResource::make($checkoutData),
-        ]);
     }
 
     public function store(StoreCheckoutRequest $request, CreateCheckoutSession $action)

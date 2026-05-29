@@ -26,21 +26,13 @@ interface SetDefaultAddressForm {
 }
 
 export default function Checkout({
-    checkout: {
-        cartItems,
-        addresses,
-        defaultAddress,
-        anotherAddresses,
-        shippingFee,
-        subtotal,
-        total,
-    },
+    checkout: { cartItems, addresses, shippingFee, subtotal, total },
 }: CheckoutProps) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const { data, setData, patch, processing, reset, errors } =
         useForm<SetDefaultAddressForm>({
-            selectAddressId: defaultAddress?.id,
+            selectAddressId: addresses[0].id,
         });
 
     const handleSetDefaultAddress = (e: React.FormEvent) => {
@@ -76,8 +68,6 @@ export default function Checkout({
                         <div className="space-y-6">
                             <DeliveryAddressSection
                                 addresses={addresses}
-                                defaultAddress={defaultAddress}
-                                anotherAddresses={anotherAddresses}
                                 selectedAddressId={data.selectAddressId}
                                 setData={(id: number) =>
                                     setData({ selectAddressId: id })
