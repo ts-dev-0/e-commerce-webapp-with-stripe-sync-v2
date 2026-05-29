@@ -64,8 +64,6 @@ class CheckoutControllerTest extends TestCase
         $checkoutData = new CheckoutData(
             cartItems: $items,
             addresses: new Collection([$defaultAddress, $anotherAddress]),
-            defaultAddress: $defaultAddress,
-            anotherAddresses: new Collection([$anotherAddress]),
             deliveryDate: $deliveryDate,
             shippingFee: $shippingFee,
             subtotal: $subtotal,
