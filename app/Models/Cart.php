@@ -37,4 +37,9 @@ class Cart extends Model
     {
         return $this->subtotal() + $shippingFee;
     }
+
+    public function clear(): void
+    {
+        $this->items()->delete();
+    }
 }
