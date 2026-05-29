@@ -9,14 +9,6 @@ use Stripe\Checkout\Session;
 
 class CreateOrder
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function handle(
         User $user,
         Session $session,

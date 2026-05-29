@@ -7,14 +7,6 @@ use App\Models\User;
 
 class CreateOrderItem
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function handle(User $user, Order $order): void
     {
         $cart = $user->currentCart();
