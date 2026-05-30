@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
+use Stripe\Stripe;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,5 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Disable the default 'data' wrapping for all JSON resources.
         JsonResource::withoutWrapping();
+
+        Stripe::setApiKey(config('services.stripe.secret'));
     }
 }

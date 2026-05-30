@@ -38,4 +38,15 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function addItem(Product $product, int $quantity, int $subtotal): void
+    {
+        $this->items()->create([
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'quantity' => $quantity,
+            'price' => $product->price,
+            'subtotal' => $subtotal,
+        ]);
+    }
 }
