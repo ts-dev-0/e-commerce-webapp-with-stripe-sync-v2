@@ -2,29 +2,21 @@
 
 namespace App\Actions\OrderItem;
 
+use App\Models\Cart;
 use App\Models\Order;
-use App\Models\User;
 
 class CreateOrderItem
 {
-    public function handle(User $user, Order $order): void
+    public function handle(Cart $cart, Order $order): void
     {
-        $cart = $user->currentCart();
-        $products = $cart->products()->get();
-
-        foreach ($products as $product) {
+        foreach ($cart->products()->get() as $product) {
             $quantity = $product->pivot->quantity;
             $price = $product->price;
+            $subtotal = $price * $quantity;
 
-            $order->items()->create([
-                'product_id' => $product->id,
-                'product_name' => $product->name,
-                'quantity' => $quantity,
-                'price' => $price,
-                'subtotal' => $price * $quantity,
-            ]);
+            $order->addItem(product: $product, quantity: $quantity, subtotal: $subtotal);
 
-            $product->decrement('stock', $quantity, []);
+            $product->query()->decrement('stock', $quantity);
         }
     }
 }
