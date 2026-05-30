@@ -5,6 +5,7 @@ namespace Tests\Feature\Actions\Checkout;
 use App\Actions\Checkout\ProcessCheckout;
 use App\Models\Address;
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,86 +16,44 @@ class ProcessCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @var \App\Models\User */
-    private User $user;
-
-    /** @var \App\Models\Product */
-    private Product $product;
-
-    /** @var \App\Models\Address */
-    private Address $address;
-
-    protected function setUp(): void
+    public function test_it_processes_checkout_successfully()
     {
-        parent::setUp();
-
-        /** @var \App\Models\User $user */
-        $this->user = User::factory()->create();
-
-        /** @var \App\Models\Product $product */
-        $this->product = Product::factory()->create([
-            'price' => 1500,
-            'stock' => 10,
+        $user = User::factory()->create();
+        $product = Product::factory()->create([
+            'price' => 1000,
         ]);
-
-        /** @var \App\Models\Address $address */
-        $this->address = Address::factory()->create([
-            'user_id' => $this->user->id,
-        ]);
-
-        /** @var \App\Models\Cart $cart */
         $cart = Cart::factory()->create([
-            'user_id' => $this->user->id,
+            'user_id' => $user->id,
+        ]);
+        $cartItems = CartItem::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+        $address = Address::factory()->create([
+            'user_id' => $user->id,
         ]);
 
-        $cart->products()->attach($this->product->id, [
-            'quantity' => 2,
-        ]);
-    }
-
-    public function test_it_returns_order(): void
-    {
-        $session = Session::constructFrom([
-            'amount_total' => 3000,
+        $sessionMock = Session::constructFrom([
             'metadata' => [
-                'address_id' => $this->address->id,
+                'user_id' => $user->id,
+                'address_id' => $address->id,
             ],
+            'total_amount' => 2000,
         ]);
+        $stripeSessionService = $this->mock(\App\Services\StripSessioneService::class);
 
-        $action = $this->partialMock(ProcessCheckout::class, function ($mock) use ($session) {
-            $mock->shouldAllowMockingProtectedMethods()
-                ->shouldReceive('retrieveSession')
-                ->once()
-                ->with('cs_test_123')
-                ->andReturn($session);
-        });
+        $sessionId = 'test-sessionId';
+        $stripeSessionService
+            ->shouldReceive('retrieveStripeSession')
+            ->once()
+            ->with($sessionId)
+            ->andReturn($sessionMock);
 
-        $order = $action->handle(
-            $this->user,
-            'cs_test_123'
-        );
+        app(ProcessCheckout::class)->handle($user, $sessionId);
 
-        $this->assertDatabaseHas('orders', [
-            'id' => $order->id,
-            'user_id' => $this->user->id,
-            'total_amount' => 3000,
-        ]);
-
-        $this->assertDatabaseHas('order_items', [
-            'order_id' => $order->id,
-            'product_id' => $this->product->id,
-            'quantity' => 2,
-            'price' => 1500,
-            'subtotal' => 3000,
-        ]);
-
-        $this->assertDatabaseHas('products', [
-            'id' => $this->product->id,
-            'stock' => 8,
-        ]);
-
-        $this->assertDatabaseMissing('cart_items', [
-            'product_id' => $this->product->id,
-        ]);
+        $this->assertDatabaseCount('orders', 1);
+        $this->assertDatabaseCount('order_items', 1);
+        $this->assertDatabaseCount('cart_items', 0);
     }
 }

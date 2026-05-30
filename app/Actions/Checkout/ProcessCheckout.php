@@ -4,35 +4,39 @@ namespace App\Actions\Checkout;
 
 use App\Actions\Order\CreateOrder;
 use App\Actions\OrderItem\CreateOrderItem;
-use App\Models\Address;
 use App\Models\User;
-use Stripe\Checkout\Session;
-use Stripe\Stripe;
+use App\Services\StripSessioneService;
 
 class ProcessCheckout
 {
-    public function __construct()
-    {
-        Stripe::setApiKey(config('services.stripe.secret'));
-    }
+    public function __construct(
+        private StripSessioneService $stripeSessionService,
+        private CreateOrder $createOrder,
+        private CreateOrderItem $createOrderItem
+    ) {}
 
-    public function handle(User $user, string $sessionId): void
-    {
-        $session = Session::retrieve($sessionId);
+    public function handle(
+        User $user,
+        string $sessionId,
+    ): void {
+        /**
+         * Core logic:
+         * 1. sessionIdを使ってSessionを生成
+         * 2. ユーザーが指定した配送先を検索し取得
+         * 3. Orderを生成
+         * 4. OrderItemを生成
+         * 5. Cartを空にする
+         */
+        $session = $this->stripeSessionService->retrieveStripeSession($sessionId);
 
-        $deliveryAddress = Address::findOrFail($session->metadata->address_id);
+        $deliveryAddress = $user->addresses->findOrFail($session->metadata->address_id);
 
-        $order = (new CreateOrder)->handle($user, $session, $deliveryAddress);
+        $order = $this->createOrder->handle($user, $session->total_amount, $deliveryAddress);
 
-        (new CreateOrderItem)->handle($user, $order);
         $cart = $user->currentCart();
-        $cart->clear();
-    }
 
-    private function clearCart(User $user): void
-    {
-        $user->currentCart()
-            ->products()
-            ->detach();
+        $this->createOrderItem->handle($cart, $order);
+
+        $cart->clear();
     }
 }
