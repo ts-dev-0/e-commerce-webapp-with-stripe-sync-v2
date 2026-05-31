@@ -2,24 +2,21 @@
 
 namespace Tests\Feature\CartItem;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Traits\MocksActions;
-use App\Actions\CartItem\AddItemToCart;
-use App\Actions\CartItem\RemoveCartItem;
-use App\Actions\CartItem\UpdateCartItemQuantity;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CartItemControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use MocksActions;
 
     protected User $user;
+
     protected Product $product1;
+
     protected Product $product2;
 
     protected function setUp(): void
@@ -45,10 +42,11 @@ class CartItemControllerTest extends TestCase
             'quantity' => 2,
         ];
 
-        $this->mockAction(
-            AddItemToCart::class,
-            [$this->user, $this->product1->id, 2]
-        );
+        $addItemToCart = $this->mock(\App\Actions\CartItem\AddItemToCart::class);
+        $addItemToCart
+            ->shouldReceive('handle')
+            ->once()
+            ->with($this->user, $this->product1->id, 2);
 
         $response = $this
             ->actingAs($this->user)
@@ -90,10 +88,11 @@ class CartItemControllerTest extends TestCase
             'quantity' => 3,
         ];
 
-        $this->mockAction(
-            UpdateCartItemQuantity::class,
-            [$this->user, $this->product1->id, 3]
-        );
+        $updateCartItemQuantity = $this->mock(\App\Actions\CartItem\UpdateCartItemQuantity::class);
+        $updateCartItemQuantity
+            ->shouldReceive('handle')
+            ->once()
+            ->with($this->user, $this->product1->id, 3);
 
         $response = $this
             ->actingAs($this->user)
@@ -127,10 +126,11 @@ class CartItemControllerTest extends TestCase
             'product_id' => $this->product1->id,
         ];
 
-        $this->mockAction(
-            RemoveCartItem::class,
-            [$this->user, $this->product1->id]
-        );
+        $removeCartItem = $this->mock(\App\Actions\CartItem\RemoveCartItem::class);
+        $removeCartItem
+            ->shouldReceive('handle')
+            ->once()
+            ->with($this->user, $this->product1->id);
 
         $response = $this
             ->actingAs($this->user)
