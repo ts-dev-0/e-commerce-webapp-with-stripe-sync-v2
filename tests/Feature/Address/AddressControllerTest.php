@@ -2,19 +2,15 @@
 
 namespace Tests\Feature\Address;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\Address\StoreAddress;
-use App\Actions\Address\UpdateAddress;
-use App\Models\User;
 use App\Models\Address;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
-use Tests\Traits\MocksActions;
+use Tests\TestCase;
 
 class AddressControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use MocksActions;
 
     private User $user;
 
@@ -39,10 +35,11 @@ class AddressControllerTest extends TestCase
             'is_default' => true,
         ];
 
-        $this->mockAction(
-            StoreAddress::class,
-            [$this->user, $address],
-        );
+        $storeAddressMock = $this->mock(\App\Actions\Address\StoreAddress::class);
+        $storeAddressMock
+            ->shouldReceive('handle')
+            ->once()
+            ->with($this->user, $address);
 
         $response = $this
             ->actingAs($this->user)
@@ -68,10 +65,11 @@ class AddressControllerTest extends TestCase
             'is_default' => false,
         ];
 
-        $this->mockAction(
-            UpdateAddress::class,
-            [$this->user, Mockery::type(Address::class), $updatedData],
-        );
+        $updateAddressMock = $this->mock(\App\Actions\Address\UpdateAddress::class);
+        $updateAddressMock
+            ->shouldReceive('handle')
+            ->once()
+            ->with($this->user, Mockery::type(Address::class), $updatedData);
 
         $response = $this
             ->actingAs($this->user)
@@ -86,10 +84,11 @@ class AddressControllerTest extends TestCase
     {
         $existingAddress = Address::factory()->create(['user_id' => $this->user->id]);
 
-        $this->mockAction(
-            \App\Actions\Address\DeleteAddress::class,
-            [Mockery::type(Address::class)],
-        );
+        $deleteAddressMock = $this->mock(\App\Actions\Address\DeleteAddress::class);
+        $deleteAddressMock
+            ->shouldReceive('handle')
+            ->once()
+            ->with(Mockery::type(Address::class));
 
         $response = $this
             ->actingAs($this->user)
