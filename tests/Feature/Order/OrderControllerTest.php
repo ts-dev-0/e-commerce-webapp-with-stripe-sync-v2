@@ -2,22 +2,19 @@
 
 namespace Tests\Feature\Order;
 
+use App\Models\Order;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Traits\MocksActions;
-use App\Actions\Order\CancelOrder;
-use App\Actions\Order\ViewOrderHistory;
-use App\Models\User;
-use App\Models\Order;
-use Illuminate\Database\Eloquent\Collection;
 
 class OrderControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use MocksActions;
 
     private User $user;
+
     private Order $order;
 
     protected function setUp(): void
@@ -40,11 +37,11 @@ class OrderControllerTest extends TestCase
             $this->order,
         ]);
 
-        $this->mockAction(
-            ViewOrderHistory::class,
-            [$this->user, $queryParameter['timeFilter']],
-            $orders,
-        );
+        $viewOrderHistory = $this->mock(\App\Actions\Order\ViewOrderHistory::class);
+        $viewOrderHistory
+            ->shouldReceive('handle')
+            ->with($this->user, $queryParameter['timeFilter'])
+            ->andReturn($orders);
 
         $response = $this
             ->actingAs($this->user)
@@ -63,10 +60,11 @@ class OrderControllerTest extends TestCase
     // cancel
     public function test_user_can_cancel_order()
     {
-        $this->mockAction(
-            CancelOrder::class,
-            [Mockery::type(Order::class)],
-        );
+
+        $cancelOrder = $this->mock(\App\Actions\Order\CancelOrder::class);
+        $cancelOrder
+            ->shouldReceive('handle')
+            ->with(Mockery::type(Order::class));
 
         $response = $this
             ->actingAs($this->user)
@@ -79,7 +77,7 @@ class OrderControllerTest extends TestCase
     public function test_guest_cannot_cancel_order()
     {
         $response = $this->patch(route('account.orders.cancel.update', $this->order->id));
-        
+
         $response->assertRedirect(route('login'));
     }
 }
