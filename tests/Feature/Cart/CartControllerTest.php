@@ -52,8 +52,8 @@ class CartControllerTest extends TestCase
             subtotal: 400
         );
 
-        $getCartMock = $this->mock(\App\Actions\Cart\GetCart::class);
-        $getCartMock
+        $getCart = $this->mock(\App\Actions\Cart\GetCart::class);
+        $getCart
             ->shouldReceive('handle')
             ->once()
             ->with($this->user)
