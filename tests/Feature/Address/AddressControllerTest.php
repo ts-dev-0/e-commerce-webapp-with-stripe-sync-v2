@@ -35,8 +35,8 @@ class AddressControllerTest extends TestCase
             'is_default' => true,
         ];
 
-        $storeAddressMock = $this->mock(\App\Actions\Address\StoreAddress::class);
-        $storeAddressMock
+        $storeAddress = $this->mock(\App\Actions\Address\StoreAddress::class);
+        $storeAddress
             ->shouldReceive('handle')
             ->once()
             ->with($this->user, $address);
@@ -65,8 +65,8 @@ class AddressControllerTest extends TestCase
             'is_default' => false,
         ];
 
-        $updateAddressMock = $this->mock(\App\Actions\Address\UpdateAddress::class);
-        $updateAddressMock
+        $updateAddress = $this->mock(\App\Actions\Address\UpdateAddress::class);
+        $updateAddress
             ->shouldReceive('handle')
             ->once()
             ->with($this->user, Mockery::type(Address::class), $updatedData);
@@ -84,8 +84,8 @@ class AddressControllerTest extends TestCase
     {
         $existingAddress = Address::factory()->create(['user_id' => $this->user->id]);
 
-        $deleteAddressMock = $this->mock(\App\Actions\Address\DeleteAddress::class);
-        $deleteAddressMock
+        $deleteAddress = $this->mock(\App\Actions\Address\DeleteAddress::class);
+        $deleteAddress
             ->shouldReceive('handle')
             ->once()
             ->with(Mockery::type(Address::class));
