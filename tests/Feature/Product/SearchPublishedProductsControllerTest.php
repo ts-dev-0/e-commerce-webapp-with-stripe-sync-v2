@@ -2,18 +2,15 @@
 
 namespace Tests\Feature\Product;
 
-use Tests\TestCase;
-use Tests\Traits\MocksActions;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\Search\SearchPublishedProducts;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SearchPublishedProductsControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use MocksActions;
 
     private User $user;
 
@@ -35,11 +32,11 @@ class SearchPublishedProductsControllerTest extends TestCase
             Product::factory()->make(),
         ]);
 
-        $this->mockAction(
-            SearchPublishedProducts::class,
-            [$parameter['keyword']],
-            $products,
-        );
+        $searchPublishedProducts = $this->mock(\App\Actions\Search\SearchPublishedProducts::class);
+        $searchPublishedProducts
+            ->shouldReceive('handle')
+            ->with($parameter['keyword'])
+            ->andReturn($products);
 
         $response = $this
             ->actingAs($this->user)
