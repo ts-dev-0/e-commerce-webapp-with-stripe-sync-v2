@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Product;
 
 use App\Actions\ProductDetail\GetProductDetail;
 use App\Models\Product;
