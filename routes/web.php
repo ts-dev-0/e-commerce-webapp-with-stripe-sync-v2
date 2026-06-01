@@ -4,17 +4,16 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchPublishedProductsController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])
-    ->name('home');
-Route::get('products/{product}', [ProductController::class, 'show'])
-    ->name('product.show');
+Route::controller(ShopController::class)->group(function () {
+    Route::get('/',  'index')->name('home');
+    Route::get('products/{product}', 'show')->name('product.show');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('cart', CartController::class)
