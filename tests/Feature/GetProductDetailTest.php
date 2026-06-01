@@ -2,42 +2,39 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\ProductDetail\GetProductDetail;
 use App\Models\Product;
 use App\Models\Review;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class getProductDetailTest extends TestCase
 {
     use RefreshDatabase;
 
     private GetProductDetail $action;
+
     private Product $product;
-    private Review $review1;
-    private Review $review2;
-    private Review $review3;
-    private Review $review4;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->action = new GetProductDetail();
+        $this->action = new GetProductDetail;
         $this->product = Product::factory()->create();
-        $this->review1 = Review::factory()->create([
+        Review::factory()->create([
             'product_id' => $this->product->id,
             'rating' => 3,
         ]);
-        $this->review2 = Review::factory()->create([
+        Review::factory()->create([
             'product_id' => $this->product->id,
             'rating' => 2,
         ]);
-        $this->review3 = Review::factory()->create([
+        Review::factory()->create([
             'product_id' => $this->product->id,
             'rating' => 1,
         ]);
-        $this->review4 = Review::factory()->create([
+        Review::factory()->create([
             'product_id' => $this->product->id,
             'rating' => 5,
         ]);
