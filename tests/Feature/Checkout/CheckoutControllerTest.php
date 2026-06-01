@@ -2,22 +2,18 @@
 
 namespace Tests\Feature\Checkout;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Traits\MocksActions;
-use App\Actions\Checkout\GetCheckout;
-use App\Actions\Stripe\CreateCheckoutSession;
+use App\DTOs\CheckoutData;
 use App\Models\Address;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
-use App\DTOs\CheckoutData;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CheckoutControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use MocksActions;
 
     protected User $user;
 
@@ -70,11 +66,12 @@ class CheckoutControllerTest extends TestCase
             total: $total,
         );
 
-        $this->mockAction(
-            GetCheckout::class,
-            [$this->user],
-            $checkoutData,
-        );
+        $getCheckout = $this->mock(\App\Actions\Checkout\GetCheckout::class);
+        $getCheckout
+            ->shouldReceive('handle')
+            ->once()
+            ->with($this->user)
+            ->andReturn($checkoutData);
 
         $response = $this
             ->actingAs($this->user)
@@ -98,11 +95,12 @@ class CheckoutControllerTest extends TestCase
 
         $checkoutUrl = 'https://checkout.stripe.com/test-session';
 
-        $this->mockAction(
-            CreateCheckoutSession::class,
-            [$this->user, $address->id],
-            $checkoutUrl,
-        );
+        $createCheckoutSession = $this->mock(\App\Actions\Stripe\CreateCheckoutSession::class);
+        $createCheckoutSession
+            ->shouldReceive('handle')
+            ->once()
+            ->with($this->user, $address->id)
+            ->andReturn($checkoutUrl);
 
         $response = $this
             ->actingAs($this->user)

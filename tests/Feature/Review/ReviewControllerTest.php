@@ -2,23 +2,19 @@
 
 namespace Tests\Feature\Review;
 
-use Mockery;
-use Tests\TestCase;
-use Tests\Traits\MocksActions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Actions\Review\CreateReview;
-use App\Actions\Review\DeleteReview;
-use App\Actions\Review\UpdateReview;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
+use Tests\TestCase;
 
 class ReviewControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use MocksActions;
 
     private User $user;
+
     private Product $product;
 
     protected function setUp(): void
@@ -37,13 +33,14 @@ class ReviewControllerTest extends TestCase
         $review = [
             'product_id' => $this->product->id,
             'rating' => 5,
-            'comment' => "Great product",
+            'comment' => 'Great product',
         ];
 
-        $this->mockAction(
-            CreateReview::class,
-            [$this->user, $review['product_id'], $review['rating'], $review['comment']],
-        );
+        $createReview = $this->mock(\App\Actions\Review\CreateReview::class);
+        $createReview
+            ->shouldReceive('handle')
+            ->once()
+            ->with($this->user, $review['product_id'], $review['rating'], $review['comment']);
 
         $response = $this
             ->actingAs($this->user)
@@ -78,10 +75,11 @@ class ReviewControllerTest extends TestCase
             'comment' => 'Updated review',
         ];
 
-        $this->mockAction(
-            UpdateReview::class,
-            [Mockery::type(Review::class), $updatedReview],
-        );
+        $updateReview = $this->mock(\App\Actions\Review\UpdateReview::class);
+        $updateReview
+            ->shouldReceive('handle')
+            ->once()
+            ->with(Mockery::type(Review::class), $updatedReview);
 
         $response = $this
             ->actingAs($this->user)
@@ -112,10 +110,11 @@ class ReviewControllerTest extends TestCase
             'user_id' => $this->user->id,
         ]);
 
-        $this->mockAction(
-            DeleteReview::class,
-            [Mockery::type(Review::class)],
-        );
+        $deleteReview = $this->mock(\App\Actions\Review\DeleteReview::class);
+        $deleteReview
+            ->shouldReceive('handle')
+            ->once()
+            ->with(Mockery::type(Review::class));
 
         $response = $this
             ->actingAs($this->user)

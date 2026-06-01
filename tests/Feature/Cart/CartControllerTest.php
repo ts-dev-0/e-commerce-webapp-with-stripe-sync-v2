@@ -2,22 +2,21 @@
 
 namespace Tests\Feature\Cart;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Traits\MocksActions;
-use App\Actions\Cart\GetCart;
 use App\DTOs\CartData;
 use App\Models\CartItem;
-use App\Models\User;
 use App\Models\Product;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CartControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use MocksActions;
 
     protected User $user;
+
     protected Product $product1;
+
     protected Product $product2;
 
     protected function setUp(): void
@@ -40,11 +39,11 @@ class CartControllerTest extends TestCase
         $items = collect([
             new CartItem([
                 'product' => $this->product1,
-                'quantity' => 2
+                'quantity' => 2,
             ]),
             new CartItem([
                 'product' => $this->product2,
-                'quantity' => 1
+                'quantity' => 1,
             ]),
         ]);
 
@@ -53,11 +52,12 @@ class CartControllerTest extends TestCase
             subtotal: 400
         );
 
-        $this->mockAction(
-            GetCart::class,
-            [$this->user],
-            $cartData
-        );
+        $getCart = $this->mock(\App\Actions\Cart\GetCart::class);
+        $getCart
+            ->shouldReceive('handle')
+            ->once()
+            ->with($this->user)
+            ->andReturn($cartData);
 
         $response = $this
             ->actingAs($this->user)
