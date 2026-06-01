@@ -11,7 +11,6 @@ use Tests\Traits\MocksActions;
 class SecurityControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use MocksActions;
 
     private User $user;
 

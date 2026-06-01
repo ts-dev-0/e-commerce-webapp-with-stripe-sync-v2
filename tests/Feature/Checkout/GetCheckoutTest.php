@@ -17,7 +17,6 @@ use Tests\Traits\MocksActions;
 class GetCheckoutTest extends TestCase
 {
     use RefreshDatabase;
-    use MocksActions;
 
     public function test_it_returns_checkout_data()
     {
