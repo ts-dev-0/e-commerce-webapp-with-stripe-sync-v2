@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\ProductDetail\GetProductDetail;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ReviewResource;
 use App\Models\Product;
@@ -21,14 +20,16 @@ class ShopController extends Controller
         ]);
     }
 
-    public function show(Product $product, GetProductDetail $action)
+    public function show(Product $product)
     {
-        $result = $action->handle($product);
+        $reviews = $product->getLatestReviewsWithUser();
+
+        $averageRating = $product->getAvarageRating();
 
         return Inertia::render('product/show', [
             'product' => ProductResource::make($product),
-            'reviews' => ReviewResource::collection($result['reviews']),
-            'averageRating' => $result['averageRating'],
+            'reviews' => ReviewResource::collection($reviews),
+            'averageRating' => $averageRating,
         ]);
     }
 }
