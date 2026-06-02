@@ -113,8 +113,33 @@ class ProductTest extends TestCase
             'rating' => 2,
         ]);
 
-        $averageRating = $product->getAvarageRating();
+        $averageRating = $product->getAverageRating();
 
         $this->assertEqualsWithDelta(3.67, $averageRating, 0.01);
+    }
+
+    public function test_get_average_rating_returns_zero_when_reviews_are_empty()
+    {
+        $product = Product::factory()->create();
+
+        $averageRating = $product->getAverageRating();
+
+        $this->assertEquals(0, $averageRating);
+    }
+
+    public function test_get_average_rating_returns_empty_when_associated_user_is_deleted()
+    {
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+        Review::factory()->create([
+            'user_id' => $user->id,
+            'product_id' => $product->id,
+        ]);
+
+        $user->forceDelete();
+
+        $averageRating = $product->getAverageRating();
+
+        $this->assertEquals(0, $averageRating);
     }
 }
