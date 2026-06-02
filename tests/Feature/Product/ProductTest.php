@@ -42,6 +42,58 @@ class ProductTest extends TestCase
         $this->assertEquals($user->name, $reviews->first()->user->name);
     }
 
+    public function test_get_latest_reviews_with_user_returns_empty_collection_when_no_reviews_exist()
+    {
+        $product = Product::factory()->create();
+
+        $reviews = $product->getLatestReviewsWithUser();
+
+        $this->assertEmpty($reviews);
+    }
+
+    public function test_get_latest_reviews_with_user_returns_empty_when_associated_user_is_deleted()
+    {
+        $user = User::factory()->create();
+        /** @var \App\Models\Product $product */
+        $product = Product::factory()->create();
+        Review::factory()->create([
+            'product_id' => $product->id,
+            'user_id' => $user->id,
+            'rating' => 3,
+        ]);
+
+        $user->forceDelete();
+        $reviews = $product->getLatestReviewsWithUser();
+
+        $this->assertCount(0, $reviews);
+        $this->assertDatabaseCount('reviews', 0);
+    }
+
+    public function test_get_latest_reviews_with_user_does_not_include_reviews_from_other_products()
+    {
+        $user1 = User::factory()->create();
+        /** @var \App\Models\Product $targetProduct */
+        $targetProduct = Product::factory()->create();
+        $targetReview = Review::factory()->create([
+            'product_id' => $targetProduct->id,
+            'user_id' => $user1->id,
+        ]);
+
+        $user2 = User::factory()->create();
+        /** @var \App\Models\Product $otherProduct */
+        $otherProduct = Product::factory()->create();
+        $otherReview = Review::factory()->create([
+            'product_id' => $otherProduct->id,
+            'user_id' => $user2->id,
+        ]);
+
+        $reviews = $targetProduct->getLatestReviewsWithUser();
+
+        $this->assertCount(1, $reviews);
+        $this->assertEquals($targetReview->id, $reviews->first()->id);
+        $this->assertNotEquals($otherReview->id, $reviews->first()->id);
+    }
+
     /**
      * getAvarageRating
      */
