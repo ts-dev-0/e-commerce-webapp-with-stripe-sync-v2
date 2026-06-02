@@ -85,7 +85,7 @@ class Product extends Model
         return $this->reviews()->with('user:id,name')->latest()->get();
     }
 
-    public function getAvarageRating(): float
+    public function getAverageRating(): float
     {
         return (float) ($this->reviews->avg('rating') ?? 0.0);
     }

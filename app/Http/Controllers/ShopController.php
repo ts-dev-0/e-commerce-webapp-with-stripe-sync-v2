@@ -24,7 +24,7 @@ class ShopController extends Controller
     {
         $reviews = $product->getLatestReviewsWithUser();
 
-        $averageRating = $product->getAvarageRating();
+        $averageRating = $product->getAverageRating();
 
         return Inertia::render('product/show', [
             'product' => ProductResource::make($product),
