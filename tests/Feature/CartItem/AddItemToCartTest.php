@@ -70,6 +70,36 @@ class AddItemToCartTest extends TestCase
         ]);
     }
 
+
+    /**
+     *  Exception Cases
+     */
+    public function test_it_throws_insufficient_stock_exception_when_stock_is_zero()
+    {
+        $user = User::factory()->create();
+        $product = Product::factory()->create([
+            'stock' => 0,
+        ]);
+        Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->expectException(\App\Exceptions\InsufficientStockException::class);
+        app(AddItemToCart::class)->handle($user, $product->id, 1);
+    }
+    public function test_it_throws_insufficient_stock_exception_when_request_quantity_exceeds_stock()
+    {
+        $user = User::factory()->create();
+        $product = Product::factory()->create([
+            'stock' => 8,
+        ]);
+        Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        $this->expectException(\App\Exceptions\InsufficientStockException::class);
+        app(AddItemToCart::class)->handle($user, $product->id, 10);
+    }
+
     /**
      *  Edge Cases
      */
