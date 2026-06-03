@@ -14,57 +14,63 @@ class AddItemToCartTest extends TestCase
 {
     use RefreshDatabase;
 
-    private AddItemToCart $action;
-    private User $user;
-
-    protected function setUp(): void
+    /**
+     *  Happy Path
+     */
+    public function test_it_can_add_an_item_to_the_cart()
     {
-        parent::setUp();
-        $this->action = new AddItemToCart();
-        $this->user = User::factory()->create();
-    }
-
-    public function test_user_can_add_product_to_their_own_cart()
-    {
+        $user = User::factory()->create();
+        $product = Product::factory()->create([
+            'stock' => 10,
+        ]);
         $cart = Cart::factory()->create([
-            'user_id' => $this->user->id,
+            'user_id' => $user->id,
         ]);
 
-        $product = Product::factory()->create();
-
-        $quantity = 2;
-
-        $this->action->handle($this->user, $product->id, $quantity);
+        app(AddItemToCart::class)->handle($user, $product->id, 1);
 
         $this->assertDatabaseHas('cart_items', [
-            'cart_id'     => $cart->id,
-            'product_id'  => $product->id,
-            'quantity'    => 2,
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'stock' => 9,
         ]);
     }
 
-    public function test_add_product_increments_quantity_if_product_already_exists_in_cart()
+    public function test_it_can_increment_item_quantity_when_item_already_exists_in_the_cart()
     {
-        $cart = Cart::factory()->create([
-            'user_id' => $this->user->id,
+        $user = User::factory()->create();
+        $product = Product::factory()->create([
+            'stock' => 10,
         ]);
-
-        $product = Product::factory()->create();
-
+        $cart = Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
         CartItem::factory()->create([
             'cart_id' => $cart->id,
             'product_id' => $product->id,
             'quantity' => 1,
         ]);
 
-        $quantity = 1;
-
-        $this->action->handle($this->user, $product->id, $quantity);
+        app(AddItemToCart::class)->handle($user, $product->id, 1);
 
         $this->assertDatabaseHas('cart_items', [
-            'cart_id'     => $cart->id,
-            'product_id'  => $product->id,
-            'quantity'    => 2,
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'quantity' => 2,
+        ]);
+        $this->assertDatabaseCount('cart_items', 1);
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'stock' => 9,
         ]);
     }
+
+    /**
+     *  Edge Cases
+     */
 }

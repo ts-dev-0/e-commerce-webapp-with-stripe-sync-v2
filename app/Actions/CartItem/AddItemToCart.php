@@ -2,6 +2,7 @@
 
 namespace App\Actions\CartItem;
 
+use App\Models\Product;
 use App\Models\User;
 
 class AddItemToCart
@@ -10,22 +11,20 @@ class AddItemToCart
     {
         $cart = $user->currentCart();
 
-        $existing = $cart->products()
-                ->where('product_id', $productId)
-                ->first();
-        if($existing) {
-            $cart->products()->updateExistingPivot(
-                $productId,
-                [
-                    'quantity' => $existing->pivot->quantity + $quantity,
-                ]
-            );
+        $cartItem = $cart->items()
+            ->where('product_id', $productId)
+            ->first();
 
-            return;
+        if ($cartItem) {
+            $cartItem->increment('quantity', $quantity);
+        } else {
+            $cart->items()->create([
+                'product_id' => $productId,
+                'quantity' => $quantity,
+            ]);
         }
 
-        $cart->products()->attach($productId, [
-            'quantity' => $quantity,
-        ]);
+        Product::whereKey($productId)
+            ->decrement('stock', $quantity);
     }
 }
