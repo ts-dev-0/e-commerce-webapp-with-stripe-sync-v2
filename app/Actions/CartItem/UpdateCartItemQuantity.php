@@ -2,26 +2,30 @@
 
 namespace App\Actions\CartItem;
 
+use App\Models\Product;
 use App\Models\User;
 
 class UpdateCartItemQuantity
 {
     public function handle(User $user, int $productId, int $updateQuantity): void
     {
-        $cart = $user->currentCart();
-
-        $existing = $cart->products()
-                ->where('product_id', $productId)
-                ->exists();
-        if(! $existing) {
-            throw new \InvalidArgumentException("Product does not exists in user's cart");
+        /** @var \App\Models\Product $product */
+        $product = Product::find($productId, ['*']);
+        if (! $product->hasEnoughStock($updateQuantity)) {
+            throw new \App\Exceptions\InsufficientStockException('There is not enough stock available for this product.');
         }
 
-        $cart->products()->updateExistingPivot(
-            $productId,
-            [
-                'quantity' => $updateQuantity,
-            ]
-        );
+        $cart = $user->currentCart();
+
+        /** @var \App\Models\CartItem | null $cartItem */
+        $cartItem = $cart->items()
+            ->where('product_id', $productId)
+            ->first();
+
+        if ($cartItem === null) {
+            throw new \App\Exceptions\CartItemNotFoundException('Cart item not found.');
+        }
+
+        $cartItem->update(['quantity' => $updateQuantity]);
     }
 }
