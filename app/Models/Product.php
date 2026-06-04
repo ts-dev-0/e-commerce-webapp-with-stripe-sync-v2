@@ -89,4 +89,9 @@ class Product extends Model
     {
         return (float) ($this->reviews->avg('rating') ?? 0.0);
     }
+
+    public function hasEnoughStock(int $quantity): bool
+    {
+        return $this->stock >= $quantity;
+    }
 }

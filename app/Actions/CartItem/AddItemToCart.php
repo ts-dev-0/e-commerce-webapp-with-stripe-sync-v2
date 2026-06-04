@@ -11,12 +11,8 @@ class AddItemToCart
     {
         /** @var \App\Models\Product $product */
         $product = Product::find($productId, ['*']);
-        if ($product->stock === 0) {
-            throw new \App\Exceptions\InsufficientStockException('Product is out of stock.');
-        }
-
-        if ($product->stock < $quantity) {
-            throw new \App\Exceptions\InsufficientStockException('The requested quantity exceeds the available stock.');
+        if (! $product->hasEnoughStock($quantity)) {
+            throw new \App\Exceptions\InsufficientStockException('There is not enough stock available for this product.');
         }
 
         $cart = $user->currentCart();
