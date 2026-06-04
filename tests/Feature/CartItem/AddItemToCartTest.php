@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\CartItem;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\CartItem\AddItemToCart;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class AddItemToCartTest extends TestCase
 {
@@ -69,7 +69,6 @@ class AddItemToCartTest extends TestCase
             'stock' => 9,
         ]);
     }
-
 
     /**
      *  Exception Cases
