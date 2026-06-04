@@ -87,6 +87,7 @@ class AddItemToCartTest extends TestCase
         $this->expectException(\App\Exceptions\InsufficientStockException::class);
         app(AddItemToCart::class)->handle($user, $product->id, 1);
     }
+
     public function test_it_throws_insufficient_stock_exception_when_request_quantity_exceeds_stock()
     {
         $user = User::factory()->create();
@@ -103,4 +104,36 @@ class AddItemToCartTest extends TestCase
     /**
      *  Edge Cases
      */
+    public function test_it_does_not_modify_items_in_other_users_carts()
+    {
+        $product = Product::factory()->create(['stock' => 10]);
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+        $cart1 = Cart::factory()->create(['user_id' => $user1->id]);
+        $cart2 = Cart::factory()->create(['user_id' => $user2->id]);
+        CartItem::factory()->create([
+            'cart_id' => $cart1->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+        CartItem::factory()->create([
+            'cart_id' => $cart2->id,
+            'product_id' => $product->id,
+            'quantity' => 5,
+        ]);
+
+        app(AddItemToCart::class)->handle($user1, $product->id, 2);
+
+        $this->assertDatabaseHas('cart_items', [
+            'cart_id' => $cart1->id,
+            'product_id' => $product->id,
+            'quantity' => 3,
+        ]);
+        $this->assertDatabaseHas('cart_items', [
+            'cart_id' => $cart2->id,
+            'product_id' => $product->id,
+            'quantity' => 5,
+        ]);
+        $this->assertDatabaseCount('cart_items', 2);
+    }
 }
