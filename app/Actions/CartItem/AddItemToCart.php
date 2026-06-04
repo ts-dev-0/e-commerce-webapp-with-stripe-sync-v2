@@ -29,8 +29,5 @@ class AddItemToCart
                 'quantity' => $quantity,
             ]);
         }
-
-        Product::whereKey($productId)
-            ->decrement('stock', $quantity);
     }
 }
