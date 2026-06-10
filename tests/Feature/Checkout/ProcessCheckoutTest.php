@@ -39,7 +39,7 @@ class ProcessCheckoutTest extends TestCase
                 'user_id' => $user->id,
                 'address_id' => $address->id,
             ],
-            'total_amount' => 2000,
+            'amount_total' => 2000,
         ]);
         $stripeSessionService = $this->mock(\App\Services\StripeSessionService::class);
 
