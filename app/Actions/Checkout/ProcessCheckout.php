@@ -31,7 +31,7 @@ class ProcessCheckout
 
         $deliveryAddress = $user->addresses->findOrFail($session->metadata->address_id);
 
-        $order = $this->createOrder->handle($user, $session->total_amount, $deliveryAddress);
+        $order = $this->createOrder->handle($user, $session->amount_total, $deliveryAddress);
 
         $cart = $user->currentCart();
 
