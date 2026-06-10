@@ -5,12 +5,12 @@ namespace App\Actions\Checkout;
 use App\Actions\Order\CreateOrder;
 use App\Actions\OrderItem\CreateOrderItem;
 use App\Models\User;
-use App\Services\StripSessioneService;
+use App\Services\StripSessionService;
 
 class ProcessCheckout
 {
     public function __construct(
-        private StripSessioneService $stripeSessionService,
+        private StripSessionService $stripeSessionService,
         private CreateOrder $createOrder,
         private CreateOrderItem $createOrderItem
     ) {}

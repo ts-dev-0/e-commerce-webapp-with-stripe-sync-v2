@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Stripe\Checkout\Session;
 
-class StripSessioneService
+class StripSessionService
 {
     public function retrieveStripeSession(string $sessionId): Session
     {
