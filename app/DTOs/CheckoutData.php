@@ -2,8 +2,7 @@
 
 namespace App\DTOs;
 
-use App\Models\Address;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 readonly class CheckoutData
 {
