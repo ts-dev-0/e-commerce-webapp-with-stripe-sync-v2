@@ -60,13 +60,12 @@ class CheckoutControllerTest extends TestCase
         $checkoutData = new CheckoutData(
             cartItems: $items,
             addresses: new Collection([$defaultAddress, $anotherAddress]),
-            deliveryDate: $deliveryDate,
             shippingFee: $shippingFee,
             subtotal: $subtotal,
             total: $total,
         );
 
-        $getCheckout = $this->mock(\App\Actions\Checkout\GetCheckout::class);
+        $getCheckout = $this->mock(\App\Actions\Checkout\GetCheckoutPageData::class);
         $getCheckout
             ->shouldReceive('handle')
             ->once()
