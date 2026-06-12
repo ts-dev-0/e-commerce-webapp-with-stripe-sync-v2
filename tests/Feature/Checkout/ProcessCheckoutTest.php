@@ -25,7 +25,7 @@ class ProcessCheckoutTest extends TestCase
         $cart = Cart::factory()->create([
             'user_id' => $user->id,
         ]);
-        $cartItems = CartItem::factory()->create([
+        CartItem::factory()->create([
             'cart_id' => $cart->id,
             'product_id' => $product->id,
             'quantity' => 1,
