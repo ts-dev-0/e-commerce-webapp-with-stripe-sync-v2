@@ -17,7 +17,6 @@ class CheckoutResource extends JsonResource
         return [
             'cartItems' => CartItemResource::collection($this->cartItems),
             'addresses' => AddressResource::collection($this->addresses),
-            'deliveryDate' => $this->deliveryDate,
             'shippingFee' => $this->shippingFee,
             'subtotal' => $this->subtotal,
             'total' => $this->total,

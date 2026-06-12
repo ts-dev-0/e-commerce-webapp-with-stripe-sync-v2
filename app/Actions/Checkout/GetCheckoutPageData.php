@@ -27,7 +27,6 @@ class GetCheckoutPageData
         return new CheckoutData(
             cartItems: $cartItems,
             addresses: $addresses,
-            deliveryDate: array(),
             shippingFee: $shippingFee,
             subtotal: $subtotal,
             total: $total,
