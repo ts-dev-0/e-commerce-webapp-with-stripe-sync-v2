@@ -69,6 +69,14 @@ class GetCheckoutPageDataTest extends TestCase
     /**
      *  Exception Cases
      */
+    public function test_it_throws_empty_cart_items_exception_when_cart_items_is_empty()
+    {
+        $user = User::factory()->create();
+        Cart::factory()->create(['user_id' => $user->id]);
+
+        $this->expectException(\App\Exceptions\EmptyCartException::class);
+        app(GetCheckoutPageData::class)->handle($user);
+    }
 
     /**
      *  Edge Cases
