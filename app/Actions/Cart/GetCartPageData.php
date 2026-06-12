@@ -5,7 +5,7 @@ namespace App\Actions\Cart;
 use App\DTOs\CartData;
 use App\Models\User;
 
-class ShowCart
+class GetCartPageData
 {
     public function handle(User $user)
     {

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Cart;
 
-use App\Actions\Cart\ShowCart;
+use App\Actions\Cart\GetCartPageData;
 use App\DTOs\CartData;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -11,7 +11,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ShowCartTest extends TestCase
+class GetCartPageDataTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -33,7 +33,7 @@ class ShowCartTest extends TestCase
             'quantity' => 2,
         ]);
 
-        $cartData = app(ShowCart::class)->handle($user);
+        $cartData = app(GetCartPageData::class)->handle($user);
 
         $this->assertInstanceOf(CartData::class, $cartData);
         $this->assertEquals($cartItem->id, $cartData->items->first()->id);
@@ -52,7 +52,7 @@ class ShowCartTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $cartData = app(ShowCart::class)->handle($user);
+        $cartData = app(GetCartPageData::class)->handle($user);
 
         $this->assertInstanceOf(CartData::class, $cartData);
         $this->assertTrue($cartData->items->isEmpty());
@@ -82,7 +82,7 @@ class ShowCartTest extends TestCase
             'quantity' => 3,
         ]);
 
-        $cartData = app(ShowCart::class)->handle($user);
+        $cartData = app(GetCartPageData::class)->handle($user);
         $this->assertInstanceOf(CartData::class, $cartData);
         $this->assertCount(2, $cartData->items);
         $this->assertEquals(11000, $cartData->subtotal);
@@ -112,7 +112,7 @@ class ShowCartTest extends TestCase
             'quantity' => 1,
         ]);
 
-        $cartData = app(ShowCart::class)->handle($user1);
+        $cartData = app(GetCartPageData::class)->handle($user1);
 
         $this->assertInstanceOf(CartData::class, $cartData);
         $this->assertCount(1, $cartData->items);
