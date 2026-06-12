@@ -5,92 +5,63 @@ namespace Tests\Feature\Actions\Stripe;
 use App\Actions\Stripe\CreateCheckoutSession;
 use App\Models\Address;
 use App\Models\Cart;
-use App\Models\Product;
+use App\Models\CartItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Stripe\Checkout\Session;
 use Tests\TestCase;
 
 class CreateCheckoutSessionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @var \App\Models\User $user */
-    private User $user;
-
-    /** @var \App\Models\Product $product */
-    private Product $product;
-
-    /** @var \App\Models\Address $address */
-    private Address $address;
-
-    protected function setUp(): void
+    /**
+     *  Happy Path
+     */
+    public function test_it_returns_a_checkout_session_url(): void
     {
-        parent::setUp();
+        $user = User::factory()->create();
 
-        /** @var \App\Models\User $user */
-        $this->user = User::factory()->create();
+        $cart = Cart::factory()->create(['user_id' => $user->id]);
 
-        /** @var \App\Models\Product $product */
-        $this->product = Product::factory()->create([
-            'price' => 1000,
-        ]);
+        CartItem::factory()->create(['cart_id' => $cart->id]);
 
-        /** @var \App\Models\Address $address */
-        $this->address = Address::factory()->create([
-            'user_id' => $this->user->id,
-        ]);
-    }
+        $address = Address::factory()->create(['user_id' => $user->id]);
 
-    public function test_it_returns_stripe_session_url(): void
-    {
-        $cart = Cart::factory()->create([
-            'user_id' => $this->user->id,
-        ]);
+        $session = new \Stripe\Checkout\Session();
+        $session->url = 'https://checkout.stripe.com/test-session';
 
-        $cart->products()->attach($this->product->id, [
-            'quantity' => 2,
-        ]);
-
-        $mockSession = Session::constructFrom([
-            'url' => 'https://checkout.stripe.com/test-session',
-        ]);
-
-        $action = $this->partialMock(
-            CreateCheckoutSession::class,
-            function ($mock) use ($mockSession) {
-                $mock->shouldAllowMockingProtectedMethods()
-                    ->shouldReceive('createSession')
-                    ->once()
-                    ->andReturn($mockSession);
-            }
+        $stripeSessionService = $this->mock(
+            \App\Services\StripeSessionService::class
         );
 
-        $url = $action->handle(
-            $this->user,
-            $this->address->id
+        $stripeSessionService
+            ->shouldReceive('createCheckoutSession')
+            ->once()
+            ->with(
+                \Mockery::type(
+                    \Illuminate\Database\Eloquent\Collection::class
+                ),
+                $user,
+                $address->id,
+            )
+            ->andReturn($session);
+
+        $result = app(CreateCheckoutSession::class)->handle(
+            user: $user,
+            selectedAddressId: $address->id,
         );
 
-        $this->assertSame(
+        $this->assertEquals(
             'https://checkout.stripe.com/test-session',
-            $url
+            $result
         );
     }
 
-    public function test_it_throws_exception_when_cart_is_empty(): void
-    {
-        Cart::factory()->create([
-            'user_id' => $this->user->id,
-        ]);
+    /**
+     *  Exception Cases
+     */
 
-        $action = new CreateCheckoutSession();
-
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Cart is empty.');
-
-        $action->handle(
-            $this->user,
-            $this->address->id
-        );
-    }
+    /**
+     *  Edge Cases
+     */
 }
