@@ -45,7 +45,7 @@ class ProcessCheckoutTest extends TestCase
 
         $sessionId = 'test-sessionId';
         $stripeSessionService
-            ->shouldReceive('retrieveStripeSession')
+            ->shouldReceive('retrieveSession')
             ->once()
             ->with($sessionId)
             ->andReturn($sessionMock);

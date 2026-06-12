@@ -27,7 +27,7 @@ class ProcessCheckout
          * 4. OrderItemを生成
          * 5. Cartを空にする
          */
-        $session = $this->stripeSessionService->retrieveStripeSession($sessionId);
+        $session = $this->stripeSessionService->retrieveSession($sessionId);
 
         $deliveryAddress = $user->addresses->findOrFail($session->metadata->address_id);
 

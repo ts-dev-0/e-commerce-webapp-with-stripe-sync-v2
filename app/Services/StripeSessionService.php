@@ -29,7 +29,7 @@ class StripeSessionService
         return Session::create($payload);
     }
 
-    public function retrieveStripeSession(string $sessionId): Session
+    public function retrieveSession(string $sessionId): Session
     {
         return Session::retrieve($sessionId);
     }
