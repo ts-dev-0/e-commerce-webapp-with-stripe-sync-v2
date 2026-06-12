@@ -49,20 +49,14 @@ class GetCheckoutPageDataTest extends TestCase
 
         $result = app(GetCheckoutPageData::class)->handle($user);
 
-        // CheckoutDataかどうかの検証
         $this->assertInstanceOf(CheckoutData::class, $result);
-        // カート情報の検証
         $this->assertCount(2, $result->cartItems);
         $this->assertTrue($result->cartItems->contains($cartItem1));
         $this->assertTrue($result->cartItems->contains($cartItem2));
-        // 配送先情報の検証
         $this->assertCount(1, $result->addresses);
         $this->assertEquals($addresses->id, $result->addresses->first()->id);
-        // 配送料金の検証
         $this->assertEquals($shippingFee, $result->shippingFee);
-        // 小計額の検証
         $this->assertEquals($subTotal, $result->subtotal);
-        // 合計額の検証
         $this->assertEquals($total, $result->total);
     }
 
@@ -81,4 +75,32 @@ class GetCheckoutPageDataTest extends TestCase
     /**
      *  Edge Cases
      */
+    public function test_it_returns_checkout_page_data_when_user_has_no_address()
+    {
+        $product = Product::factory()->create([
+            'price' => 1000,
+        ]);
+
+        $user = User::factory()->create();
+        $cart = Cart::factory()->create(['user_id' => $user->id]);
+        $cartItem1 = CartItem::factory()->create([
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+
+        $shippingFee = 0;
+        $subTotal = 1000;
+        $total = 1000;
+
+        $result = app(GetCheckoutPageData::class)->handle($user);
+
+        $this->assertInstanceOf(CheckoutData::class, $result);
+        $this->assertCount(1, $result->cartItems);
+        $this->assertTrue($result->cartItems->contains($cartItem1));
+        $this->assertCount(0, $result->addresses);
+        $this->assertEquals($shippingFee, $result->shippingFee);
+        $this->assertEquals($subTotal, $result->subtotal);
+        $this->assertEquals($total, $result->total);
+    }
 }
