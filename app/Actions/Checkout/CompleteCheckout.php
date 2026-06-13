@@ -7,7 +7,7 @@ use App\Actions\OrderItem\CreateOrderItem;
 use App\Models\User;
 use App\Services\StripeSessionService;
 
-class ProcessCheckout
+class CompleteCheckout
 {
     public function __construct(
         private StripeSessionService $stripeSessionService,

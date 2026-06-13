@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Actions\Checkout;
 
-use App\Actions\Checkout\ProcessCheckout;
+use App\Actions\Checkout\CompleteCheckout;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Stripe\Checkout\Session;
 use Tests\TestCase;
 
-class ProcessCheckoutTest extends TestCase
+class CompleteCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -50,7 +50,7 @@ class ProcessCheckoutTest extends TestCase
             ->with($sessionId)
             ->andReturn($sessionMock);
 
-        app(ProcessCheckout::class)->handle($user, $sessionId);
+        app(CompleteCheckout::class)->handle($user, $sessionId);
 
         $this->assertDatabaseCount('orders', 1);
         $this->assertDatabaseCount('order_items', 1);
