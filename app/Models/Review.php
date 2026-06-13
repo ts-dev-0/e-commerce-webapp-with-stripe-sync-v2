@@ -16,6 +16,9 @@ class Review extends Model
         'comment',
     ];
 
+    /**
+     *  Relation
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -26,15 +29,21 @@ class Review extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public static function alreadyReviewed(int $userId, int $productId): bool
+    /**
+     *  Instance
+     */
+    public function isOwnedBy(User $user): bool
+    {
+        return $this->user_id === $user->id;
+    }
+
+    /**
+     *  Static
+     */
+    public static function hasReviewed(int $userId, int $productId): bool
     {
         return static::where('user_id', $userId)
             ->where('product_id', $productId)
             ->exists();
-    }
-
-    public function isOwnedBy(User $user): bool
-    {
-        return $this->user_id === $user->id;
     }
 }

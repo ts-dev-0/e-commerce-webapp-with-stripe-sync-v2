@@ -9,7 +9,7 @@ class CreateReview
 {
     public function handle(User $user, array $reviewData): void
     {
-        if (Review::alreadyReviewed($user->id, $reviewData['product_id'])) {
+        if (Review::hasReviewed($user->id, $reviewData['product_id'])) {
             throw new \App\Exceptions\ReviewAlreadyExistsException('Already reviewed.');
         }
 
