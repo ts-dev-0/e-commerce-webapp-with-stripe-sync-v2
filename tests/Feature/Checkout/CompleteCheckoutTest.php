@@ -16,6 +16,9 @@ class CompleteCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     *  Happy Path
+     */
     public function test_it_processes_checkout_successfully()
     {
         $user = User::factory()->create();
@@ -56,4 +59,12 @@ class CompleteCheckoutTest extends TestCase
         $this->assertDatabaseCount('order_items', 1);
         $this->assertDatabaseCount('cart_items', 0);
     }
+
+    /**
+     *  Exception Cases
+     */
+
+    /**
+     *  Edge Cases
+     */
 }
