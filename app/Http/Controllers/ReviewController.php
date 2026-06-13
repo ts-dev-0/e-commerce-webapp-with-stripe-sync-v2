@@ -9,21 +9,31 @@ use App\Http\Requests\Review\DestroyReviewRequest;
 use App\Http\Requests\Review\StoreReviewRequest;
 use App\Http\Requests\Review\UpdateReviewRequest;
 use App\Models\Review;
+use Illuminate\Validation\ValidationException;
 
 class ReviewController extends Controller
 {
     public function store(StoreReviewRequest $request, CreateReview $action)
     {
-        $validatedData = $request->validated();
+        try {
+            $validatedData = $request->validated();
 
-        $action->handle(
-            $request->user(),
-            $validatedData,
-        );
+            $action->handle(
+                $request->user(),
+                $validatedData,
+            );
 
-        return redirect()
-            ->back()
-            ->with('success', 'Review posted.');
+            return redirect()
+                ->back()
+                ->with('success', 'Review posted.');
+        } catch (\App\Exceptions\ReviewAlreadyExistsException $e) {
+            error_log($e->getMessage());
+
+            throw ValidationException::withMessages([
+                // TODO: Change the key to 'id' once the front-end is fixed.
+                'comment' => 'You have already reviewed this product.',
+            ]);
+        }
     }
 
     public function update(UpdateReviewRequest $request, UpdateReview $action, Review $review)
