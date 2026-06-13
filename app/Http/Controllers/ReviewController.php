@@ -18,9 +18,7 @@ class ReviewController extends Controller
 
         $action->handle(
             $request->user(),
-            $validatedData['product_id'],
-            $validatedData['rating'],
-            $validatedData['comment'],
+            $validatedData,
         );
 
         return redirect()
