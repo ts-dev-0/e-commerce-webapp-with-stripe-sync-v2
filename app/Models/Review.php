@@ -42,7 +42,8 @@ class Review extends Model
      */
     public static function hasReviewed(int $userId, int $productId): bool
     {
-        return static::where('user_id', $userId)
+        return static::query()
+            ->where('user_id', $userId)
             ->where('product_id', $productId)
             ->exists();
     }
