@@ -19,14 +19,6 @@ class ProcessCheckout
         User $user,
         string $sessionId,
     ): void {
-        /**
-         * Core logic:
-         * 1. sessionIdを使ってSessionを生成
-         * 2. ユーザーが指定した配送先を検索し取得
-         * 3. Orderを生成
-         * 4. OrderItemを生成
-         * 5. Cartを空にする
-         */
         $session = $this->stripeSessionService->retrieveSession($sessionId);
 
         $deliveryAddress = $user->addresses->findOrFail($session->metadata->address_id);
