@@ -60,10 +60,6 @@ class CreateCheckoutSessionTest extends TestCase
     /**
      *  Exception Cases
      */
-
-    /**
-     *  Edge Cases
-     */
     public function test_it_throws_empty_cart_exception_when_cart_is_empty()
     {
         $user = User::factory()->create();
@@ -72,4 +68,8 @@ class CreateCheckoutSessionTest extends TestCase
         $this->expectException(\App\Exceptions\EmptyCartException::class);
         app(CreateCheckoutSession::class)->handle($user, $address->id);
     }
+
+    /**
+     *  Edge Cases
+     */
 }
