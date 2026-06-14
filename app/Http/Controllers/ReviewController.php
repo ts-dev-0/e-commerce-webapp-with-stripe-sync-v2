@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Review\CreateReview;
-use App\Actions\Review\DeleteReview;
 use App\Http\Requests\Review\DestroyReviewRequest;
 use App\Http\Requests\Review\StoreReviewRequest;
 use App\Http\Requests\Review\UpdateReviewRequest;
@@ -45,9 +44,12 @@ class ReviewController extends Controller
             ->with('success', 'Review updated.');
     }
 
-    public function destroy(DestroyReviewRequest $request, DeleteReview $action, Review $review)
+    public function destroy(DestroyReviewRequest $request, Review $review)
     {
-        $action->handle($review);
+        // TODO:更新の権限検証(実装後DestroyReviewRequestを削除)
+        $review
+            ->query()
+            ->delete();
 
         return redirect()
             ->back()
