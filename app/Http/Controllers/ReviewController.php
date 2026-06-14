@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\Review\CreateReview;
 use App\Actions\Review\DeleteReview;
-use App\Actions\Review\UpdateReview;
 use App\Http\Requests\Review\DestroyReviewRequest;
 use App\Http\Requests\Review\StoreReviewRequest;
 use App\Http\Requests\Review\UpdateReviewRequest;
@@ -36,12 +35,10 @@ class ReviewController extends Controller
         }
     }
 
-    public function update(UpdateReviewRequest $request, UpdateReview $action, Review $review)
+    public function update(UpdateReviewRequest $request, Review $review)
     {
-        $action->handle(
-            $review,
-            $request->validated(),
-        );
+        // TODO:更新の権限検証
+        $review->update($request->validated());
 
         return redirect()
             ->back()
