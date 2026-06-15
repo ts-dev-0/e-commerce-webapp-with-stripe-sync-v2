@@ -90,7 +90,7 @@ class User extends Authenticatable
 
     public function defaultAddress(): HasOne
     {
-        return $this->addresses()
+        return $this->hasOne(Address::class)
                 ->where('is_default', true);
     }
 
