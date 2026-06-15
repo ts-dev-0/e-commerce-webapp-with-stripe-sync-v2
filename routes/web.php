@@ -6,7 +6,7 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\SearchPublishedProductsController;
+use App\Http\Controllers\SearchProductsController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +14,9 @@ Route::controller(ShopController::class)->group(function () {
     Route::get('/',  'index')->name('home');
     Route::get('products/{product}', 'show')->name('product.show');
 });
+
+Route::get('search/products', SearchProductsController::class)
+    ->name('search.products');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('cart', CartController::class)
@@ -38,8 +41,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('reviews', ReviewController::class)
         ->only(['store', 'update', 'destroy']);
 
-    Route::get('search/products', SearchPublishedProductsController::class)
-        ->name('search.products');
 
     Route::post('addresses', [AddressController::class, 'store'])
         ->name('addresses.store');

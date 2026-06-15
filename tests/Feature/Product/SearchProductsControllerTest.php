@@ -44,13 +44,4 @@ class SearchProductsControllerTest extends TestCase
 
         $response->assertOk();
     }
-
-    public function test_guest_cannot_search_products()
-    {
-        $response = $this->get(route('search.products', [
-            'keyword' => 'iphone',
-        ]));
-
-        $response->assertRedirect(route('login'));
-    }
 }
