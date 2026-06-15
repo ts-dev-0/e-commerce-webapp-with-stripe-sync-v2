@@ -6,7 +6,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Actions\Address\DeleteAddress;
 use App\Actions\Address\SetDefaultAddress;
-use App\Actions\Address\StoreAddress;
+use App\Actions\Address\CreateAddress;
 use App\Actions\Address\UpdateAddress;
 use App\Http\Requests\Address\StoreAddressRequest;
 use App\Http\Requests\Address\UpdateAddressRequest;
@@ -24,7 +24,7 @@ class AddressController extends Controller
         ]);
     }
 
-    public function store(StoreAddressRequest $request, StoreAddress $action)
+    public function store(StoreAddressRequest $request, CreateAddress $action)
     {
         $validatedData = $request->validated();
 
