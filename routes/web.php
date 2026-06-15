@@ -41,7 +41,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('reviews', ReviewController::class)
         ->only(['store', 'update', 'destroy']);
 
-
     Route::post('addresses', [AddressController::class, 'store'])
         ->name('addresses.store');
 
