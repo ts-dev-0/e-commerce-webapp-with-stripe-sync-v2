@@ -32,7 +32,7 @@ class SearchPublishedProductsControllerTest extends TestCase
             Product::factory()->make(),
         ]);
 
-        $searchPublishedProducts = $this->mock(\App\Actions\Search\SearchPublishedProducts::class);
+        $searchPublishedProducts = $this->mock(\App\Actions\Product\SearchProducts::class);
         $searchPublishedProducts
             ->shouldReceive('handle')
             ->with($parameter['keyword'])
