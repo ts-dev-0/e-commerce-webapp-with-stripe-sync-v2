@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class SearchPublishedProductsControllerTest extends TestCase
+class SearchProductsControllerTest extends TestCase
 {
     use RefreshDatabase;
 

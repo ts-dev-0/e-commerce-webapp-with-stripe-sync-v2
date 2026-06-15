@@ -7,7 +7,7 @@ use Inertia\Inertia;
 use App\Http\Requests\Search\SearchPublishedProductRequest;
 use App\Http\Resources\ProductResource;
 
-class SearchPublishedProductsController extends Controller
+class SearchProductsController extends Controller
 {
     public function __invoke(SearchPublishedProductRequest $request, SearchProducts $action)
     {
