@@ -41,17 +41,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('reviews', ReviewController::class)
         ->only(['store', 'update', 'destroy']);
 
-    Route::post('addresses', [AddressController::class, 'store'])
-        ->name('addresses.store');
-
-    Route::patch('addresses/{address}', [AddressController::class, 'update'])
-        ->name('addresses.update');
+    Route::resource('addresses', AddressController::class)
+        ->only(['store', 'update', 'destroy']);
 
     Route::patch('addresses/{address}/default', [AddressController::class, 'updateDefault'])
         ->name('addresses.default.update');
-
-    Route::delete('addresses/{address}', [AddressController::class, 'destroy'])
-        ->name('addresses.destroy');
 });
 
 require __DIR__ . '/settings.php';
