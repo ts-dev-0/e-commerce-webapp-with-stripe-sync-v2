@@ -35,7 +35,7 @@ class AddressControllerTest extends TestCase
             'is_default' => true,
         ];
 
-        $storeAddress = $this->mock(\App\Actions\Address\StoreAddress::class);
+        $storeAddress = $this->mock(\App\Actions\Address\CreateAddress::class);
         $storeAddress
             ->shouldReceive('handle')
             ->once()
