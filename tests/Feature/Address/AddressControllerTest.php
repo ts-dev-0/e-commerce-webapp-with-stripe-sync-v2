@@ -65,12 +65,6 @@ class AddressControllerTest extends TestCase
             'is_default' => false,
         ];
 
-        $updateAddress = $this->mock(\App\Actions\Address\UpdateAddress::class);
-        $updateAddress
-            ->shouldReceive('handle')
-            ->once()
-            ->with($this->user, Mockery::type(Address::class), $updatedData);
-
         $response = $this
             ->actingAs($this->user)
             ->from(route('account.addresses'))

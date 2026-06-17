@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Actions\Address\DeleteAddress;
 use App\Actions\Address\SetDefaultAddress;
 use App\Actions\Address\CreateAddress;
-use App\Actions\Address\UpdateAddress;
 use App\Http\Requests\Address\StoreAddressRequest;
 use App\Http\Requests\Address\UpdateAddressRequest;
 use App\Http\Resources\AddressResource;
@@ -35,11 +34,9 @@ class AddressController extends Controller
             ->with('success', 'Created Address.');
     }
 
-    public function update(UpdateAddressRequest $request, Address $address, UpdateAddress $action)
+    public function update(UpdateAddressRequest $request, Address $address)
     {
-        $validatedData = $request->validated();
-
-        $action->handle($request->user(), $address, $validatedData);
+        $address->update($request->validated());
 
         return redirect()
             ->back()
