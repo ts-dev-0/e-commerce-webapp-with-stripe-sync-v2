@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use App\Actions\Address\DeleteAddress;
 use App\Actions\Address\SetDefaultAddress;
 use App\Actions\Address\CreateAddress;
 use App\Http\Requests\Address\StoreAddressRequest;
@@ -54,11 +53,11 @@ class AddressController extends Controller
             ->with('success', 'Update default address.');
     }
 
-    public function destroy(DeleteAddress $action, Address $address)
+    public function destroy(Address $address)
     {
         $this->authorize('delete', $address);
 
-        $action->handle($address);
+        $address->query()->delete();
 
         return redirect()
             ->back()

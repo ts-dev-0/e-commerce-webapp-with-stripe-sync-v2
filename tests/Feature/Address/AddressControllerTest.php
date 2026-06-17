@@ -78,12 +78,6 @@ class AddressControllerTest extends TestCase
     {
         $existingAddress = Address::factory()->create(['user_id' => $this->user->id]);
 
-        $deleteAddress = $this->mock(\App\Actions\Address\DeleteAddress::class);
-        $deleteAddress
-            ->shouldReceive('handle')
-            ->once()
-            ->with(Mockery::type(Address::class));
-
         $response = $this
             ->actingAs($this->user)
             ->from(route('account.addresses'))
