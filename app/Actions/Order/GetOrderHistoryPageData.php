@@ -2,17 +2,28 @@
 
 namespace App\Actions\Order;
 
+use App\DTOs\OrderHistoryData;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 
 class GetOrderHistoryPageData
 {
-    public function handle(User $user, ?string $timeFilter): Collection
+    public function handle(User $user, ?string $timeFilter): OrderHistoryData
     {
-        return $user->orders()
+        $orders = $user->orders()
             ->with('items')
             ->filteredByPeriod($timeFilter ?? 'months-3', $user->created_at)
             ->orderByDesc('ordered_at')
             ->get();
+
+        $startYear = $user->created_at->year;
+        $currentYear = now()->year;
+        $availableYears =  collect(
+            range($currentYear, $startYear)
+        )->map(fn($year) => [
+            'label' => (string) $year,
+            'value' => (string) $year,
+        ])->toArray();
+
+        return new OrderHistoryData(orders: $orders, availableYears: $availableYears);
     }
 }
