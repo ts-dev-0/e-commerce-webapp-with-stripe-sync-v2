@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Product\SearchProducts;
 use Inertia\Inertia;
-use App\Actions\Search\SearchPublishedProducts;
 use App\Http\Requests\Search\SearchPublishedProductRequest;
 use App\Http\Resources\ProductResource;
 
-class SearchPublishedProductsController extends Controller
+class SearchProductsController extends Controller
 {
-    public function __invoke(SearchPublishedProductRequest $request, SearchPublishedProducts $action)
+    public function __invoke(SearchPublishedProductRequest $request, SearchProducts $action)
     {
         $validatedData = $request->validated();
         $products = $action->handle($validatedData['keyword']);

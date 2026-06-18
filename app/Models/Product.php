@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -77,5 +78,20 @@ class Product extends Model
                 'label' => '在庫あり',
             ];
         }
+    }
+
+    public function getLatestReviewsWithUser(): Collection
+    {
+        return $this->reviews()->with('user:id,name')->latest()->get();
+    }
+
+    public function getAverageRating(): float
+    {
+        return (float) ($this->reviews->avg('rating') ?? 0.0);
+    }
+
+    public function hasEnoughStock(int $quantity): bool
+    {
+        return $this->stock >= $quantity;
     }
 }

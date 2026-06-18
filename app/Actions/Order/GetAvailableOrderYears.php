@@ -13,9 +13,9 @@ class GetAvailableOrderYears
 
         return collect(
             range($currentYear, $startYear)
-        )->map(fn ($year) => [
+        )->map(fn($year) => [
             'label' => (string) $year,
-            'value' => "year-{$year}",
+            'value' => (string) $year,
         ])->toArray();
     }
 }

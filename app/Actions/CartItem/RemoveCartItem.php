@@ -8,8 +8,8 @@ class RemoveCartItem
 {
     public function handle(User $user, int $productId): void
     {
-        $cart = $user->currentCart();
-
-        $cart->products()->detach($productId);
+        $user->currentCart()
+            ->products()
+            ->detach($productId);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class EmptyCartItemException extends Exception
+class EmptyCartException extends Exception
 {
   //
 }

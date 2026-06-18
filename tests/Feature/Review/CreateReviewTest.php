@@ -13,58 +13,55 @@ class CreateReviewTest extends TestCase
 {
     use RefreshDatabase;
 
-    private CreateReview $action;
-    private User $user;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->action = new CreateReview();
-        $this->user = User::factory()->create();
-    }
-
-    public function test_user_can_create_review()
+    /**
+     *  Happy Path
+     */
+    public function test_it_creates_a_review()
     {
         $product = Product::factory()->create();
 
-        $review = $this->action->handle(
-            $this->user,
-            $product->id,
-            5,
-            'Great product'
-        );
-
-        $this->assertInstanceOf(Review::class, $review);
-
-        $this->assertDatabaseHas('reviews', [
-            'user_id' => $this->user->id,
+        $user = User::factory()->create();
+        $reviewData = [
             'product_id' => $product->id,
             'rating' => 5,
-            'comment' => 'Great product',
+            'comment' => 'Good Product!',
+        ];
+
+        app(CreateReview::class)->handle($user, $reviewData);
+
+        $this->assertDatabaseHas('reviews', [
+            'user_id' => $user->id,
+            'product_id' => $reviewData['product_id'],
+            'rating' => $reviewData['rating'],
+            'comment' => $reviewData['comment'],
         ]);
     }
 
-    public function test_user_cannot_review_same_product_twice()
+    /**
+     *  Exception Cases
+     */
+    public function test_it_throws_review_already_exists_exception()
     {
         $product = Product::factory()->create();
 
-        $this->action->handle(
-            $this->user,
-            $product->id,
-            5,
-            'Great product'
-        );
+        $user = User::factory()->create();
+        Review::factory()->create([
+            'user_id' => $user->id,
+            'product_id' => $product->id,
+            'rating' => 5,
+            'comment' => 'Good Product!',
+        ]);
+        $reviewData = [
+            'product_id' => $product->id,
+            'rating' => 1,
+            'comment' => 'Bad Product',
+        ];
 
-        $this->assertDatabaseCount('reviews', 1);
-
-        $this->expectException(\DomainException::class);
-
-        $this->action->handle(
-            $this->user,
-            $product->id,
-            4,
-            'Second review'
-        );
+        $this->expectException(\App\Exceptions\ReviewAlreadyExistsException::class);
+        app(CreateReview::class)->handle($user, $reviewData);
     }
+
+    /**
+     *  Edge Cases
+     */
 }

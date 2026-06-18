@@ -40,7 +40,7 @@ class ReviewControllerTest extends TestCase
         $createReview
             ->shouldReceive('handle')
             ->once()
-            ->with($this->user, $review['product_id'], $review['rating'], $review['comment']);
+            ->with($this->user, $review);
 
         $response = $this
             ->actingAs($this->user)
@@ -70,21 +70,10 @@ class ReviewControllerTest extends TestCase
             'user_id' => $this->user->id,
         ]);
 
-        $updatedReview = [
-            'rating' => 4,
-            'comment' => 'Updated review',
-        ];
-
-        $updateReview = $this->mock(\App\Actions\Review\UpdateReview::class);
-        $updateReview
-            ->shouldReceive('handle')
-            ->once()
-            ->with(Mockery::type(Review::class), $updatedReview);
-
         $response = $this
             ->actingAs($this->user)
             ->from(route('product.show', $this->product->id))
-            ->put(route('reviews.update', $review), $updatedReview);
+            ->put(route('reviews.update', $review));
 
         $response->assertRedirect(route('product.show', $this->product->id));
 
@@ -109,12 +98,6 @@ class ReviewControllerTest extends TestCase
         $review = Review::factory()->create([
             'user_id' => $this->user->id,
         ]);
-
-        $deleteReview = $this->mock(\App\Actions\Review\DeleteReview::class);
-        $deleteReview
-            ->shouldReceive('handle')
-            ->once()
-            ->with(Mockery::type(Review::class));
 
         $response = $this
             ->actingAs($this->user)

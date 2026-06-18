@@ -9,11 +9,12 @@ class CancelOrder
 {
     public function handle(Order $order): void
     {
-        if(! $order->status->canCancel()) {
-            throw new \DomainException('Order cannot be canceled.');
+        if (! $order->status->canCancel()) {
+            throw new \App\Exceptions\OrderCannotBeCanceledException('Only pending orders can be canceled.');
         }
 
-        $order->status = OrderStatus::Canceled;
-        $order->save();
+        $order->update([
+            'status' => OrderStatus::Canceled,
+        ]);
     }
 }

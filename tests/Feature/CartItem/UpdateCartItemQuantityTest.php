@@ -2,61 +2,73 @@
 
 namespace Tests\Feature\CartItem;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\CartItem\UpdateCartItemQuantity;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class UpdateCartItemQuantityTest extends TestCase
 {
     use RefreshDatabase;
 
-    private UpdateCartItemQuantity $action;
-    private User $user;
-    private Cart $cart;
-    private Product $product;
-
-    protected function setUp(): void
+    /**
+     *  Happy Path
+     */
+    public function test_it_can_update_cart_item_quantity()
     {
-        parent::setUp();
+        $user = User::factory()->create();
 
-        $this->action = new UpdateCartItemQuantity();
-        $this->user = User::factory()->create();
-        $this->cart = Cart::factory()->create([
-            'user_id' => $this->user->id,
+        $product = Product::factory()->create([
+            'stock' => 10,
         ]);
-        $this->product = Product::factory()->create();
-    }
-
-    public function test_user_can_update_product_quantity()
-    {        
+        $cart = Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
         CartItem::factory()->create([
-            'cart_id' => $this->cart->id,
-            'product_id' => $this->product->id,
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
             'quantity' => 1,
         ]);
 
-        $updatedQuantity = 1;
+        app(UpdateCartItemQuantity::class)->handle($user, $product->id, 2);
 
-        $this->action->handle($this->user, $this->product->id, $updatedQuantity);
-
+        $this->assertDatabaseCount('cart_items', 1);
         $this->assertDatabaseHas('cart_items', [
-                'cart_id'    => $this->cart->id,
-                'product_id' => $this->product->id,
-                'quantity'   => $updatedQuantity,
-            ]
-        );
+            'cart_id' => $cart->id,
+            'product_id' => $product->id,
+            'quantity' => 2,
+        ]);
     }
 
-    public function test_throws_exception_if_product_not_in_cart()
+    /**
+     *  Exception Cases
+     */
+    public function test_it_throws_insufficient_stock_exception_when_request_quantity_exceeds_stock()
     {
-        $updatedQuantity = 1;
-
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->action->handle($this->user, $this->product->id, $updatedQuantity);
+        $user = User::factory()->create();
+        $product = Product::factory()->create([
+            'stock' => 8,
+        ]);
+        Cart::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        $this->expectException(\App\Exceptions\InsufficientStockException::class);
+        app(UpdateCartItemQuantity::class)->handle($user, $product->id, 10);
     }
+
+    public function test_it_throws_cart_item_not_found_exception_when_cart_item_is_null()
+    {
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+
+        $this->expectException(\App\Exceptions\CartItemNotFoundException::class);
+        app(UpdateCartItemQuantity::class)->handle($user, $product->id, 1);
+    }
+
+    /**
+     *  Edge Cases
+     */
 }

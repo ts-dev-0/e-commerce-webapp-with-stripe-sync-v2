@@ -6,70 +6,59 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Actions\Order\CancelOrder;
 use App\Enums\OrderStatus;
+use App\Exceptions\OrderCannotBeCanceledException;
 use App\Models\Order;
-use App\Models\User;
 
 class CancelOrderTest extends TestCase
 {
     use RefreshDatabase;
 
-    private CancelOrder $action;
-    private User $user;
-
-    protected function setUp(): void
+    /**
+     *  Happy Path
+     */
+    public function test_it_can_cancel_a_pending_order()
     {
-        parent::setUp();
+        $order = Order::factory()->create(['status' => OrderStatus::Pending]);
 
-        $this->action = new CancelOrder();
-        $this->user = User::factory()->create();
-    }
-
-    public function test_user_can_cancel_order_when_status_is_pending()
-    {
-        $order = Order::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => OrderStatus::Pending,
-        ]);
-
-        $this->action->handle($order);
+        app(CancelOrder::class)->handle($order);
 
         $this->assertDatabaseHas('orders', [
             'id' => $order->id,
-            'user_id' => $this->user->id,
             'status' => OrderStatus::Canceled,
         ]);
     }
 
-    public function test_user_can_not_cancel_order_when_status_is_paid()
+    /**
+     *  Exception Cases
+     */
+    public function test_it_throws_order_can_not_be_canceled_excetption_when_status_is_paid()
     {
-        $order = Order::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => OrderStatus::Paid,
-        ]);
+        $order = Order::factory()->create(['status' => OrderStatus::Paid]);
 
-        $this->expectException(\DomainException::class);
-        $this->action->handle($order);
+        $this->expectException(OrderCannotBeCanceledException::class);
+
+        app(CancelOrder::class)->handle($order);
     }
 
-    public function test_user_can_not_cancel_order_when_status_is_completed()
+    public function test_it_throws_order_can_not_be_canceled_excetption_when_status_is_completed()
     {
-        $order = Order::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => OrderStatus::Completed,
-        ]);
+        $order = Order::factory()->create(['status' => OrderStatus::Completed]);
 
-        $this->expectException(\DomainException::class);
-        $this->action->handle($order);
+        $this->expectException(OrderCannotBeCanceledException::class);
+
+        app(CancelOrder::class)->handle($order);
     }
 
-    public function test_user_can_not_cancel_order_when_status_is_canceled()
+    public function test_it_throws_order_can_not_be_canceled_excetption_when_status_is_canceled()
     {
-        $order = Order::factory()->create([
-            'user_id' => $this->user->id,
-            'status' => OrderStatus::Canceled,
-        ]);
+        $order = Order::factory()->create(['status' => OrderStatus::Canceled]);
 
-        $this->expectException(\DomainException::class);
-        $this->action->handle($order);
+        $this->expectException(OrderCannotBeCanceledException::class);
+
+        app(CancelOrder::class)->handle($order);
     }
+
+    /**
+     *  Edge Cases
+     */
 }

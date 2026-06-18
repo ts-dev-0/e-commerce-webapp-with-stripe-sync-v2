@@ -35,7 +35,7 @@ class AddressControllerTest extends TestCase
             'is_default' => true,
         ];
 
-        $storeAddress = $this->mock(\App\Actions\Address\StoreAddress::class);
+        $storeAddress = $this->mock(\App\Actions\Address\CreateAddress::class);
         $storeAddress
             ->shouldReceive('handle')
             ->once()
@@ -65,12 +65,6 @@ class AddressControllerTest extends TestCase
             'is_default' => false,
         ];
 
-        $updateAddress = $this->mock(\App\Actions\Address\UpdateAddress::class);
-        $updateAddress
-            ->shouldReceive('handle')
-            ->once()
-            ->with($this->user, Mockery::type(Address::class), $updatedData);
-
         $response = $this
             ->actingAs($this->user)
             ->from(route('account.addresses'))
@@ -83,12 +77,6 @@ class AddressControllerTest extends TestCase
     public function test_authenticated_user_can_delete_address()
     {
         $existingAddress = Address::factory()->create(['user_id' => $this->user->id]);
-
-        $deleteAddress = $this->mock(\App\Actions\Address\DeleteAddress::class);
-        $deleteAddress
-            ->shouldReceive('handle')
-            ->once()
-            ->with(Mockery::type(Address::class));
 
         $response = $this
             ->actingAs($this->user)

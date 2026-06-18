@@ -2,61 +2,29 @@
 
 namespace App\Actions\Stripe;
 
-use App\Models\Product;
 use App\Models\User;
-use Illuminate\Support\Collection;
-use Stripe\Checkout\Session;
-use Stripe\Stripe;
+use App\Services\StripeSessionService;
 
 class CreateCheckoutSession
 {
-    public function __construct()
-    {
-        Stripe::setApiKey(config('services.stripe.secret'));
-    }
+    public function __construct(
+        private StripeSessionService $stripeSessionService
+    ) {}
 
-    /**
-     * @throws \DomainException
-     */
-    public function handle(User $user, int $addressId): string
+    public function handle(User $user, int $selectedAddressId): string
     {
-        $cartItems = $user->currentCart()->products()->get();
-
+        $cartItems = $user->currentCart()->items()->get();
         if ($cartItems->isEmpty()) {
-            throw new \DomainException('Cart is empty.');
+            throw new \App\Exceptions\EmptyCartException('cart is empty');
         }
 
-        $session = $this->createSession([
-            'payment_method_types' => ['card'],
-            'line_items' => $this->mapCartItemsToStripeFormat($cartItems),
-            'mode' => 'payment',
-            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('checkout.failed'),
-            'metadata' => [
-                'user_id' => $user->id,
-                'address_id' => $addressId,
-            ],
-        ]);
+        $session = $this->stripeSessionService
+            ->createCheckoutSession(
+                $cartItems,
+                $user,
+                $selectedAddressId
+            );
 
         return $session->url;
-    }
-
-    protected function createSession(array $payload): Session
-    {
-        return Session::create($payload);
-    }
-
-    private function mapCartItemsToStripeFormat(Collection $items): array
-    {
-        return $items->map(fn(Product $product) => [
-            'price_data' => [
-                'currency' => 'jpy',
-                'product_data' => [
-                    'name' => $product->name,
-                ],
-                'unit_amount' => $product->price,
-            ],
-            'quantity' => $product->pivot->quantity,
-        ])->toArray();
     }
 }

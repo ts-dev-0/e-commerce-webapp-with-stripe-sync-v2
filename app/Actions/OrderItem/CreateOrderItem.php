@@ -16,7 +16,7 @@ class CreateOrderItem
 
             $order->addItem(product: $product, quantity: $quantity, subtotal: $subtotal);
 
-            $product->query()->decrement('stock', $quantity);
+            $product->decrement('stock', $quantity, []);
         }
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,5 +50,18 @@ class Order extends Model
             'price' => $product->price,
             'subtotal' => $subtotal,
         ]);
+    }
+
+    public function scopeFilteredByPeriod(Builder $query, ?string $filter, Carbon $userCreatedAt): Builder
+    {
+        return match (true) {
+            $filter === 'last30' => $query->where('ordered_at', '>=', now()->subDays(30)),
+            $filter === 'months-3' => $query->where('ordered_at', '>=', now()->subMonths(3)),
+
+            is_numeric($filter) && (int)$filter >= $userCreatedAt->year && (int)$filter <= now()->year
+            => $query->whereYear('ordered_at', (int)$filter),
+
+            default => $query->where('ordered_at', '>=', now()->subMonths(3)),
+        };
     }
 }

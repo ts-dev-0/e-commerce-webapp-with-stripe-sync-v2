@@ -4,17 +4,19 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\SearchPublishedProductsController;
+use App\Http\Controllers\SearchProductsController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])
-    ->name('home');
-Route::get('products/{product}', [ProductController::class, 'show'])
-    ->name('product.show');
+Route::controller(ShopController::class)->group(function () {
+    Route::get('/',  'index')->name('home');
+    Route::get('products/{product}', 'show')->name('product.show');
+});
+
+Route::get('search/products', SearchProductsController::class)
+    ->name('search.products');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('cart', CartController::class)
@@ -39,20 +41,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('reviews', ReviewController::class)
         ->only(['store', 'update', 'destroy']);
 
-    Route::get('search/products', SearchPublishedProductsController::class)
-        ->name('search.products');
-
-    Route::post('addresses', [AddressController::class, 'store'])
-        ->name('addresses.store');
-
-    Route::patch('addresses/{address}', [AddressController::class, 'update'])
-        ->name('addresses.update');
+    Route::resource('addresses', AddressController::class)
+        ->only(['store', 'update', 'destroy']);
 
     Route::patch('addresses/{address}/default', [AddressController::class, 'updateDefault'])
         ->name('addresses.default.update');
-
-    Route::delete('addresses/{address}', [AddressController::class, 'destroy'])
-        ->name('addresses.destroy');
 });
 
 require __DIR__ . '/settings.php';

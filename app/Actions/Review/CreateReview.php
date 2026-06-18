@@ -7,24 +7,16 @@ use App\Models\User;
 
 class CreateReview
 {
-    public function handle(
-        User $user,
-        int $productId,
-        int $rating,
-        ?string $comment,
-    ): Review
+    public function handle(User $user, array $reviewData): void
     {
-        if (Review::alreadyReviewed($user->id, $productId)) {
-            throw new \DomainException('Already reviewed.');
+        if (Review::hasReviewed($user->id, $reviewData['product_id'])) {
+            throw new \App\Exceptions\ReviewAlreadyExistsException('Already reviewed.');
         }
 
-        $review = Review::create([
-            'user_id' => $user->id,
-            'product_id' => $productId,
-            'rating' => $rating,
-            'comment' => $comment,
+        $user->reviews()->create([
+            'product_id' => $reviewData['product_id'],
+            'rating' => $reviewData['rating'],
+            'comment' => $reviewData['comment'],
         ]);
-
-        return $review;
     }
 }

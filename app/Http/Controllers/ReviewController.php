@@ -3,46 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Review\CreateReview;
-use App\Actions\Review\DeleteReview;
-use App\Actions\Review\UpdateReview;
 use App\Http\Requests\Review\DestroyReviewRequest;
 use App\Http\Requests\Review\StoreReviewRequest;
 use App\Http\Requests\Review\UpdateReviewRequest;
 use App\Models\Review;
+use Illuminate\Validation\ValidationException;
 
 class ReviewController extends Controller
 {
     public function store(StoreReviewRequest $request, CreateReview $action)
     {
-        $validatedData = $request->validated();
+        try {
+            $validatedData = $request->validated();
 
-        $action->handle(
-            $request->user(),
-            $validatedData['product_id'],
-            $validatedData['rating'],
-            $validatedData['comment'],
-        );
+            $action->handle(
+                $request->user(),
+                $validatedData,
+            );
 
-        return redirect()
-            ->back()
-            ->with('success', 'Review posted.');
+            return redirect()
+                ->back()
+                ->with('success', 'Review posted.');
+        } catch (\App\Exceptions\ReviewAlreadyExistsException $e) {
+            error_log($e->getMessage());
+
+            throw ValidationException::withMessages([
+                // TODO: Change the key to 'id' once the front-end is fixed.
+                'comment' => 'You have already reviewed this product.',
+            ]);
+        }
     }
 
-    public function update(UpdateReviewRequest $request, UpdateReview $action, Review $review)
+    public function update(UpdateReviewRequest $request, Review $review)
     {
-        $action->handle(
-            $review,
-            $request->validated(),
-        );
+        // TODO:更新の権限検証
+        $review->update($request->validated());
 
         return redirect()
             ->back()
             ->with('success', 'Review updated.');
     }
 
-    public function destroy(DestroyReviewRequest $request, DeleteReview $action, Review $review)
+    public function destroy(DestroyReviewRequest $request, Review $review)
     {
-        $action->handle($review);
+        // TODO:更新の権限検証(実装後DestroyReviewRequestを削除)
+        $review
+            ->query()
+            ->delete();
 
         return redirect()
             ->back()

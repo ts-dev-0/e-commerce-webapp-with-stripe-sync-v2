@@ -9,11 +9,11 @@ class SetDefaultAddress
 {
     public function handle(User $user, Address $address): void
     {
-        if($address->is_default) {
+        if ($address->is_default) {
             return;
         }
 
-        $user->defaultAddress()?->update(['is_default' => false]);
+        $user->clearDefaultAddress();
 
         $address->update(['is_default' => true]);
     }

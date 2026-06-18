@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Actions\Checkout;
 
-use App\Actions\Checkout\ProcessCheckout;
+use App\Actions\Checkout\CompleteCheckout;
 use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -12,10 +12,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Stripe\Checkout\Session;
 use Tests\TestCase;
 
-class ProcessCheckoutTest extends TestCase
+class CompleteCheckoutTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     *  Happy Path
+     */
     public function test_it_processes_checkout_successfully()
     {
         $user = User::factory()->create();
@@ -25,7 +28,7 @@ class ProcessCheckoutTest extends TestCase
         $cart = Cart::factory()->create([
             'user_id' => $user->id,
         ]);
-        $cartItems = CartItem::factory()->create([
+        CartItem::factory()->create([
             'cart_id' => $cart->id,
             'product_id' => $product->id,
             'quantity' => 1,
@@ -39,21 +42,29 @@ class ProcessCheckoutTest extends TestCase
                 'user_id' => $user->id,
                 'address_id' => $address->id,
             ],
-            'total_amount' => 2000,
+            'amount_total' => 2000,
         ]);
-        $stripeSessionService = $this->mock(\App\Services\StripSessioneService::class);
+        $stripeSessionService = $this->mock(\App\Services\StripeSessionService::class);
 
         $sessionId = 'test-sessionId';
         $stripeSessionService
-            ->shouldReceive('retrieveStripeSession')
+            ->shouldReceive('retrieveSession')
             ->once()
             ->with($sessionId)
             ->andReturn($sessionMock);
 
-        app(ProcessCheckout::class)->handle($user, $sessionId);
+        app(CompleteCheckout::class)->handle($user, $sessionId);
 
         $this->assertDatabaseCount('orders', 1);
         $this->assertDatabaseCount('order_items', 1);
         $this->assertDatabaseCount('cart_items', 0);
     }
+
+    /**
+     *  Exception Cases
+     */
+
+    /**
+     *  Edge Cases
+     */
 }

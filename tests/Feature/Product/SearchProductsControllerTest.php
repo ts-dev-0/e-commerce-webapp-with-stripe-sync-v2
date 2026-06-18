@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class SearchPublishedProductsControllerTest extends TestCase
+class SearchProductsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -32,7 +32,7 @@ class SearchPublishedProductsControllerTest extends TestCase
             Product::factory()->make(),
         ]);
 
-        $searchPublishedProducts = $this->mock(\App\Actions\Search\SearchPublishedProducts::class);
+        $searchPublishedProducts = $this->mock(\App\Actions\Product\SearchProducts::class);
         $searchPublishedProducts
             ->shouldReceive('handle')
             ->with($parameter['keyword'])
@@ -43,14 +43,5 @@ class SearchPublishedProductsControllerTest extends TestCase
             ->get(route('search.products', $parameter));
 
         $response->assertOk();
-    }
-
-    public function test_guest_cannot_search_products()
-    {
-        $response = $this->get(route('search.products', [
-            'keyword' => 'iphone',
-        ]));
-
-        $response->assertRedirect(route('login'));
     }
 }

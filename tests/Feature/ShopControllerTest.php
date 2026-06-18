@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
 
-class HomeControllerTest extends TestCase
+class ShopControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -37,5 +37,14 @@ class HomeControllerTest extends TestCase
                 ->component('home')
                 ->has('products', 15)
         );
+    }
+
+    public function test_product_show_page_is_displayed()
+    {
+        $product = Product::factory()->create();
+
+        $response = $this->get(route('product.show', $product->id));
+
+        $response->assertOk();
     }
 }

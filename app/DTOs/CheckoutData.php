@@ -2,8 +2,7 @@
 
 namespace App\DTOs;
 
-use App\Models\Address;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 readonly class CheckoutData
 {
@@ -14,7 +13,6 @@ readonly class CheckoutData
     public function __construct(
         public Collection $cartItems,
         public Collection $addresses,
-        public array $deliveryDate,
         public int $shippingFee,
         public int $subtotal,
         public int $total,

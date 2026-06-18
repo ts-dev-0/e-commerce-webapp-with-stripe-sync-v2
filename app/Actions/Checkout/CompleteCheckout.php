@@ -5,12 +5,12 @@ namespace App\Actions\Checkout;
 use App\Actions\Order\CreateOrder;
 use App\Actions\OrderItem\CreateOrderItem;
 use App\Models\User;
-use App\Services\StripSessioneService;
+use App\Services\StripeSessionService;
 
-class ProcessCheckout
+class CompleteCheckout
 {
     public function __construct(
-        private StripSessioneService $stripeSessionService,
+        private StripeSessionService $stripeSessionService,
         private CreateOrder $createOrder,
         private CreateOrderItem $createOrderItem
     ) {}
@@ -19,19 +19,11 @@ class ProcessCheckout
         User $user,
         string $sessionId,
     ): void {
-        /**
-         * Core logic:
-         * 1. sessionIdを使ってSessionを生成
-         * 2. ユーザーが指定した配送先を検索し取得
-         * 3. Orderを生成
-         * 4. OrderItemを生成
-         * 5. Cartを空にする
-         */
-        $session = $this->stripeSessionService->retrieveStripeSession($sessionId);
+        $session = $this->stripeSessionService->retrieveSession($sessionId);
 
         $deliveryAddress = $user->addresses->findOrFail($session->metadata->address_id);
 
-        $order = $this->createOrder->handle($user, $session->total_amount, $deliveryAddress);
+        $order = $this->createOrder->handle($user, $session->amount_total, $deliveryAddress);
 
         $cart = $user->currentCart();
 
