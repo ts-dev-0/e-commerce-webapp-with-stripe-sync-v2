@@ -5,7 +5,7 @@ namespace App\Actions\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
-class ViewOrderHistory
+class GetOrderHistoryPageData
 {
     public function handle(User $user, ?string $timeFilter): Collection
     {
