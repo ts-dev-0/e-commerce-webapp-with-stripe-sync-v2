@@ -14,7 +14,6 @@ import { useForm } from '@inertiajs/react';
 import ErrorMessage from './error-message';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Label } from './ui/label';
 import { Spinner } from './ui/spinner';
 
 interface EditDeliveryAddressFormProps {
@@ -161,17 +160,6 @@ export default function EditDeliveryAddressForm({
                     />
                     <ErrorMessage message={errors.phoneNumber} />
                 </div>
-            </div>
-            <div className="mt-4 flex items-center justify-start gap-2">
-                <Input
-                    checked={data.isDefault}
-                    type="checkbox"
-                    className="h-4 w-4 border-slate-300 text-emerald-600 accent-emerald-600 focus:ring-emerald-500"
-                    onChange={(e) => setData('isDefault', e.target.checked)}
-                />
-                <Label className="text-sm font-medium text-slate-700">
-                    いつもこの住所に届ける
-                </Label>
             </div>
             <Button
                 className="mt-6 w-full rounded-md bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700"
