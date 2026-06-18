@@ -14,17 +14,11 @@ class CheckoutController extends Controller
 {
     public function index(Request $request, GetCheckoutPageData $action)
     {
-        try {
-            $checkoutData = $action->handle($request->user());
+        $checkoutData = $action->handle($request->user());
 
-            return Inertia::render('checkout', [
-                'checkout' => CheckoutResource::make($checkoutData),
-            ]);
-        } catch (\App\Exceptions\EmptyCartException $e) {
-            error_log($e->getMessage());
-
-            return to_route('cart.index');
-        }
+        return Inertia::render('checkout', [
+            'checkout' => CheckoutResource::make($checkoutData),
+        ]);
     }
 
     public function store(StoreCheckoutRequest $request, CreateCheckoutSession $action)
