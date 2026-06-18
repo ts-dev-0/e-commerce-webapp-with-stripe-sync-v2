@@ -1,5 +1,10 @@
 <?php
 
+use App\Exceptions\CartItemNotFoundException;
+use App\Exceptions\EmptyCartException;
+use App\Exceptions\InsufficientStockException;
+use App\Exceptions\OrderCannotBeCanceledException;
+use App\Exceptions\ReviewAlreadyExistsException;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -31,5 +36,15 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(
+            function (CartItemNotFoundException|
+            EmptyCartException|
+            InsufficientStockException|
+            OrderCannotBeCanceledException|
+            ReviewAlreadyExistsException $e) {
+                return back()->withErrors([
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        );
     })->create();
