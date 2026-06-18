@@ -28,8 +28,7 @@ class AddressController extends Controller
 
         $action->handle($request->user(), $validatedData);
 
-        return redirect()
-            ->back()
+        return back()
             ->with('success', 'Created Address.');
     }
 
@@ -37,8 +36,7 @@ class AddressController extends Controller
     {
         $address->update($request->validated());
 
-        return redirect()
-            ->back()
+        return back()
             ->with('success', 'Updated Address.');
     }
 
@@ -48,8 +46,7 @@ class AddressController extends Controller
 
         $action->handle($request->user(), $address);
 
-        return redirect()
-            ->back()
+        return back()
             ->with('success', 'Update default address.');
     }
 
@@ -59,8 +56,7 @@ class AddressController extends Controller
 
         $address->query()->delete();
 
-        return redirect()
-            ->back()
+        return back()
             ->with('success', 'Deleted Address.');
     }
 }

@@ -23,7 +23,7 @@ class CheckoutController extends Controller
         } catch (\App\Exceptions\EmptyCartException $e) {
             error_log($e->getMessage());
 
-            return redirect()->route('cart.index');
+            return to_route('cart.index');
         }
     }
 
