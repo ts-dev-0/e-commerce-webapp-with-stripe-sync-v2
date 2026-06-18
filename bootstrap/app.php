@@ -42,9 +42,10 @@ return Application::configure(basePath: dirname(__DIR__))
             InsufficientStockException|
             OrderCannotBeCanceledException|
             ReviewAlreadyExistsException $e) {
-                return back()->withErrors([
-                    'error' => $e->getMessage(),
-                ]);
+                return back()->with(
+                    'error',
+                    $e->getMessage(),
+                );
             }
         );
     })->create();
