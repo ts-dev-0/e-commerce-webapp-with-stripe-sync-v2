@@ -11,10 +11,7 @@ class DestroyReviewRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        /** @var \App\Models\Review $review */
-        $review = $this->route('review');
-
-        return $this->user()->id === $review->user_id;
+        return $this->user()->can('delete', $this->route('review')->user_id);
     }
 
     /**

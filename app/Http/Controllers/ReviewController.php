@@ -35,19 +35,17 @@ class ReviewController extends Controller
 
     public function update(UpdateReviewRequest $request, Review $review)
     {
-        // TODO:更新の権限検証
         $review->update($request->validated());
 
         return back()
             ->with('success', 'Review updated.');
     }
 
-    public function destroy(DestroyReviewRequest $request, Review $review)
+    public function destroy(Review $review)
     {
-        // TODO:更新の権限検証(実装後DestroyReviewRequestを削除)
-        $review
-            ->query()
-            ->delete();
+        $this->authorize('delete', $review);
+
+        $review->query()->delete();
 
         return back()
             ->with('success', 'Review deleted.');
