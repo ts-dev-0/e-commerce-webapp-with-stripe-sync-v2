@@ -4,7 +4,7 @@ namespace App\Http\Requests\Search;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchPublishedProductRequest extends FormRequest
+class SearchProductsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
