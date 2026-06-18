@@ -40,16 +40,6 @@ class AddressController extends Controller
             ->with('success', 'Updated Address.');
     }
 
-    public function updateDefault(Request $request, Address $address, SetDefaultAddress $action)
-    {
-        $this->authorize('setDefault', $address);
-
-        $action->handle($request->user(), $address);
-
-        return back()
-            ->with('success', 'Update default address.');
-    }
-
     public function destroy(Address $address)
     {
         $this->authorize('delete', $address);
@@ -58,5 +48,15 @@ class AddressController extends Controller
 
         return back()
             ->with('success', 'Deleted Address.');
+    }
+
+    public function updateDefault(Request $request, Address $address, SetDefaultAddress $action)
+    {
+        $this->authorize('setDefault', $address);
+
+        $action->handle($request->user(), $address);
+
+        return back()
+            ->with('success', 'Update default address.');
     }
 }
