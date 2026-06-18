@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Order;
 
+use App\DTOs\OrderHistoryData;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,15 +34,17 @@ class OrderControllerTest extends TestCase
     public function test_authenticated_user_can_view_order_history()
     {
         $queryParameter = ['timeFilter' => 'last30'];
-        $orders = new Collection([
-            $this->order,
-        ]);
 
-        $viewOrderHistory = $this->mock(\App\Actions\Order\ViewOrderHistory::class);
-        $viewOrderHistory
+        $result = new OrderHistoryData(
+            orders: new Collection([$this->order]),
+            availableYears: ['2026'],
+        );
+
+        $getOrderHistoryPageData = $this->mock(\App\Actions\Order\GetOrderHistoryPageData::class);
+        $getOrderHistoryPageData
             ->shouldReceive('handle')
             ->with($this->user, $queryParameter['timeFilter'])
-            ->andReturn($orders);
+            ->andReturn($result);
 
         $response = $this
             ->actingAs($this->user)
