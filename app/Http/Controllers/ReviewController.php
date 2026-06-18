@@ -21,8 +21,7 @@ class ReviewController extends Controller
                 $validatedData,
             );
 
-            return redirect()
-                ->back()
+            return back()
                 ->with('success', 'Review posted.');
         } catch (\App\Exceptions\ReviewAlreadyExistsException $e) {
             error_log($e->getMessage());
@@ -39,8 +38,7 @@ class ReviewController extends Controller
         // TODO:更新の権限検証
         $review->update($request->validated());
 
-        return redirect()
-            ->back()
+        return back()
             ->with('success', 'Review updated.');
     }
 
@@ -51,8 +49,7 @@ class ReviewController extends Controller
             ->query()
             ->delete();
 
-        return redirect()
-            ->back()
+        return back()
             ->with('success', 'Review deleted.');
     }
 }

@@ -20,8 +20,7 @@ class CartItemController extends Controller
             $validatedData['quantity'],
         );
 
-        return redirect()
-            ->route('cart.index')
+        return to_route('cart.index')
             ->with('success', 'Product added to cart.');
     }
 
@@ -34,8 +33,7 @@ class CartItemController extends Controller
             $validatedData['quantity'],
         );
 
-        return redirect()
-            ->back()
+        return back()
             ->with('success', 'Cart updated.');
     }
 
@@ -47,8 +45,7 @@ class CartItemController extends Controller
             $validatedData['product_id'],
         );
 
-        return redirect()
-            ->back()
+        return back()
             ->with('success', 'Item removed from cart.');
     }
 }
