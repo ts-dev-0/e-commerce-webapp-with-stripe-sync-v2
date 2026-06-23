@@ -7,13 +7,13 @@ use App\Models\User;
 
 class GetCheckoutPageData
 {
-    public function handle(User $user)
+    public function handle(User $user): ?CheckoutData
     {
         $cart = $user->currentCart();
 
         $cartItems = $cart->items()->with('product')->get();
         if ($cartItems->isEmpty()) {
-            throw new \App\Exceptions\EmptyCartException('Cart is empty.');
+            return null;
         }
 
         $addresses = $user->addresses()->get();

@@ -15,6 +15,9 @@ class CheckoutController extends Controller
     public function index(Request $request, GetCheckoutPageData $action)
     {
         $checkoutData = $action->handle($request->user());
+        if ($checkoutData === null) {
+            return to_route('cart.index');
+        }
 
         return Inertia::render('checkout', [
             'checkout' => CheckoutResource::make($checkoutData),
