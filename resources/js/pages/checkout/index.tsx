@@ -10,13 +10,13 @@ import ErrorMessage from '@/components/error-message';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
-import { DeliveryMethodSection } from './checkout/component/delivery-method-section';
-import { OrderItemSection } from './checkout/component/order-item-section';
-import { OrderSummarySection } from './checkout/component/order-summary-section';
-import { PaymentMethodSection } from './checkout/component/payment-method-section';
-import { ShippingAddressSection } from './checkout/component/shipping-address/shipping-address-section';
-
 import { Checkout as CheckoutType } from '@/types/checkout';
+
+import { DeliveryMethodSection } from './component/delivery-method-section';
+import { OrderItemSection } from './component/order-item-section';
+import { OrderSummarySection } from './component/order-summary-section';
+import { PaymentMethodSection } from './component/payment-method-section';
+import { ShippingAddressSection } from './component/shipping-address/shipping-address-section';
 
 interface CheckoutProps {
     checkout: CheckoutType;
@@ -26,7 +26,7 @@ interface CheckoutForm {
     shippingAddressId: number | null;
 }
 
-export default function Checkout({ checkout }: CheckoutProps) {
+export default function Index({ checkout }: CheckoutProps) {
     const { data, setData, post, transform, errors } = useForm<CheckoutForm>({
         shippingAddressId: checkout.addresses[0].id,
     });

@@ -19,7 +19,7 @@ class CheckoutController extends Controller
             return to_route('cart.index');
         }
 
-        return Inertia::render('checkout', [
+        return Inertia::render('checkout/index', [
             'checkout' => CheckoutResource::make($checkoutData),
         ]);
     }
