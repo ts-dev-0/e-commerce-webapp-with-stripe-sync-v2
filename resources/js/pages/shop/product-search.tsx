@@ -1,3 +1,4 @@
+import { EmptyState } from '@/components/empty-state';
 import AppLayout from '@/layouts/app-layout';
 import ProductCard from '@/pages/shop/component/product-card';
 import { Product } from '@/types/product';
@@ -33,9 +34,7 @@ export default function ProductSearch({
                 </div>
 
                 {products.length === 0 ? (
-                    <div className="mt-6 rounded-lg border border-dashed border-slate-200 bg-white p-10 text-center text-sm text-slate-500">
-                        条件に一致する商品が見つかりません。
-                    </div>
+                    <EmptyState title="条件に一致する商品が見つかりません。" />
                 ) : (
                     <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         {products.map((product) => (
