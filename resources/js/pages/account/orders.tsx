@@ -7,7 +7,8 @@ import {
 } from '@/components/ui/hover-card';
 import AccountLayout from '@/layouts/account-layout';
 import cancel from '@/routes/account/orders/cancel';
-import { show } from '@/routes/product';
+import { detail } from '@/routes/product';
+
 import { Order } from '@/types/order';
 import { Head, Link } from '@inertiajs/react';
 
@@ -150,7 +151,7 @@ export default function Orders({ orders, years }: OrdersProps) {
                                                 >
                                                     <Link
                                                         href={
-                                                            show(item.productId)
+                                                            detail(item.productId)
                                                                 .url
                                                         }
                                                     >
