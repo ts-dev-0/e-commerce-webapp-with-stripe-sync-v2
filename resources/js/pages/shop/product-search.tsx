@@ -1,5 +1,5 @@
-import ProductCard from '@/components/product-card';
 import AppLayout from '@/layouts/app-layout';
+import ProductCard from '@/pages/shop/component/product-card';
 import { Product } from '@/types/product';
 import { Head } from '@inertiajs/react';
 
