@@ -44,10 +44,10 @@ class ReviewControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->from(route('product.show', $this->product->id))
+            ->from(route('product.detail', $this->product->id))
             ->post(route('reviews.store'), $review);
 
-        $response->assertRedirect(route('product.show', $this->product->id));
+        $response->assertRedirect(route('product.detail', $this->product->id));
 
         $response->assertSessionHas('success', 'Review posted.');
     }
@@ -72,10 +72,10 @@ class ReviewControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->from(route('product.show', $this->product->id))
+            ->from(route('product.detail', $this->product->id))
             ->put(route('reviews.update', $review));
 
-        $response->assertRedirect(route('product.show', $this->product->id));
+        $response->assertRedirect(route('product.detail', $this->product->id));
 
         $response->assertSessionHas('success', 'Review updated.');
     }
@@ -101,10 +101,10 @@ class ReviewControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->user)
-            ->from(route('product.show', $this->product->id))
+            ->from(route('product.detail', $this->product->id))
             ->delete(route('reviews.destroy', $review));
 
-        $response->assertRedirect(route('product.show', $this->product->id));
+        $response->assertRedirect(route('product.detail', $this->product->id));
 
         $response->assertSessionHas('success', 'Review deleted.');
     }

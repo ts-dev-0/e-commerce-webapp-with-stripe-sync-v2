@@ -8,7 +8,7 @@ interface SearchProductProps {
     keyword: string;
 }
 
-export default function SearchProduct({
+export default function ProductSearch({
     products,
     keyword,
 }: SearchProductProps) {

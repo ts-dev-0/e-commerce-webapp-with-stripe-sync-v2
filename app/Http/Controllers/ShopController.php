@@ -17,7 +17,7 @@ class ShopController extends Controller
     {
         $newArrivalProducts = Product::newArrivals(self::Limit)->get();
 
-        return Inertia::render('home', [
+        return Inertia::render('shop/index', [
             'products' => ProductResource::collection($newArrivalProducts),
         ]);
     }
@@ -28,7 +28,7 @@ class ShopController extends Controller
 
         $averageRating = $product->getAverageRating();
 
-        return Inertia::render('product/show', [
+        return Inertia::render('shop/product-detail', [
             'product' => ProductResource::make($product),
             'reviews' => ReviewResource::collection($reviews),
             'averageRating' => $averageRating,
@@ -40,7 +40,7 @@ class ShopController extends Controller
         $validatedData = $request->validated();
         $products = $action->handle($validatedData['keyword']);
 
-        return Inertia::render('search-product', [
+        return Inertia::render('shop/product-search', [
             'products' => ProductResource::collection($products),
             'keyword' => $validatedData['keyword'],
         ]);

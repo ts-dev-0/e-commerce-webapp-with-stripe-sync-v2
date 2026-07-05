@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(ShopController::class)->group(function () {
     Route::get('/',  'index')->name('home');
-    Route::get('products/{product}', 'show')->name('product.show');
+    Route::get('products/{product}', 'show')->name('product.detail');
     Route::get('search/products', 'searchProducts')->name('product.search');
 });
 

@@ -35,7 +35,7 @@ class ShopControllerTest extends TestCase
 
         $response->assertInertia(
             fn(Assert $page) => $page
-                ->component('home')
+                ->component('shop/index')
                 ->has('products', 15)
         );
     }
@@ -44,7 +44,7 @@ class ShopControllerTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $response = $this->get(route('product.show', $product->id));
+        $response = $this->get(route('product.detail', $product->id));
 
         $response->assertOk();
     }

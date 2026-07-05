@@ -22,7 +22,7 @@ interface AddToCartForm {
     quantity: number;
 }
 
-export default function Show({ product, reviews, averageRating }: Props) {
+export default function ProductDetail({ product, reviews, averageRating }: Props) {
     const form = useForm<AddToCartForm>({
         productId: product.id,
         quantity: 1,
