@@ -1,11 +1,11 @@
 import ErrorMessage from '@/components/error-message';
 import { QuantitySelector } from '@/components/quantity-selector';
 import ReviewSection from '@/components/review-section';
+import { StockStatus } from '@/components/stock-status';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
-import { cn } from '@/lib/utils';
 import { store } from '@/routes/cart/items';
 import { Product } from '@/types/product';
 import { Review } from '@/types/review';
@@ -78,15 +78,11 @@ export default function Show({ product, reviews, averageRating }: Props) {
                             <span className="text-xl font-bold text-slate-800">
                                 {product.price.toLocaleString('ja-JP')}円
                             </span>
-                            <span
-                                className={cn(
-                                    'text-sm font-semibold text-red-600',
-                                    product.stockStatus['status'] ===
-                                        'inStock' && 'text-emerald-600',
-                                )}
-                            >
-                                {product.stockStatus['label']}
-                            </span>
+
+                            <StockStatus
+                                status={product.stockStatus.status}
+                                label={product.stockStatus.label}
+                            />
                         </div>
 
                         <div className="mt-6 flex items-center space-x-3">
