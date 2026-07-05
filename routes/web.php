@@ -6,17 +6,14 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\SearchProductsController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(ShopController::class)->group(function () {
     Route::get('/',  'index')->name('home');
-    Route::get('products/{product}', 'show')->name('product.show');
+    Route::get('products/{product}', 'show')->name('product.detail');
+    Route::get('search/products', 'searchProducts')->name('product.search');
 });
-
-Route::get('search/products', SearchProductsController::class)
-    ->name('search.products');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('cart', CartController::class)

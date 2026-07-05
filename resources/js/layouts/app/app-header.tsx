@@ -4,7 +4,8 @@ import { Input } from '@/components/ui/input';
 import { home, login, register } from '@/routes';
 import { orders } from '@/routes/account';
 import cart from '@/routes/cart';
-import search from '@/routes/search';
+import { search } from '@/routes/product';
+
 import { SharedData } from '@/types';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Package, ShoppingCartIcon } from 'lucide-react';
@@ -24,9 +25,13 @@ export default function AppHeader() {
                 </>
             ) : (
                 <div className="flex items-center gap-2">
-                    <TextLink href={login().url} className='text-sm'>Log in</TextLink>
+                    <TextLink href={login().url} className="text-sm">
+                        Log in
+                    </TextLink>
                     <span>/</span>
-                    <TextLink href={register().url} className='text-sm'>Sign in</TextLink>
+                    <TextLink href={register().url} className="text-sm">
+                        Sign in
+                    </TextLink>
                 </div>
             )}
         </header>
@@ -82,7 +87,7 @@ function SearchProductsForm() {
         e.preventDefault();
 
         if (data.keyword.length === 0) return;
-        get(search.products().url, {
+        get(search().url, {
             onSuccess: () => {
                 reset();
             },

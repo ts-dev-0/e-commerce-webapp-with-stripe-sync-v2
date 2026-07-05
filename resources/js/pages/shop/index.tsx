@@ -7,7 +7,7 @@ interface HomeProps {
     products: Product[];
 }
 
-export default function Home({ products }: HomeProps) {
+export default function Index({ products }: HomeProps) {
     return (
         <AppLayout>
             <Head title="Home" />
