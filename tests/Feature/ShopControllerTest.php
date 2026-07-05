@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -44,6 +45,27 @@ class ShopControllerTest extends TestCase
         $product = Product::factory()->create();
 
         $response = $this->get(route('product.show', $product->id));
+
+        $response->assertOk();
+    }
+
+    public function test_user_can_search_products()
+    {
+        $parameter = ['keyword' => 'iphone'];
+
+        $products = Collection::make([
+            Product::factory()->make(),
+            Product::factory()->make(),
+        ]);
+
+        $searchPublishedProducts = $this->mock(\App\Actions\Product\SearchProducts::class);
+        $searchPublishedProducts
+            ->shouldReceive('handle')
+            ->with($parameter['keyword'])
+            ->andReturn($products);
+
+        $response = $this
+            ->get(route('product.search', $parameter));
 
         $response->assertOk();
     }

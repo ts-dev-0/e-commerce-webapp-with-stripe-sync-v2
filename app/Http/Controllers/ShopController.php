@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Product\SearchProducts;
+use App\Http\Requests\Search\SearchProductsRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ReviewResource;
 use App\Models\Product;
@@ -30,6 +32,17 @@ class ShopController extends Controller
             'product' => ProductResource::make($product),
             'reviews' => ReviewResource::collection($reviews),
             'averageRating' => $averageRating,
+        ]);
+    }
+
+    public function searchProducts(SearchProductsRequest $request, SearchProducts $action)
+    {
+        $validatedData = $request->validated();
+        $products = $action->handle($validatedData['keyword']);
+
+        return Inertia::render('search-product', [
+            'products' => ProductResource::collection($products),
+            'keyword' => $validatedData['keyword'],
         ]);
     }
 }
