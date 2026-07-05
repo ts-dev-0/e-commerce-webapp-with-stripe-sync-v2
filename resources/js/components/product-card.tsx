@@ -1,4 +1,5 @@
-import { show } from '@/routes/product';
+
+import { detail } from '@/routes/product';
 import { Product } from '@/types/product';
 import { Link } from '@inertiajs/react';
 
@@ -10,7 +11,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     return (
         <Link
             key={product.id}
-            href={show(product.id)}
+            href={detail(product.id)}
             className="block overflow-hidden rounded-lg border border-slate-200 bg-white transition hover:shadow-md"
         >
             <div className="flex h-40 w-full items-center justify-center bg-slate-100">
