@@ -1,4 +1,4 @@
-interface StockStatus {
+export interface StockStatus {
     status: 'inStock' | 'lowStock' | 'outOfStock';
     label: string;
 }
