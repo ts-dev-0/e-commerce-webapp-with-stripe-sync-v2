@@ -1,69 +1,48 @@
-import { Trash2 } from 'lucide-react';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 import { Button } from './ui/button';
 
 interface QuantitySelectorProps {
     quantity: number;
-    decrement: () => void;
-    increment: () => void;
-    onRemove?: () => void;
-    min?: number;
-    max?: number;
+    onChange: (newQuantity: number) => void;
+    showTrashIcon: boolean;
+    processing: boolean;
 }
 
 export function QuantitySelector({
     quantity,
-    decrement,
-    increment,
-    onRemove,
-    min = 1,
-    max = 10,
+    onChange,
+    showTrashIcon,
+    processing,
 }: QuantitySelectorProps) {
-    const isMin = quantity <= min;
-    const isMax = quantity >= max;
-    const shouldShowRemoveButton =
-        quantity === 1 && typeof onRemove === 'function';
-
-    function handleDecrement() {
-        if (isMin) {
-            onRemove?.();
-            return;
-        }
-
-        decrement();
-    }
-
-    function handleIncrement() {
-        if (isMax) {
-            return;
-        }
-
-        increment();
-    }
+    const min = quantity <= 1;
+    const max = quantity >= 10;
 
     return (
-        <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-2 py-1">
+        <div className="flex w-fit items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-2 py-1">
             <Button
-                type="button"
                 variant="outline"
                 size="icon"
-                className="h-7 w-7 p-0"
+                className="size-7"
                 aria-label="数量を減らす"
-                onClick={handleDecrement}
-                disabled={!shouldShowRemoveButton && isMin}
+                onClick={() => onChange(quantity - 1)}
+                disabled={(!showTrashIcon && min) || processing}
             >
-                {shouldShowRemoveButton ? <Trash2 className="size-3.5" /> : '-'}
+                {showTrashIcon && min ? (
+                    <Trash2 className="size-3.5" />
+                ) : (
+                    <Minus className='size-3.5'/>
+                )}
             </Button>
             <span className="text-xs text-slate-700">{quantity}</span>
             <Button
-                type="button"
                 variant="outline"
                 size="icon"
-                className="h-7 w-7 p-0"
+                className="size-7"
                 aria-label="数量を増やす"
-                onClick={handleIncrement}
-                disabled={isMax}
+                onClick={() => onChange(quantity + 1)}
+                disabled={max || processing}
             >
-                +
+                <Plus className='size-3.5'/>
             </Button>
         </div>
     );

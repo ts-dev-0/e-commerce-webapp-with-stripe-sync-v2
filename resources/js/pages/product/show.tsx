@@ -11,34 +11,39 @@ import { Product } from '@/types/product';
 import { Review } from '@/types/review';
 import { Head, useForm } from '@inertiajs/react';
 
-interface ShowProps {
+interface Props {
     product: Product;
     reviews: Review[];
     averageRating: number;
 }
 
-interface LocalQuantityForm {
+interface AddToCartForm {
     productId: number;
     quantity: number;
 }
 
-export default function Show({ product, reviews, averageRating }: ShowProps) {
-    const { data, setData, transform, post, processing, errors } =
-        useForm<LocalQuantityForm>({
-            productId: product.id,
-            quantity: 1,
-        });
+export default function Show({ product, reviews, averageRating }: Props) {
+    const form = useForm<AddToCartForm>({
+        productId: product.id,
+        quantity: 1,
+    });
 
     const handleSubmit: React.FormEventHandler = (e) => {
         e.preventDefault();
 
-        transform(() => ({
+        form.transform((data) => ({
             ...data,
             product_id: data.productId,
             quantity: data.quantity,
         }));
 
-        post(store().url);
+        form.submit(store());
+    };
+
+    const handleChange = (newQuantity: number) => {
+        if (newQuantity < 1 || newQuantity > 10) return;
+
+        form.setData('quantity', newQuantity);
     };
 
     return (
@@ -86,32 +91,23 @@ export default function Show({ product, reviews, averageRating }: ShowProps) {
 
                         <div className="mt-6 flex items-center space-x-3">
                             <QuantitySelector
-                                decrement={() =>
-                                    setData((prev) => ({
-                                        ...prev,
-                                        quantity: prev.quantity - 1,
-                                    }))
-                                }
-                                increment={() =>
-                                    setData((prev) => ({
-                                        ...prev,
-                                        quantity: prev.quantity + 1,
-                                    }))
-                                }
-                                quantity={data.quantity}
+                                onChange={handleChange}
+                                quantity={form.data.quantity}
+                                showTrashIcon={false}
+                                processing={form.processing}
                             />
                             <form onSubmit={handleSubmit}>
                                 <Button
                                     type="submit"
                                     variant="primary"
-                                    disabled={processing}
+                                    disabled={form.processing}
                                 >
-                                    {processing && <Spinner />}
+                                    {form.processing && <Spinner />}
                                     カートに入れる
                                 </Button>
                             </form>
-                            <ErrorMessage message={errors.productId} />
-                            <ErrorMessage message={errors.quantity} />
+                            <ErrorMessage message={form.errors.productId} />
+                            <ErrorMessage message={form.errors.quantity} />
                         </div>
                     </div>
                 </div>
