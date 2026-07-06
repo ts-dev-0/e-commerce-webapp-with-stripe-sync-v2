@@ -18,7 +18,7 @@ class OrderController extends Controller
         /** @var \App\DTOs\OrderHistoryData $orderHistory */
         $orderHistory = $action->handle($request->user(), $validatedData['timeFilter'] ?? null);
 
-        return Inertia::render('account/orders', [
+        return Inertia::render('account/order/index', [
             'orders' => OrderResource::collection($orderHistory->orders),
             'years' => $orderHistory->availableYears,
         ]);
