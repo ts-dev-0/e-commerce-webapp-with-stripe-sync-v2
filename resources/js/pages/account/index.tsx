@@ -1,9 +1,9 @@
-import AccountCard from '@/components/account-card';
 import AccountLayout from '@/layouts/account-layout';
+import AccountCard from '@/pages/account/component/account-card';
 import { Head } from '@inertiajs/react';
 import { Lock, MapPin, ShoppingBag } from 'lucide-react';
 
-const cards = [
+const ACCOUNT_MENU_CARD = [
     {
         title: '注文履歴',
         description: '過去の注文を確認',
@@ -36,7 +36,7 @@ export default function Index() {
             <Head title="アカウント" />
 
             <div className="grid gap-6 md:grid-cols-3">
-                {cards.map((card) => (
+                {ACCOUNT_MENU_CARD.map((card) => (
                     <AccountCard key={card.title} {...card} />
                 ))}
             </div>
