@@ -29,7 +29,7 @@ export default function ModalWrapper({ children }: Props) {
         >
             <div
                 onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl"
+                className="w-full max-w-lg rounded-xl bg-white p-6"
             >
                 {children}
             </div>
