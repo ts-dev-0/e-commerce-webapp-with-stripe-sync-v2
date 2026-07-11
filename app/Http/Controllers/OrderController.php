@@ -29,7 +29,7 @@ class OrderController extends Controller
         $this->authorize('cancel', $order);
         $action->handle($order);
 
-        return to_route('account.orders.cancel.complete', $order->id)
+        return to_route('account.orders.cancel.success', $order->id)
             ->with('success', 'Order has been cancelled.');
     }
 
