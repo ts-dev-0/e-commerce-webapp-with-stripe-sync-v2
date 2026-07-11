@@ -20,7 +20,14 @@ export default function ModalRenderer() {
         case 'deleteDeliveryAddress':
             return <DeleteDeliveryAddressModal id={modal.props.id} />;
         case 'cancelOrderConfirm':
-            return <CancelOrderConfirmModal id={modal.props.id} />;
+            return (
+                <CancelOrderConfirmModal
+                    id={modal.props.id}
+                    orderNumber={modal.props.orderNumber}
+                    totalAmount={modal.props.totalAmount}
+                    items={modal.props.items}
+                />
+            );
 
         default:
             return null;
