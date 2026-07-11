@@ -2,10 +2,9 @@ import { ImagePlaceholder } from '@/components/image-placeholder';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import cancel from '@/routes/account/orders/cancel';
 import { detail } from '@/routes/product';
+import { useModalStore } from '@/stores/modalStore';
 import { Order } from '@/types/order';
-import { Link } from '@inertiajs/react';
 
 interface Props {
     order: Order;
@@ -39,6 +38,7 @@ const STATUS_CONFIG = {
 } as const;
 
 export function OrderCard({ order }: Props) {
+    const openModal = useModalStore((state) => state.openModal);
     const statusConfig = STATUS_CONFIG[order.status];
 
     return (
@@ -83,10 +83,18 @@ export function OrderCard({ order }: Props) {
                         </div>
                         <div className="flex flex-col gap-3">
                             {order.status === 'Pending' && (
-                                <Button asChild variant={'outline'}>
-                                    <Link href={cancel.show(order.orderId)}>
-                                        キャンセルする
-                                    </Link>
+                                <Button
+                                    variant={'outline'}
+                                    onClick={() =>
+                                        openModal('cancelOrderConfirm', {
+                                            id: order.orderId,
+                                            orderNumber: order.orderNumber,
+                                            totalAmount: order.totalAmount,
+                                            items: order.items,
+                                        })
+                                    }
+                                >
+                                    キャンセルする
                                 </Button>
                             )}
                         </div>
