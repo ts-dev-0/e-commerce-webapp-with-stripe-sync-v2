@@ -33,9 +33,9 @@ class OrderController extends Controller
             ->with('success', 'Order has been cancelled.');
     }
 
-    public function complete(Order $order)
+    public function success(Order $order)
     {
-        return Inertia::render('account/cancel-order-complete', [
+        return Inertia::render('account/order/cancel/success', [
             'orderNumber' => $order->order_number,
         ]);
     }

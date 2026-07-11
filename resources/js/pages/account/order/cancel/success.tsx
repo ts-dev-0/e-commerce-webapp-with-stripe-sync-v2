@@ -8,9 +8,7 @@ interface CancelOrderCompleteProps {
     orderNumber: number;
 }
 
-export default function CancelOrderComplete({
-    orderNumber,
-}: CancelOrderCompleteProps) {
+export default function Success({ orderNumber }: CancelOrderCompleteProps) {
     return (
         <div className="mx-auto mt-20 max-w-lg text-center">
             <div className="mb-6 flex justify-center">
@@ -28,7 +26,7 @@ export default function CancelOrderComplete({
                 ご注文のキャンセルが正常に完了しました。
             </p>
 
-            <div className="space-x-4">
+            <div className="flex justify-center gap-4">
                 <Button asChild variant={'primary'}>
                     <Link href={account.orders().url}>注文履歴を見る</Link>
                 </Button>

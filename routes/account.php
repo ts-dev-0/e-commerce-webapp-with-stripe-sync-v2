@@ -15,8 +15,8 @@ Route::middleware(['auth', 'verified'])->prefix('account')->group(function () {
   Route::get('orders', [OrderController::class, 'index'])
     ->name('account.orders');
 
-  Route::get('orders/{order}/cancel/complete', [OrderController::class, 'complete'])
-    ->name('account.orders.cancel.complete');
+  Route::get('orders/{order}/cancel/success', [OrderController::class, 'success'])
+    ->name('account.orders.cancel.success');
 
   Route::patch('orders/{order}/cancel', [OrderController::class, 'cancel'])
     ->name('account.orders.cancel.update');
