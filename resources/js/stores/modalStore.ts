@@ -1,4 +1,5 @@
 import { Address } from '@/types/address';
+import { OrderItem } from '@/types/order-item';
 import { create } from 'zustand';
 
 /*
@@ -18,6 +19,9 @@ export interface ModalPropsMap {
 
     cancelOrderConfirm: {
         id: number;
+        orderNumber: string;
+        totalAmount: number;
+        items: OrderItem[];
     };
 
     createDeliveryAddress: undefined;
