@@ -17,7 +17,7 @@ class AddressController extends Controller
     {
         $addresses = $request->user()->addresses()->get();
 
-        return Inertia::render('account/addresses', [
+        return Inertia::render('account/address/index', [
             'addresses' => AddressResource::collection($addresses),
         ]);
     }

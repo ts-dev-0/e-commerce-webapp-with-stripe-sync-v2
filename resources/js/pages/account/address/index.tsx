@@ -9,7 +9,7 @@ import { Head, router } from '@inertiajs/react';
 interface AddressesProps {
     addresses: Address[];
 }
-export default function Addresses({ addresses }: AddressesProps) {
+export default function Index({ addresses }: AddressesProps) {
     const openModal = useModalStore((state) => state.openModal);
 
     function handleSetDefaultAddress(id: number) {
