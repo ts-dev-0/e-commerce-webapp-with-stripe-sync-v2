@@ -10,30 +10,29 @@ interface CancelOrderCompleteProps {
 
 export default function Success({ orderNumber }: CancelOrderCompleteProps) {
     return (
-        <div className="mx-auto mt-20 max-w-lg text-center">
-            <div className="mb-6 flex justify-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
-                    <CheckCircle2 className="text-emerald-600" />
+        <div className="mx-auto h-screen max-h-screen w-5xl">
+            <div className="flex flex-col items-center gap-6 pt-32">
+                <div className="flex items-center gap-3">
+                    <CheckCircle2 className="size-20 text-indigo-600/80" />
+                    <h1 className="text-2xl font-semibold">
+                        ご注文のキャンセルが完了しました
+                    </h1>
                 </div>
-            </div>
+                <div>
+                    <p className="text-lg font-semibold">
+                        ご注文番号: {orderNumber}{' '}
+                        のキャンセル処理が正常に完了しました。
+                    </p>
+                </div>
+                <div className="flex gap-3">
+                    <Button asChild variant={'primary'}>
+                        <Link href={account.orders().url}>注文履歴を見る</Link>
+                    </Button>
 
-            <h1 className="mb-2 text-2xl font-semibold">
-                注文をキャンセルしました
-            </h1>
-
-            <p className="mb-4 text-gray-500">注文番号: {orderNumber}</p>
-            <p className="mb-6 text-gray-600">
-                ご注文のキャンセルが正常に完了しました。
-            </p>
-
-            <div className="flex justify-center gap-4">
-                <Button asChild variant={'primary'}>
-                    <Link href={account.orders().url}>注文履歴を見る</Link>
-                </Button>
-
-                <Button asChild variant={'outline'}>
-                    <Link href={home().url}>トップページへ戻る</Link>
-                </Button>
+                    <Button asChild variant={'outline'}>
+                        <Link href={home().url}>トップページへ戻る</Link>
+                    </Button>
+                </div>
             </div>
         </div>
     );
