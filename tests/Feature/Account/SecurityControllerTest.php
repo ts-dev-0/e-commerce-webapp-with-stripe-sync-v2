@@ -33,7 +33,7 @@ class SecurityControllerTest extends TestCase
 
         $response->assertInertia(fn (Assert $page) =>
             $page
-                ->component('account/login-security')
+                ->component('account/security/index')
                 ->where('name', $this->user->name)
                 ->where('email', $this->user->email)
         );
@@ -53,7 +53,7 @@ class SecurityControllerTest extends TestCase
             ->actingAs($this->user)
             ->get(route('account.security'))
             ->assertInertia(fn (Assert $page) =>
-                $page->component('account/login-security')
+                $page->component('account/security/index')
             );
     }
 
