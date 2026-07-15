@@ -1,5 +1,5 @@
-import OrderTimeFilterSelect from '@/components/order-time-filter-select';
 import AccountLayout from '@/layouts/account-layout';
+import OrderTimeFilterSelect from '@/pages/account/order/component/order-time-filter-select';
 
 import { EmptyState } from '@/components/empty-state';
 import { Order } from '@/types/order';
