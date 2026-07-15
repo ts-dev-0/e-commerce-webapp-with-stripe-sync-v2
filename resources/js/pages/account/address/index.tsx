@@ -1,20 +1,15 @@
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import AccountLayout from '@/layouts/account-layout';
-import { update } from '@/routes/addresses/default';
 import { useModalStore } from '@/stores/modalStore';
 import { Address } from '@/types/address';
-import { Head, router } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
+import { AddressCard } from './component/address-card';
 
 interface AddressesProps {
     addresses: Address[];
 }
 export default function Index({ addresses }: AddressesProps) {
     const openModal = useModalStore((state) => state.openModal);
-
-    function handleSetDefaultAddress(id: number) {
-        router.patch(update(id).url);
-    }
 
     return (
         <AccountLayout
@@ -37,88 +32,9 @@ export default function Index({ addresses }: AddressesProps) {
                     <p className="text-slate-600">登録済みの住所がありません</p>
                 </div>
             ) : (
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid grid-cols-2">
                     {addresses.map((address) => (
-                        <div
-                            key={address.id}
-                            className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
-                        >
-                            <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                    <div className="flex items-center gap-2">
-                                        <h2 className="font-semibold text-slate-800">
-                                            {address.fullName}
-                                        </h2>
-                                        {address.isDefault && (
-                                            <Badge variant="primary">
-                                                デフォルト
-                                            </Badge>
-                                        )}
-                                    </div>
-                                    <p className="mt-1 text-sm text-slate-600">
-                                        {address.phoneNumber}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="mt-4 space-y-2 border-t border-slate-200 pt-4">
-                                <p className="text-sm text-slate-800">
-                                    <span className="font-medium">
-                                        郵便番号：
-                                    </span>
-                                    {address.postalCode}
-                                </p>
-                                <p className="text-sm text-slate-800">
-                                    <span className="font-medium">住所：</span>
-                                    {address.prefecture}
-                                    {address.city}
-                                    {address.addressLine}
-                                </p>
-                            </div>
-
-                            <div className="mt-4 flex items-center justify-between gap-2 border-t border-slate-200 pt-4">
-                                <div>
-                                    {!address.isDefault && (
-                                        <Button
-                                            variant={'link'}
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                                handleSetDefaultAddress(
-                                                    address.id,
-                                                )
-                                            }
-                                        >
-                                            既定の住所に設定
-                                        </Button>
-                                    )}
-                                </div>
-                                <div className="flex gap-x-2">
-                                    <Button
-                                        variant="primary"
-                                        onClick={() =>
-                                            openModal(
-                                                'editDeliveryAddress',
-                                                address,
-                                            )
-                                        }
-                                    >
-                                        編集
-                                    </Button>
-
-                                    <Button
-                                        type="button"
-                                        variant="ghost"
-                                        onClick={() =>
-                                            openModal('deleteDeliveryAddress', {
-                                                id: address.id,
-                                            })
-                                        }
-                                    >
-                                        削除
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
+                        <AddressCard key={address.id} address={address} />
                     ))}
                 </div>
             )}
