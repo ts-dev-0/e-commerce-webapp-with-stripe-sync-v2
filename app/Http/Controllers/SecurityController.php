@@ -11,7 +11,7 @@ class SecurityController extends Controller
     {
         $user = $request->user();
 
-        return Inertia::render('account/login-security', [
+        return Inertia::render('account/security/index', [
             'name' => $user->name,
             'email' => $user->email,
         ]);

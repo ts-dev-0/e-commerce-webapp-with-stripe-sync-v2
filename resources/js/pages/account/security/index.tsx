@@ -16,7 +16,7 @@ interface LoginSecurityProps {
     email: string;
 }
 
-export default function LoginSecurity({ name, email }: LoginSecurityProps) {
+export default function Index({ name, email }: LoginSecurityProps) {
     const [isUserProfileEditing, setIsUserProfileEditing] = useState(false);
     const [isPasswordEditing, setIsPasswordEditing] = useState(false);
 
