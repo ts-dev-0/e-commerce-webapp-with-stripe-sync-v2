@@ -1,46 +1,40 @@
-import { update } from '@/routes/reviews';
+import { store } from '@/routes/reviews';
 import { useForm } from '@inertiajs/react';
 import { Star } from 'lucide-react';
-import ErrorMessage from './error-message';
-import { Button } from './ui/button';
-import { Spinner } from './ui/spinner';
+import ErrorMessage from '../../../components/error-message';
+import { Button } from '../../../components/ui/button';
+import { Spinner } from '../../../components/ui/spinner';
 
-interface EditReviewFormData {
+interface ReviewFormData {
+    productId: number;
     rating: number;
     comment: string;
 }
 
 interface ReviewFormProps {
-    reviewId: number;
-    rating: number;
-    comment: string;
-    setEditMode: (editMode: boolean) => void;
+    productId: number;
 }
 
-export default function EditReviewForm({
-    reviewId,
-    rating,
-    comment,
-    setEditMode,
-}: ReviewFormProps) {
-    const { data, setData, transform, processing, patch, reset, errors } =
-        useForm<EditReviewFormData>({
-            rating,
-            comment,
+export default function CreateReviewForm({ productId }: ReviewFormProps) {
+    const { data, setData, transform, processing, post, reset, errors } =
+        useForm<ReviewFormData>({
+            productId,
+            rating: 5,
+            comment: '',
         });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         transform(() => ({
+            product_id: data.productId,
             rating: data.rating,
             comment: data.comment,
         }));
 
-        patch(update(reviewId).url, {
+        post(store().url, {
             onSuccess: () => {
                 reset();
-                setEditMode(false);
             },
         });
     };
@@ -57,11 +51,9 @@ export default function EditReviewForm({
 
                 <div className="flex gap-1">
                     {[1, 2, 3, 4, 5].map((value) => (
-                        <Button
+                        <button
                             key={value}
                             type="button"
-                            variant="ghost"
-                            size="icon"
                             onClick={() => setData('rating', value)}
                         >
                             <Star
@@ -71,7 +63,7 @@ export default function EditReviewForm({
                                         : 'text-slate-300'
                                 }`}
                             />
-                        </Button>
+                        </button>
                     ))}
                 </div>
             </div>
@@ -87,13 +79,12 @@ export default function EditReviewForm({
                     rows={4}
                     className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
                     placeholder="レビューを入力してください"
-                    required
                 />
             </div>
 
             <Button type="submit" variant="primary" disabled={processing}>
                 {processing && <Spinner />}
-                レビューを更新する
+                レビューを投稿する
             </Button>
             <ErrorMessage message={errors.rating} />
             <ErrorMessage message={errors.comment} />

@@ -2,8 +2,8 @@ import { useModalStore } from '@/stores/modalStore';
 import { Review } from '@/types/review';
 import { Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { Button } from '../../../components/ui/button';
 import EditReviewForm from './edit-review-form';
-import { Button } from './ui/button';
 
 interface ReviewCardProps {
     review: Review;

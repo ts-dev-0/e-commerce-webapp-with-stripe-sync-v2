@@ -1,11 +1,11 @@
 import ErrorMessage from '@/components/error-message';
 import { QuantitySelector } from '@/components/quantity-selector';
-import ReviewSection from '@/components/review-section';
 import { StockStatus } from '@/components/stock-status';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
+import ReviewSection from '@/pages/shop/component/review-section';
 import { store } from '@/routes/cart/items';
 import { Product } from '@/types/product';
 import { Review } from '@/types/review';
@@ -22,7 +22,11 @@ interface AddToCartForm {
     quantity: number;
 }
 
-export default function ProductDetail({ product, reviews, averageRating }: Props) {
+export default function ProductDetail({
+    product,
+    reviews,
+    averageRating,
+}: Props) {
     const form = useForm<AddToCartForm>({
         productId: product.id,
         quantity: 1,
