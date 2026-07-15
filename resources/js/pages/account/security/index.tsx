@@ -1,4 +1,4 @@
-import EditPasswordForm from '@/components/edit-password-form';
+import EditPasswordForm from '@/pages/account/security/component/edit-password-form';
 import EditUserProfileForm from '@/components/edit-user-profile-form';
 import AccountLayout from '@/layouts/account-layout';
 import { useState } from 'react';
