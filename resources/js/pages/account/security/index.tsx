@@ -1,6 +1,6 @@
-import EditPasswordForm from '@/pages/account/security/component/edit-password-form';
-import EditUserProfileForm from '@/components/edit-user-profile-form';
 import AccountLayout from '@/layouts/account-layout';
+import EditPasswordForm from '@/pages/account/security/component/edit-password-form';
+import EditUserProfileForm from '@/pages/account/security/component/edit-user-profile-form';
 import { useState } from 'react';
 import { EditableCard } from './component/editable-card';
 import { PasswordSummary } from './component/password-summary';

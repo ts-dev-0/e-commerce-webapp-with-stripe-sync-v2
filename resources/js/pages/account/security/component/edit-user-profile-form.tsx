@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { update } from '@/routes/profile';
 import { useForm } from '@inertiajs/react';
-import { Button } from './ui/button';
+import { Button } from '../../../../components/ui/button';
 
 interface EditUserProfileForm {
     name: string;
