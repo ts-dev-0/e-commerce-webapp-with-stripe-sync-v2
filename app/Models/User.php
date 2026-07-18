@@ -75,7 +75,9 @@ class User extends Authenticatable
 
     public function addresses()
     {
-        return $this->hasMany(Address::class);
+        return $this->hasMany(Address::class)
+            ->orderByDesc('is_default')
+            ->orderBy('created_at');
     }
 
     public function currentCart(): Cart
@@ -91,7 +93,7 @@ class User extends Authenticatable
     public function defaultAddress(): HasOne
     {
         return $this->hasOne(Address::class)
-                ->where('is_default', true);
+            ->where('is_default', true);
     }
 
     public function clearDefaultAddress(): void
