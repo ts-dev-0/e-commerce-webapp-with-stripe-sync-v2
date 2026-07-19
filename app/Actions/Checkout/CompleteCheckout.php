@@ -21,9 +21,9 @@ class CompleteCheckout
     ): void {
         $session = $this->stripeSessionService->retrieveSession($sessionId);
 
-        $deliveryAddress = $user->addresses->findOrFail($session->metadata->address_id);
+        $shippingAddress = $user->addresses->findOrFail($session->metadata->address_id);
 
-        $order = $this->createOrder->handle($user, $session->amount_total, $deliveryAddress);
+        $order = $this->createOrder->handle($user, $session->amount_total, $shippingAddress);
 
         $cart = $user->currentCart();
 
