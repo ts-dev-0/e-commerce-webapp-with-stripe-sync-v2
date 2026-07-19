@@ -13,11 +13,10 @@ class CreateCheckoutSession
 
     public function handle(User $user, int $selectedAddressId): string
     {
-        $cartItems = $user->currentCart()->items()->get();
+        $cartItems = $user->currentCart()->products()->get();
         if ($cartItems->isEmpty()) {
             throw new \App\Exceptions\EmptyCartException('cart is empty');
         }
-
         $session = $this->stripeSessionService
             ->createCheckoutSession(
                 $cartItems,
