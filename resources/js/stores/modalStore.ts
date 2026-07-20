@@ -13,10 +13,6 @@ export interface ModalPropsMap {
         id: number;
     };
 
-    deleteDeliveryAddress: {
-        id: number;
-    };
-
     cancelOrderConfirm: {
         id: number;
         orderNumber: string;
@@ -24,9 +20,13 @@ export interface ModalPropsMap {
         items: OrderItem[];
     };
 
-    createDeliveryAddress: undefined;
+    createShippingAddress: undefined;
 
-    editDeliveryAddress: Address;
+    editShippingAddress: Address;
+
+    deleteShippingAddress: {
+        id: number;
+    };
 }
 
 /*

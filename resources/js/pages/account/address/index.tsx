@@ -21,7 +21,7 @@ export default function Index({ addresses }: AddressesProps) {
             <div className="mb-6 flex items-center justify-end">
                 <Button
                     variant="primary"
-                    onClick={() => openModal('createDeliveryAddress')}
+                    onClick={() => openModal('createShippingAddress')}
                 >
                     新しい住所を追加
                 </Button>

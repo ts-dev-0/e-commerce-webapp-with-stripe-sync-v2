@@ -19,7 +19,7 @@ import {
 import { Spinner } from '../ui/spinner';
 import ModalWrapper from './modal-wrapper';
 
-export default function CreateDeliveryAddressModal() {
+export default function CreateShippingAddressModal() {
     const { data, setData, transform, post, processing, reset, errors } =
         useForm<CreateAddress>({
             fullName: '',
