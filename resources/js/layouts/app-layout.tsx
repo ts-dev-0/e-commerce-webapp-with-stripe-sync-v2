@@ -7,12 +7,29 @@ interface AppLayoutProps {
 
 export default function AppLayout({ children }: AppLayoutProps) {
     return (
-        <div className="flex min-h-svh flex-col gap-y-5">
+        <div className="flex min-h-dvh flex-col">
             <AppHeader />
 
-            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                {children}
-            </div>
+            <main className='flex-1'>{children}</main>
         </div>
     );
 }
+
+// Shop layout
+// 〇 shop/index 
+// 〇 shop/product-detail
+// 〇 shop/product-search
+// 〇 cart/index
+// 〇 checkout/index
+// 〇 checkout/success
+// 〇 checkout/failed
+
+// Account layout
+// account/index
+// account/address/index
+// account/order/index
+// account/security/index
+// account/address/index
+// settings/apperance
+// settings/profile
+// settings/two-factor
