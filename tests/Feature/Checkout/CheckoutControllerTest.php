@@ -46,13 +46,6 @@ class CheckoutControllerTest extends TestCase
             'user_id' => $this->user->id,
         ]);
 
-        $deliveryDate = [
-            '2026-03-20',
-            '2026-03-21',
-            '2026-03-22',
-            '2026-03-23',
-        ];
-
         $subtotal = 400;
         $shippingFee = 0;
         $total = $subtotal + $shippingFee;
