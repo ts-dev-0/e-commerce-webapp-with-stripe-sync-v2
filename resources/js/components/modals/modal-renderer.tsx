@@ -1,6 +1,6 @@
 import { useModalStore } from '@/stores/modalStore';
 import CancelOrderConfirmModal from './cancel-order-confirm-modal';
-import CreateDeliveryAddressModal from './create-delivery-address-modal';
+import CreateShippingAddressModal from './create-shipping-address-modal';
 import DeleteDeliveryAddressModal from './delete-delivery-address-modal';
 import DeleteReviewModal from './delete-review-modal';
 import EditDeliveryAddressModal from './edit-delivery-address-modal';
@@ -11,8 +11,8 @@ export default function ModalRenderer() {
     if (modal.type === null) return null;
 
     switch (modal.type) {
-        case 'createDeliveryAddress':
-            return <CreateDeliveryAddressModal />;
+        case 'createShippingAddress':
+            return <CreateShippingAddressModal />;
         case 'editDeliveryAddress':
             return <EditDeliveryAddressModal address={modal.props} />;
         case 'deleteReviewConfirm':

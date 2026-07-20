@@ -24,7 +24,7 @@ export interface ModalPropsMap {
         items: OrderItem[];
     };
 
-    createDeliveryAddress: undefined;
+    createShippingAddress: undefined;
 
     editDeliveryAddress: Address;
 }

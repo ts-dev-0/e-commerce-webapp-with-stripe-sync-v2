@@ -23,7 +23,7 @@ export function ShippingAddressSection({
     return (
         <div className="flex flex-col gap-y-5">
             <ShippingAddressHeader
-                onClick={() => openModal('createDeliveryAddress')}
+                onClick={() => openModal('createShippingAddress')}
             />
 
             {addresses.length === 0 ? (
