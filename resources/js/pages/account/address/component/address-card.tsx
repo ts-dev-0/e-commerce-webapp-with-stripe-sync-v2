@@ -60,7 +60,7 @@ export function AddressCard({ address }: Props) {
                         variant="ghost"
                         size={'sm'}
                         onClick={() =>
-                            openModal('deleteDeliveryAddress', {
+                            openModal('deleteShippingAddress', {
                                 id: address.id,
                             })
                         }

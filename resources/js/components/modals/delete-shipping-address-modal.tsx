@@ -7,13 +7,11 @@ import { Button } from '../ui/button';
 import { Spinner } from '../ui/spinner';
 import ModalWrapper from './modal-wrapper';
 
-interface DeleteDeliveryAddressModalProps {
+interface Props {
     id: number;
 }
 
-export default function DeleteDeliveryAddressModal({
-    id,
-}: DeleteDeliveryAddressModalProps) {
+export default function DeleteShippingAddressModal({ id }: Props) {
     const { processing, delete: deleteAddress, errors } = useForm({ id });
     const closeModal = useModalStore((state) => state.closeModal);
 
