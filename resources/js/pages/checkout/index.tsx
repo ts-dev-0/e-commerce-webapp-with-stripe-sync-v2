@@ -12,11 +12,11 @@ import { Separator } from '@/components/ui/separator';
 
 import { Checkout as CheckoutType } from '@/types/checkout';
 
-import { ShippingMethodSection } from './component/shipping-address/shipping-method-section';
 import { OrderItemSection } from './component/order-item-section';
 import { OrderSummarySection } from './component/order-summary-section';
 import { PaymentMethodSection } from './component/payment-method-section';
 import { ShippingAddressSection } from './component/shipping-address/shipping-address-section';
+import { ShippingMethodSection } from './component/shipping-address/shipping-method-section';
 
 interface CheckoutProps {
     checkout: CheckoutType;
@@ -28,7 +28,8 @@ interface CheckoutForm {
 
 export default function Index({ checkout }: CheckoutProps) {
     const { data, setData, post, transform, errors } = useForm<CheckoutForm>({
-        shippingAddressId: checkout.addresses[0].id,
+        shippingAddressId:
+            checkout.addresses.length > 0 ? checkout.addresses[0].id : null,
     });
 
     function handleCheckout(e: React.FormEvent) {
