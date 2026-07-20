@@ -1,4 +1,4 @@
-export function DeliveryMethodSection() {
+export function ShippingMethodSection() {
     return (
         <div className="flex flex-col gap-3">
             <h2 className="text-lg font-semibold text-slate-800">配送日時</h2>

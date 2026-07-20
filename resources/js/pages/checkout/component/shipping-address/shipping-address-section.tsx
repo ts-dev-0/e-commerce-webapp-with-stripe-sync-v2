@@ -7,7 +7,7 @@ import { PackageSearch } from 'lucide-react';
 import { ShippingAddressHeader } from './shipping-address-header';
 import { ShippingAddressList } from './shipping-address-list';
 
-interface DeliveryAddressSectionProps {
+interface Props {
     addresses: Address[];
     selectedShippingAddressId: number | null;
     setShippingAddressId: (id: number) => void;
@@ -17,7 +17,7 @@ export function ShippingAddressSection({
     addresses,
     selectedShippingAddressId,
     setShippingAddressId,
-}: DeliveryAddressSectionProps) {
+}: Props) {
     const openModal = useModalStore((state) => state.openModal);
 
     return (

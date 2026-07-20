@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 
 import { Checkout as CheckoutType } from '@/types/checkout';
 
-import { DeliveryMethodSection } from './component/delivery-method-section';
+import { ShippingMethodSection } from './component/shipping-address/shipping-method-section';
 import { OrderItemSection } from './component/order-item-section';
 import { OrderSummarySection } from './component/order-summary-section';
 import { PaymentMethodSection } from './component/payment-method-section';
@@ -67,7 +67,7 @@ export default function Index({ checkout }: CheckoutProps) {
 
                             <Separator />
 
-                            <DeliveryMethodSection />
+                            <ShippingMethodSection />
 
                             <Separator />
 
