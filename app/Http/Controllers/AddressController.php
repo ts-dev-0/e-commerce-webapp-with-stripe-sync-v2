@@ -44,7 +44,7 @@ class AddressController extends Controller
     {
         $this->authorize('delete', $address);
 
-        $address->query()->delete();
+        $address->delete();
 
         return back()
             ->with('success', 'Deleted Address.');

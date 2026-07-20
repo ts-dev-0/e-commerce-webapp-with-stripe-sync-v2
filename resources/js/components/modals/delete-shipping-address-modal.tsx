@@ -12,13 +12,13 @@ interface Props {
 }
 
 export default function DeleteShippingAddressModal({ id }: Props) {
-    const { processing, delete: deleteAddress, errors } = useForm({ id });
+    const { data, processing, delete: deleteAddress, errors } = useForm({ id });
     const closeModal = useModalStore((state) => state.closeModal);
 
     function handleDeleteAddress(event: React.FormEvent) {
         event.preventDefault();
 
-        deleteAddress(destroy(id).url, {
+        deleteAddress(destroy(data.id).url, {
             onSuccess: () => {
                 closeModal();
             },

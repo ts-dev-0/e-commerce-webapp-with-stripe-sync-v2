@@ -34,7 +34,7 @@ class ReviewController extends Controller
     {
         $this->authorize('delete', $review);
 
-        $review->query()->delete();
+        $review->delete();
 
         return back()
             ->with('success', 'Review deleted.');
