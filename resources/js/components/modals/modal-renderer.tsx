@@ -3,7 +3,7 @@ import CancelOrderConfirmModal from './cancel-order-confirm-modal';
 import CreateShippingAddressModal from './create-shipping-address-modal';
 import DeleteDeliveryAddressModal from './delete-delivery-address-modal';
 import DeleteReviewModal from './delete-review-modal';
-import EditDeliveryAddressModal from './edit-delivery-address-modal';
+import EditShippingAddressModal from './edit-shipping-address-modal';
 
 export default function ModalRenderer() {
     const modal = useModalStore((state) => state.modal);
@@ -13,8 +13,8 @@ export default function ModalRenderer() {
     switch (modal.type) {
         case 'createShippingAddress':
             return <CreateShippingAddressModal />;
-        case 'editDeliveryAddress':
-            return <EditDeliveryAddressModal address={modal.props} />;
+        case 'editShippingAddress':
+            return <EditShippingAddressModal address={modal.props} />;
         case 'deleteReviewConfirm':
             return <DeleteReviewModal id={modal.props.id} />;
         case 'deleteDeliveryAddress':

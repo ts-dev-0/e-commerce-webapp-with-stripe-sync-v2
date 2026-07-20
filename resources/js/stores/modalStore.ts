@@ -26,7 +26,7 @@ export interface ModalPropsMap {
 
     createShippingAddress: undefined;
 
-    editDeliveryAddress: Address;
+    editShippingAddress: Address;
 }
 
 /*

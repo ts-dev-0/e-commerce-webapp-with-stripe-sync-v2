@@ -50,7 +50,7 @@ export function AddressCard({ address }: Props) {
                         variant="primary"
                         size={'sm'}
                         onClick={() =>
-                            openModal('editDeliveryAddress', address)
+                            openModal('editShippingAddress', address)
                         }
                     >
                         編集

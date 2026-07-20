@@ -18,13 +18,11 @@ import {
 import { Spinner } from '../ui/spinner';
 import ModalWrapper from './modal-wrapper';
 
-interface EditDeliveryAddressModalProps {
+interface Props {
     address: Address;
 }
 
-export default function EditDeliveryAddressModal({
-    address,
-}: EditDeliveryAddressModalProps) {
+export default function EditShippingAddressModal({ address }: Props) {
     const { data, setData, transform, patch, processing, reset, errors } =
         useForm<UpdateAddress>({
             id: address.id,
