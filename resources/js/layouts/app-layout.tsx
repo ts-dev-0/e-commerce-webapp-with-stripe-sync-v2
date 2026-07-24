@@ -25,11 +25,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
 // 〇 checkout/failed
 
 // Account layout
-// account/index
-// account/address/index
-// account/order/index
-// account/security/index
-// account/address/index
-// settings/apperance
-// settings/profile
-// settings/two-factor
+// 〇 account/index
+// 〇 account/address/index
+// 〇 account/order/index
+// 〇 account/security/index
