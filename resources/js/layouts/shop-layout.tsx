@@ -1,12 +1,12 @@
 import { Head } from '@inertiajs/react';
 import { ReactNode } from 'react';
 
-interface AccountLayoutProps {
-    title: string;
+interface Props {
     children: ReactNode;
+    title?: string;
 }
 
-export default function AccountLayout({ title, children }: AccountLayoutProps) {
+export function ShopLayout({ children, title }: Props) {
     return (
         <>
             <Head title={title} />

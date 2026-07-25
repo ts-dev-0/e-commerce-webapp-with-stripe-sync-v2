@@ -5,11 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
+import { ShopLayout } from '@/layouts/shop-layout';
 import ReviewSection from '@/pages/shop/component/review-section';
 import { store } from '@/routes/cart/items';
 import { Product } from '@/types/product';
 import { Review } from '@/types/review';
-import { Head, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 
 interface Props {
     product: Product;
@@ -52,9 +53,7 @@ export default function ProductDetail({
 
     return (
         <AppLayout>
-            <Head title={product.name} />
-
-            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <ShopLayout title={product.name}>
                 <div className="mt-6 flex flex-col gap-6 lg:flex-row">
                     <div className="lg:w-1/2">
                         <div className="flex h-72 w-full items-center justify-center rounded-lg border border-slate-200 bg-slate-100">
@@ -117,7 +116,7 @@ export default function ProductDetail({
                     reviews={reviews}
                     averageRating={averageRating}
                 />
-            </div>
+            </ShopLayout>
         </AppLayout>
     );
 }

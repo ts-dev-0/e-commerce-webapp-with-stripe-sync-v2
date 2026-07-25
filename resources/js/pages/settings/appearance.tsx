@@ -1,9 +1,12 @@
-import AccountLayout from "@/layouts/account-layout";
+import AccountLayout from '@/layouts/account-layout';
+import AppLayout from '@/layouts/app-layout';
 
 export default function Appearance() {
     return (
-        <AccountLayout>
-            <div>Appearance Page</div>
-        </AccountLayout>
+        <AppLayout>
+            <AccountLayout title="プロフィール">
+                <div>Appearance Page</div>
+            </AccountLayout>
+        </AppLayout>
     );
 }

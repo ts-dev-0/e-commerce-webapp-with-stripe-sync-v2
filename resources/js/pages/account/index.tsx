@@ -1,6 +1,6 @@
 import AccountLayout from '@/layouts/account-layout';
+import AppLayout from '@/layouts/app-layout';
 import AccountCard from '@/pages/account/component/account-card';
-import { Head } from '@inertiajs/react';
 import { Lock, MapPin, ShoppingBag } from 'lucide-react';
 
 const ACCOUNT_MENU_CARD = [
@@ -32,14 +32,14 @@ const ACCOUNT_MENU_CARD = [
 
 export default function Index() {
     return (
-        <AccountLayout title="アカウント">
-            <Head title="アカウント" />
-
-            <div className="grid gap-6 md:grid-cols-3">
-                {ACCOUNT_MENU_CARD.map((card) => (
-                    <AccountCard key={card.title} {...card} />
-                ))}
-            </div>
-        </AccountLayout>
+        <AppLayout>
+            <AccountLayout title="アカウント">
+                <div className="grid grid-cols-3 gap-6">
+                    {ACCOUNT_MENU_CARD.map((card) => (
+                        <AccountCard key={card.title} {...card} />
+                    ))}
+                </div>
+            </AccountLayout>
+        </AppLayout>
     );
 }

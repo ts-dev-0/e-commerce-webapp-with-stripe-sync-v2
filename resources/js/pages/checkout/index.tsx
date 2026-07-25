@@ -12,6 +12,7 @@ import { Separator } from '@/components/ui/separator';
 
 import { Checkout as CheckoutType } from '@/types/checkout';
 
+import { ShopLayout } from '@/layouts/shop-layout';
 import { OrderItemSection } from './component/order-item-section';
 import { OrderSummarySection } from './component/order-summary-section';
 import { PaymentMethodSection } from './component/payment-method-section';
@@ -48,51 +49,52 @@ export default function Index({ checkout }: CheckoutProps) {
     return (
         <AppLayout>
             <Head title="Checkout" />
+            <ShopLayout title="注文を確定する">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="grid gap-6 lg:grid-cols-3">
+                        <section className="lg:col-span-2">
+                            <div className="space-y-6">
+                                <ShippingAddressSection
+                                    addresses={checkout.addresses}
+                                    selectedShippingAddressId={
+                                        data.shippingAddressId
+                                    }
+                                    setShippingAddressId={(id: number) =>
+                                        setData('shippingAddressId', id)
+                                    }
+                                />
+                                <Separator />
 
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="grid gap-6 lg:grid-cols-3">
-                    <section className="lg:col-span-2">
-                        <div className="space-y-6">
-                            <ShippingAddressSection
-                                addresses={checkout.addresses}
-                                selectedShippingAddressId={
-                                    data.shippingAddressId
-                                }
-                                setShippingAddressId={(id: number) =>
-                                    setData('shippingAddressId', id)
-                                }
-                            />
-                            <Separator />
+                                <PaymentMethodSection />
 
-                            <PaymentMethodSection />
+                                <Separator />
 
-                            <Separator />
+                                <ShippingMethodSection />
 
-                            <ShippingMethodSection />
+                                <Separator />
 
-                            <Separator />
-
-                            <OrderItemSection items={checkout.cartItems} />
-                        </div>
-                    </section>
-
-                    <section className="flex flex-col gap-5 lg:col-span-1">
-                        <OrderSummarySection
-                            subtotal={checkout.subtotal}
-                            shippingFee={checkout.shippingFee}
-                            total={checkout.total}
-                        />
-                        <form onSubmit={handleCheckout}>
-                            <div className="flex items-center justify-end">
-                                <Button type="submit" variant={'primary'}>
-                                    注文を確定する
-                                </Button>
+                                <OrderItemSection items={checkout.cartItems} />
                             </div>
-                        </form>
-                        <ErrorMessage message={errors.shippingAddressId} />
-                    </section>
+                        </section>
+
+                        <section className="flex flex-col gap-5 lg:col-span-1">
+                            <OrderSummarySection
+                                subtotal={checkout.subtotal}
+                                shippingFee={checkout.shippingFee}
+                                total={checkout.total}
+                            />
+                            <form onSubmit={handleCheckout}>
+                                <div className="flex items-center justify-end">
+                                    <Button type="submit" variant={'primary'}>
+                                        注文を確定する
+                                    </Button>
+                                </div>
+                            </form>
+                            <ErrorMessage message={errors.shippingAddressId} />
+                        </section>
+                    </div>
                 </div>
-            </div>
+            </ShopLayout>
         </AppLayout>
     );
 }
