@@ -13,6 +13,34 @@ class OrderTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * addItem
+     */
+    public function test_it_adds_an_item_to_the_order()
+    {
+        $order = Order::factory()->create();
+        $product = Product::factory()->create([
+            'name' => 'テスト商品',
+            'price' => 2_500,
+        ]);
+
+        $order->addItem($product, 3, 7_500);
+
+        $this->assertDatabaseHas('order_items', [
+            'order_id' => $order->id,
+            'product_id' => $product->id,
+            'product_name' => 'テスト商品',
+            'price' => 2_500,
+            'quantity' => 3,
+            'subtotal' => 7_500,
+        ]);
+    }
+
+
+    /**
+     * filteredByPeriod
+     */
+
+    /**
      *  Happy Path
      */
     public function test_it_returns_the_past_three_months_data_as_default()
