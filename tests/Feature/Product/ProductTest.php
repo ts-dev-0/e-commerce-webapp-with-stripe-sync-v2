@@ -15,13 +15,46 @@ class ProductTest extends TestCase
     /**
      *  scopeNewArrivals
      */
+    public function test_new_arrivals_returns_latest_published_products_up_to_the_limit()
+    {
+        $oldProduct = Product::factory()->create([
+            'is_published' => true,
+            'created_at' => now()->subDays(2),
+        ]);
+        $newProduct = Product::factory()->create([
+            'is_published' => true,
+            'created_at' => now()->subDay(),
+        ]);
+        Product::factory()->create([
+            'is_published' => false,
+            'created_at' => now(),
+        ]);
+
+        $products = Product::newArrivals(2)->get();
+
+        $this->assertCount(2, $products);
+        $this->assertTrue($products->contains($oldProduct));
+        $this->assertTrue($products->contains($newProduct));
+        $this->assertSame($newProduct->id, $products->first()->id);
+    }
 
     /**
      *  getStockStatusAttribute
      */
+    public function test_it_returns_in_stock_status_when_stock_is_sufficient()
+    {
+        $product = Product::factory()->create(['stock' => 10]);
+
+        $stockStatus = $product->stock_status;
+
+        $this->assertSame([
+            'status' => 'inStock',
+            'label' => '在庫あり',
+        ], $stockStatus);
+    }
 
     /**
-     *  getReviewsWithUser
+     *  getLatestReviewsWithUser
      */
     public function test_get_latest_reviews_with_user_data()
     {
@@ -141,5 +174,17 @@ class ProductTest extends TestCase
         $averageRating = $product->getAverageRating();
 
         $this->assertEquals(0, $averageRating);
+    }
+
+    /**
+     * hasEnoughStock
+     */
+    public function test_it_returns_true_when_the_requested_quantity_is_in_stock()
+    {
+        $product = Product::factory()->create(['stock' => 10]);
+
+        $hasEnoughStock = $product->hasEnoughStock(5);
+
+        $this->assertTrue($hasEnoughStock);
     }
 }
