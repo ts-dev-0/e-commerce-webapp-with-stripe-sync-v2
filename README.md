@@ -15,7 +15,7 @@ Modern E-Commerce application using Laravel, React and InertiaJS
 
 - **Manage product infromation**: Manage name, description, price, stock
 - **Category System**: Categorize products into multiple categories (Manu-to-Many)
-- **Search products**: 
+- **Search products**:
 
 ### Shopping Cart
 
@@ -25,22 +25,24 @@ Modern E-Commerce application using Laravel, React and InertiaJS
 
 - **Create order**: Automatically generate orders from cart contents
 - **Manage order status**
-  - 🟡 Pending
-  - ✅ Paid
-  - ✅ Completed
-  - ❌ Canceled
+    - 🟡 Pending
+    - ✅ Paid
+    - ✅ Completed
+    - ❌ Canceled
 - **Cancel feature**: Only Order in Pending status can be canceled
-- ***Order detail saved**: Persis order information for each product in OrderItem 
+- **Order detail saved**: Persis order information for each product in OrderItem
 
 ## 🛠️ Tech Stack
 
 ### Back-end
+
 - **Laravel 12**
 - **PHP 8.2+**
 - **Fortify**
 - **Wayfinder**
 
 ### Front-end
+
 - **React 19**
 - **TypeScript**
 - **Inertia.js**
@@ -48,24 +50,31 @@ Modern E-Commerce application using Laravel, React and InertiaJS
 - **Shadcn/ui**
 
 ### Build Tools
+
 - **Vite**
 - **TypeScript Compiler**
 - **ESLint**
 - **Prettier**
 
 ### Database
+
 - **MySQL**
 
+## Database Schema
+
+![Database schema](docs/images/db-schema.png)
+
 ### Test・Development
+
 - **PHPUnit**
 - **Faker**
-- **Laravel Pint**
 
 ### Prerequisites
+
 - PHP 8.2+
 - Composer
 - Node.js 18+
-- npm / yarn / bun
+- npm
 
 ## 📄 License
 
