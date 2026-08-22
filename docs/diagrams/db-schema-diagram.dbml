@@ -1,0 +1,120 @@
+Table users {
+  id bigint [pk, increment]
+  name varchar [not null]
+  email varchar [not null, unique]
+  email_verified_at timestamp
+  password varchar [not null]
+  two_factor_secret text
+  two_factor_recovery_codes text
+  two_factor_confirmed_at timestamp
+  is_admin varchar [not null, default: '0']
+  remember_token varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table products {
+  id bigint [pk, increment]
+  stripe_product_id varchar [unique]
+  stripe_price_id varchar
+  name varchar(255) [not null]
+  description text
+  price int [note: "unsigned"]
+  stock int [note: "unsigned"]
+  manufacturer varchar
+  is_published boolean [not null, default: false]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table categories {
+  id bigint [pk, increment]
+  name varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table category_product {
+  id bigint [pk, increment]
+  category_id bigint [not null, ref: > categories.id]
+  product_id bigint [not null, ref: > products.id]
+  created_at timestamp
+  updated_at timestamp
+
+  Indexes {
+    (category_id, product_id) [unique]
+  }
+}
+
+Table carts {
+  id bigint [pk, increment]
+  user_id bigint [not null, ref: > users.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table cart_items {
+  id bigint [pk, increment]
+  cart_id bigint [not null, ref: > carts.id]
+  product_id bigint [not null, ref: > products.id]
+  quantity int [not null, default: 1, note: "unsigned"]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table addresses {
+  id bigint [pk, increment]
+  full_name varchar [not null]
+  postal_code varchar(7) [not null]
+  prefecture varchar [not null]
+  city varchar [not null]
+  address_line varchar [not null]
+  phone_number varchar [not null]
+  is_default boolean [not null, default: false]
+  user_id bigint [not null, ref: > users.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table orders {
+  id bigint [pk, increment]
+  user_id bigint [not null, ref: > users.id]
+  order_number varchar [not null, unique]
+  status tinyint [not null, default: 0, note: "unsigned"]
+  total_amount int [not null, note: "unsigned"]
+  ordered_at timestamp
+  full_name varchar [not null]
+  postal_code varchar(7) [not null]
+  prefecture varchar [not null]
+  city varchar [not null]
+  address_line varchar [not null]
+  phone_number varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table order_items {
+  id bigint [pk, increment]
+  order_id bigint [not null, ref: > orders.id]
+  product_id bigint [not null, ref: > products.id]
+  product_name varchar(255) [not null]
+  price int [not null, note: "unsigned"]
+  quantity int [not null, note: "unsigned"]
+  subtotal int [not null, note: "unsigned"]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table reviews {
+  id bigint [pk, increment]
+  user_id bigint [not null, ref: > users.id]
+  product_id bigint [not null, ref: > products.id]
+  rating tinyint [not null, default: 1, note: "unsigned"]
+  comment text
+  created_at timestamp
+  updated_at timestamp
+
+  Indexes {
+    (user_id, product_id) [unique]
+  }
+}
