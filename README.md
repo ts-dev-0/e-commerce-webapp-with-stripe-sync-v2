@@ -63,6 +63,7 @@ Modern E-Commerce application using Laravel, React and InertiaJS
 ## Database Schema
 
 ![Database schema](docs/images/db-schema.png)
+![Class diagram](docs/images/class.png)
 
 ### Test・Development
 
