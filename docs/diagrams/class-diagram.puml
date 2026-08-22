@@ -1,0 +1,147 @@
+@startuml
+title E-Commerce Webapp Class Diagram
+
+!theme plain
+hide empty members
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+class User {
+  +name: string
+  +email: string
+  +password: string
+  +is_admin: boolean
+  --
+  +cart(): HasOne
+  +orders(): HasMany
+  +reviews(): HasMany
+  +addresses(): HasMany
+  +defaultAddress(): HasOne
+  +currentCart(): Cart
+  +isAdmin(): bool
+  +clearDefaultAddress(): void
+}
+
+class Product {
+  +stripe_product_id: string?
+  +stripe_price_id: string?
+  +name: string
+  +description: text?
+  +price: int?
+  +stock: int?
+  +manufacturer: string?
+  +is_published: boolean
+  +stock_status: array
+  --
+  +cartItems(): HasMany
+  +categories(): BelongsToMany
+  +reviews(): HasMany
+  +hasEnoughStock(quantity): bool
+  +getAverageRating(): float
+}
+
+class Category {
+  +name: string
+  --
+  +products(): BelongsToMany
+}
+
+class Cart {
+  +user_id: bigint
+  --
+  +user(): BelongsTo
+  +items(): HasMany
+  +products(): BelongsToMany
+  +subtotal(): int
+  +total(shippingFee): int
+  +clear(): void
+}
+
+class CartItem {
+  +cart_id: bigint
+  +product_id: bigint
+  +quantity: int
+  --
+  +cart(): BelongsTo
+  +product(): BelongsTo
+}
+
+class Order {
+  +user_id: bigint
+  +order_number: string
+  +status: OrderStatus
+  +total_amount: int
+  +ordered_at: datetime?
+  +full_name: string
+  +postal_code: string
+  +prefecture: string
+  +city: string
+  +address_line: string
+  +phone_number: string
+  --
+  +user(): BelongsTo
+  +items(): HasMany
+  +addItem(product, quantity, subtotal): void
+  +scopeFilteredByPeriod(...): Builder
+}
+
+class OrderItem {
+  +order_id: bigint
+  +product_id: bigint
+  +product_name: string
+  +price: int
+  +quantity: int
+  +subtotal: int
+  --
+  +order(): BelongsTo
+  +product(): BelongsTo
+}
+
+class Address {
+  +full_name: string
+  +postal_code: string
+  +prefecture: string
+  +city: string
+  +address_line: string
+  +phone_number: string
+  +is_default: boolean
+  --
+  +user(): BelongsTo
+}
+
+class Review {
+  +user_id: bigint
+  +product_id: bigint
+  +rating: int
+  +comment: text?
+  --
+  +user(): BelongsTo
+  +product(): BelongsTo
+  +isOwnedBy(user): bool
+  +hasReviewed(userId, productId): bool
+}
+
+enum OrderStatus {
+  Pending = 0
+  Paid = 1
+  Completed = 2
+  Canceled = 3
+  --
+  +canCancel(): bool
+}
+
+User "1" -- "0..1" Cart : cart
+Cart "1" *-- "0..*" CartItem : items
+CartItem "0..*" --> "1" Product : product
+
+User "1" -- "0..*" Order : orders
+Order "1" *-- "1..*" OrderItem : items
+OrderItem "0..*" --> "1" Product : product
+Order --> OrderStatus : status
+
+User "1" -- "0..*" Address : addresses
+User "1" -- "0..*" Review : reviews
+Product "1" -- "0..*" Review : reviews
+Category "0..*" -- "0..*" Product : category_product
+
+@enduml
